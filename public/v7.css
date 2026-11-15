@@ -1,0 +1,58 @@
+/* ======== v7: product sections (Savings, Loans, Udhaar) + shared journey components ======== */
+#paneSavings, #paneLoans, #paneUdhaar { background: #f6f7fa; }
+.p-head { display: flex; justify-content: space-between; align-items: center; padding: 64px 18px 6px; }
+.p-title { font-size: 30px; font-weight: 700; letter-spacing: -.035em; color: var(--p-navy); }
+.p-add { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 10px; border: 0; border-radius: 99px; background: var(--p-sky); color: #fff; font-size: 14px; font-weight: 600; }
+.p-add svg { width: 18px; height: 18px; }
+.p-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 14px 0; }
+.p-sum > div { background: #fff; border: 1px solid #e7e9ef; border-radius: 18px; padding: 12px 14px; }
+.p-sum > div > span { display: block; font-size: 12.5px; color: #8a90a2; font-weight: 500; }
+.p-sum b { display: block; font-size: 21px; font-weight: 600; letter-spacing: -.03em; color: #11131a; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.p-sum b small { font-size: 12px; font-weight: 500; color: #8a90a2; letter-spacing: 0; }
+.p-sum .cur { font-size: .55em; vertical-align: .6em; }
+
+.goal-card { display: grid; gap: 10px; }
+.gc-h { display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: center; }
+.gc-t b { display: block; font-size: 16px; font-weight: 600; color: #11131a; letter-spacing: -.01em; }
+.gc-t small { display: block; font-size: 12.5px; color: #8a90a2; margin-top: 1px; }
+.gc-amt { font-size: 24px; font-weight: 600; letter-spacing: -.03em; color: #11131a; font-variant-numeric: tabular-nums; }
+.gc-amt span { font-size: 14px; color: #8a90a2; font-weight: 500; letter-spacing: 0; }
+.gc-amt .cur { font-size: .55em; vertical-align: .6em; }
+.goal-card .meter { margin-top: 0; }
+.goal-card .two button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.goal-card .two svg { width: 16px; height: 16px; }
+
+.z-ic.lg { width: 40px; height: 40px; border-radius: 13px; } .z-ic.lg svg { width: 20px; height: 20px; }
+.z-ic.xl { width: 64px; height: 64px; border-radius: 20px; } .z-ic.xl svg { width: 30px; height: 30px; }
+.empty { background: #fff; border: 1px solid #e7e9ef; border-radius: 22px; padding: 26px 20px 20px; text-align: center; display: grid; justify-items: center; gap: 8px; }
+.empty b { font-size: 18px; color: var(--p-navy); letter-spacing: -.02em; margin-top: 6px; }
+.empty p { margin: 0 0 8px; color: #6b7183; font-size: 14px; line-height: 1.5; }
+
+.btn-black svg { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
+.card.list { padding: 4px 14px; }
+.card.list .z-row { border-bottom: 1px solid #eef0f4; }
+.card.list .z-row:last-child { border-bottom: 0; }
+.u-right { display: grid; justify-items: end; gap: 4px; }
+.u-right b { font-size: 15.5px; font-weight: 600; color: #11131a; font-variant-numeric: tabular-nums; }
+.mini { border: 0; background: var(--p-tint); color: var(--p-navy); font-size: 12.5px; font-weight: 600; padding: 5px 12px; border-radius: 99px; }
+.sent { font-size: 12px; font-weight: 600; color: var(--green); }
+
+/* journey components */
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opt { border: 0; text-align: left; background: #fff; border-radius: 18px; padding: 14px; display: grid; gap: 6px; box-shadow: 0 0 0 1px #e3e6ee; }
+.opt b { font-size: 15px; color: #11131a; font-weight: 600; margin-top: 4px; }
+.opt small { font-size: 12px; color: #8a90a2; }
+.opt.on { box-shadow: 0 0 0 2px var(--p-sky); background: #f2fbff; }
+.choices.n2 { grid-template-columns: repeat(2, 1fr); }
+.choices.n4 { grid-template-columns: repeat(4, 1fr); }
+.choices.n4 .choice b { font-size: 14.5px; }
+.choice { padding: 12px 6px; }
+.choice.on b, .choice.on span { color: #fff; }
+.j-body .eyebrow { margin-bottom: -6px; }
+.fit { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; border-radius: 18px; padding: 14px; }
+.fit b { display: block; font-size: 15px; color: #11131a; }
+.fit small { display: block; font-size: 13px; color: #4a5063; margin-top: 2px; line-height: 1.45; }
+.fit.good { background: #e9f8f2; } .fit.warn { background: #fff6e3; } .fit.bad { background: #fff0f3; }
+
+.tl.ok::before { background: var(--green); border-color: var(--green); }
+.p-sum b .cur, .p-sum b .dec { display: inline; }

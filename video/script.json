@@ -1,0 +1,11 @@
+[
+  {"id": "s01", "scene": "title",    "text": "Every morning, one crore sixty-four lakh Paytm Soundboxes say the same words. Money received. But not one of them tells a shopkeeper what's coming."},
+  {"id": "s02", "scene": "murugan",  "text": "Meet Murugan. He runs a small store in Velachery, Chennai. He sells eleven thousand rupees a day. And still, on the day he needs it most, the money isn't there."},
+  {"id": "s03", "scene": "why",      "text": "His Pongal stock is due on the sixth of January. Eighty thousand rupees. At today's pace, he'll be thirty-two thousand short. He's not alone: only fourteen percent of small businesses ever reach formal credit."},
+  {"id": "s04", "scene": "kaasu",    "text": "So we built Kaasu. Tamil for money. It lives on the Soundbox already on his counter, and in the Paytm app he already uses."},
+  {"id": "s05", "scene": "app",      "text": "Fifty-three days before Pongal, his Soundbox speaks to him, in Tamil. Save six hundred a day. Collect what customers owe. Borrow only the gap. He says yes. He confirms with his PIN. Money never moves on voice alone."},
+  {"id": "s06", "scene": "features", "text": "Udhaar reminders come from Paytm, not from him, so no regular feels insulted. Floods pause his loan. Customers pre-book their Pongal hampers. And his loan shrinks from thirty-five thousand to eleven."},
+  {"id": "s07", "scene": "arch",     "text": "It runs on what Paytm already has. The Soundbox fleet, UPI, and regulated partners who hold the money and lend, built to RBI's rules."},
+  {"id": "s08", "scene": "research", "text": "Nobody else answers, acts, brings money in, and plans ahead. At ten lakh shops, that's around a hundred and thirty crore rupees a year for Paytm."},
+  {"id": "s09", "scene": "close",    "text": "On the sixth of January, the distributor's truck arrives. Murugan pays in full. And his Soundbox says: Pongal stock paid. Happy Pongal, Murugan. Kaasu. Every shop's cash, planned."}
+]

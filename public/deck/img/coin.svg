@@ -1,0 +1,32 @@
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="cFace" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#ffd257"/><stop offset="1" stop-color="#f0a21c"/></radialGradient>
+  <linearGradient id="cEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d98a10"/><stop offset="1" stop-color="#a86200"/></linearGradient>
+  <radialGradient id="cGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7fe0ff" stop-opacity=".45"/><stop offset="1" stop-color="#7fe0ff" stop-opacity="0"/></radialGradient>
+</defs>
+<circle cx="200" cy="160" r="160" fill="url(#cGlow)"/>
+<ellipse cx="206" cy="292" rx="120" ry="12" fill="#011a48" opacity=".18"/>
+<circle cx="200" cy="160" r="134" fill="none" stroke="#00baf2" stroke-width="1.5" stroke-dasharray="2 8" stroke-linecap="round" opacity=".7"/>
+<g opacity="0.95">
+  <ellipse cx="96" cy="98" rx="26" ry="26" fill="url(#cEdge)"/>
+  <circle cx="96" cy="92" r="26" fill="url(#cFace)"/>
+  <circle cx="96" cy="92" r="20.8" fill="none" stroke="#e59a12" stroke-width="1.5" opacity=".55"/>
+  <path d="M77.3 84.2A20.3 20.3 0 0 1 103.8 73.3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="96" y="101.4" text-anchor="middle" font-size="27" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<g opacity="1">
+  <ellipse cx="318" cy="243" rx="34" ry="34" fill="url(#cEdge)"/>
+  <circle cx="318" cy="236" r="34" fill="url(#cFace)"/>
+  <circle cx="318" cy="236" r="27.2" fill="none" stroke="#e59a12" stroke-width="1.5" opacity=".55"/>
+  <path d="M293.5 225.8A26.5 26.5 0 0 1 328.2 211.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="318" y="248.2" text-anchor="middle" font-size="36" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<g opacity="1">
+  <ellipse cx="200" cy="166" rx="100" ry="100" fill="url(#cEdge)"/>
+  <circle cx="200" cy="150" r="100" fill="url(#cFace)"/>
+  <circle cx="200" cy="150" r="80.0" fill="none" stroke="#e59a12" stroke-width="3.5" opacity=".55"/>
+  <path d="M128.0 120.0A78.0 78.0 0 0 1 230.0 78.0" stroke="#fff" stroke-width="7.0" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="200" y="186.0" text-anchor="middle" font-size="105" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<path d="M326 74C327.8 84.2 327.8 84.2 338 86C327.8 87.8 327.8 87.8 326 98C324.2 87.8 324.2 87.8 314 86C324.2 84.2 324.2 84.2 326 74z" fill="#ffffff"/><path d="M82 217C83.35 224.65 83.35 224.65 91 226C83.35 227.35 83.35 227.35 82 235C80.65 227.35 80.65 227.35 73 226C80.65 224.65 80.65 224.65 82 217z" fill="#00baf2"/><path d="M286 44C286.9 49.1 286.9 49.1 292 50C286.9 50.9 286.9 50.9 286 56C285.1 50.9 285.1 50.9 280 50C285.1 49.1 285.1 49.1 286 44z" fill="#ffd257"/>
+</svg>

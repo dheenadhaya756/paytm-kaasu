@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paytm Kaasu · Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Anek+Tamil:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #012b72; --navy-2: #0c3b8f; --navy-3: #1a4ea6; --sky: #00baf2; --sky-2: #59d2f7; --pale: #d6f1fc; --mist: #f1f8fc; --line: #dfe8f1;
+  --ink: #0b1630; --ink-2: #44506a; --muted: #7d889e; --green: #0f9d6e; --red: #e0345c; --gold: #f0a21c;
+  --font: "Inter", -apple-system, "Segoe UI", Arial, sans-serif; --tamil: "Anek Tamil", sans-serif; --ease: cubic-bezier(.22, 1, .36, 1); color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #d9ebf6; font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; letter-spacing: -.01em; }
+button { font: inherit; cursor: pointer; transition: transform .18s var(--ease), background-color .2s, box-shadow .25s, opacity .2s; }
+button:not(:disabled):active { transform: scale(.96); }
+button:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+.ta { font-family: var(--tamil); letter-spacing: 0; }
+.stage { position: fixed; inset: 0; display: grid; place-items: center; }
+.deck { position: relative; width: 1280px; height: 720px; transform-origin: center; counter-reset: sl; }
+.s { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; background: var(--mist); box-shadow: 0 30px 80px -30px rgba(1,43,114,.45); opacity: 0; visibility: hidden; transform: scale(1.015); transition: opacity .6s var(--ease), transform .8s var(--ease), visibility 0s .6s; counter-increment: sl; }
+.s::after { content: counter(sl, decimal-leading-zero); position: absolute; right: 26px; bottom: 16px; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .08em; }
+.s.dark { background: var(--navy); color: #fff; } .s.dark::after { color: rgba(255,255,255,.45); }
+.s.on { opacity: 1; visibility: visible; transform: none; transition: opacity .6s var(--ease), transform .8s var(--ease), visibility 0s; }
+.s.past { transform: scale(.99); }
+.in { position: absolute; inset: 0; padding: 46px 56px; }
+.s .a { opacity: 0; transform: translateY(18px); }
+.s.on .a { animation: up .85s var(--ease) both; }
+.s.on .d1 { animation-delay: .1s; } .s.on .d2 { animation-delay: .2s; } .s.on .d3 { animation-delay: .3s; } .s.on .d4 { animation-delay: .4s; } .s.on .d5 { animation-delay: .5s; } .s.on .d6 { animation-delay: .6s; }
+@keyframes up { to { opacity: 1; transform: none; } }
+.s.on .float { animation: up .85s var(--ease) both, float 6s 1s ease-in-out infinite; }
+@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; } .s .a { opacity: 1; transform: none; } }
+
+/* type */
+.t { font-size: 44px; line-height: 1.08; font-weight: 400; letter-spacing: -.03em; color: var(--navy); margin: 0; text-wrap: balance; }
+.dark .t, .c-navy .t, .c-mid .t { color: #fff; }
+.t.xl { font-size: 78px; letter-spacing: -.045em; line-height: 1; }
+.t.sm { font-size: 34px; }
+.eb { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
+.dark .eb { color: var(--sky-2); }
+.p { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+.dark .p, .c-navy .p, .c-mid .p { color: rgba(255,255,255,.72); }
+.c-sky .p { color: rgba(255,255,255,.9); }
+.mini { font-size: 12px; line-height: 1.4; color: var(--muted); }
+.dark .mini, .c-navy .mini, .c-mid .mini { color: rgba(255,255,255,.55); } .c-sky .mini { color: rgba(255,255,255,.85); }
+.big { font-size: 46px; font-weight: 400; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: 20px; letter-spacing: -.02em; margin-left: 3px; }
+.lbl { font-size: 13.5px; font-weight: 600; margin-top: 8px; line-height: 1.3; }
+hr.rule { border: 0; border-top: 1px solid rgba(255,255,255,.18); margin: 18px 0; }
+.lt hr.rule, hr.rule.lt { border-top-color: var(--line); }
+
+/* cards */
+.c { border-radius: 18px; padding: 22px; position: relative; overflow: hidden; }
+.c-navy { background: var(--navy); color: #fff; }
+.c-mid { background: var(--navy-2); color: #fff; }
+.c-sky { background: var(--sky); color: #fff; }
+.c-pale { background: var(--pale); color: var(--navy); }
+.c-white { background: #fff; color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+.c-glass { background: rgba(255,255,255,.08); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.c-img { background: linear-gradient(160deg, #e6f6fd, #bfe9fb); padding: 0; }
+.dark .c-img { background: linear-gradient(160deg, #1a4ea6, #0c3b8f); }
+.c-img img { display: block; }
+.crop { overflow: hidden; border-radius: 14px; }
+.crop img { width: 100%; display: block; }
+.grid { display: grid; gap: 14px; }
+.ab { position: absolute; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 99px; background: var(--pale); color: var(--navy); }
+.dark .tag, .c-navy .tag { background: rgba(255,255,255,.12); color: #fff; }
+.tag.sky { background: var(--sky); color: #fff; } .tag.green { background: #dff5ec; color: var(--green); } .tag.amber { background: #fff1d6; color: #9a5b00; } .tag.red { background: #fde6ec; color: var(--red); }
+.num-list { display: grid; grid-template-columns: 1fr 1fr; }
+.num-list > div { display: grid; grid-template-columns: 74px 1fr; gap: 14px; padding: 22px 26px 22px 0; border-top: 1px solid rgba(255,255,255,.16); }
+.num-list > div:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.16); }
+.num-list > div:nth-child(even) { padding-left: 30px; }
+.num-list .n { font-size: 48px; font-weight: 300; letter-spacing: -.04em; line-height: .95; color: var(--sky-2); }
+.num-list b { font-size: 17px; font-weight: 600; display: block; margin-bottom: 6px; }
+.bar { height: 54px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; color: #fff; font-size: 13.5px; font-weight: 600; }
+.bar b { font-size: 22px; font-weight: 500; letter-spacing: -.02em; }
+.stack > div { border-radius: 14px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.stack b { font-size: 15.5px; } .stack .mini { margin-top: 2px; }
+.stack .v { font-size: 24px; font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
+.logo-w { display: flex; align-items: center; gap: 12px; height: 26px; color: #fff; font-weight: 700; font-size: 20px; letter-spacing: -.02em; }
+.logo-w img { height: 100%; } .logo-w i { width: 1px; height: 20px; background: rgba(255,255,255,.4); }
+.logo-w.navy { color: var(--navy); } .logo-w.navy i { background: rgba(1,43,114,.3); }
+.phone { filter: drop-shadow(0 22px 30px rgba(1,43,114,.28)); }
+.zoom { cursor: zoom-in; transition: transform .35s var(--ease); }
+.zoom:hover { transform: translateY(-4px) scale(1.02); }
+.bubble { background: #fff; color: var(--ink); border-radius: 18px; padding: 14px 18px; box-shadow: 0 18px 40px -18px rgba(1,43,114,.45); font-size: 17px; line-height: 1.4; font-weight: 600; }
+.bubble small { display: block; font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 6px; font-family: var(--font); }
+.chip { border: 0; border-radius: 99px; padding: 9px 16px; font-size: 14.5px; font-weight: 700; background: rgba(255,255,255,.12); color: #fff; }
+.chip.on { background: var(--sky); color: #fff; }
+.btn { border: 0; border-radius: 14px; background: var(--sky); color: #fff; font-weight: 700; font-size: 15.5px; padding: 13px 20px; box-shadow: 0 14px 30px -14px rgba(0,186,242,.8); }
+.btn:disabled { background: var(--green); box-shadow: none; }
+.btn.navy { background: var(--navy); box-shadow: none; }
+.leg { display: grid; gap: 12px; }
+.leg div { display: grid; grid-template-columns: 16px 1fr auto; gap: 12px; align-items: center; font-size: 15px; font-weight: 500; }
+.leg i { width: 16px; height: 16px; border-radius: 5px; } .leg b { font-variant-numeric: tabular-nums; font-size: 17px; font-weight: 600; }
+#jarFill rect { transition: y .9s var(--ease), height .9s var(--ease); }
+.rain { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .8s; z-index: 0; }
+.rain.on { opacity: 1; }
+.rain i { position: absolute; top: -20px; width: 2px; height: 18px; border-radius: 2px; background: linear-gradient(#9fdcff, rgba(159,220,255,0)); animation: drop .9s linear infinite; }
+@keyframes drop { to { transform: translateY(760px); } }
+#rainSteps > div { transition: opacity .5s, background-color .5s; }
+.flow { stroke-dasharray: 2 10; animation: dash 1.1s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -24; } }
+.lb { position: fixed; inset: 0; background: rgba(5,20,50,.8); backdrop-filter: blur(6px); display: grid; place-items: center; z-index: 20; cursor: zoom-out; }
+.lb img { height: 86vh; filter: drop-shadow(0 30px 60px rgba(0,0,0,.5)); animation: up .5s var(--ease) both; }
+.frame { position: absolute; left: 56px; right: 56px; top: 132px; bottom: 40px; border-radius: 18px; overflow: hidden; background: #f2f3f6; box-shadow: 0 0 0 1px var(--line); }
+.frame iframe { position: absolute; left: 0; top: 0; width: 1520px; height: 840px; border: 0; transform: scale(.769); transform-origin: 0 0; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; color: #4a5a78; font-size: 12.5px; z-index: 10; }
+.hud .bar { position: fixed; left: 0; top: 0; height: 3px; padding: 0; border-radius: 0; background: var(--sky); transition: width .5s var(--ease); }
+.hud button { border: 0; background: rgba(1,43,114,.1); color: var(--navy); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-weight: 600; }
+.dots { display: flex; gap: 5px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(1,43,114,.2); cursor: pointer; transition: width .3s var(--ease), background .3s; }
+.dots i.on { width: 20px; border-radius: 4px; background: var(--sky); }
+.notes { position: fixed; right: 16px; top: 16px; width: 340px; background: rgba(1,27,72,.95); color: #e6ecff; border-radius: 16px; padding: 14px 16px; font-size: 14px; line-height: 1.5; z-index: 11; }
+.logo-tile { height: 58px; border-radius: 12px; background: rgba(255,255,255,.07); display: grid; place-items: center; padding: 0 12px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.logo-tile img { max-height: 24px; max-width: 100%; object-fit: contain; }
+.mx { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; background: #fff; border-radius: 18px; box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+.mx th { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; text-align: center; padding: 12px 8px; background: #f6f9fc; }
+.mx th:first-child, .mx td:first-child { text-align: left; padding-left: 20px; }
+.mx td { padding: 9px 8px; border-top: 1px solid #eef2f7; text-align: center; font-weight: 600; color: var(--ink); }
+.mx td small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; }
+.mx tr.us td { background: var(--navy); color: #fff; } .mx tr.us td small { color: rgba(255,255,255,.65); }
+.mx.score td { font-variant-numeric: tabular-nums; }
+.dot { display: inline-block; width: 15px; height: 15px; border-radius: 50%; vertical-align: -3px; }
+.dot.y { background: var(--green); } .dot.p { background: linear-gradient(90deg, var(--gold) 50%, #e3e9f1 50%); } .dot.n { box-shadow: inset 0 0 0 2px #cfd8e4; }
+.mx tr.us .dot.y { background: var(--sky); box-shadow: 0 0 0 3px rgba(0,186,242,.3); }
+.tl-line { position: absolute; left: 56px; right: 56px; height: 0; border-top: 2px dashed #9fc6e3; }
+.tl-node { position: absolute; width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px var(--navy); display: grid; place-items: center; color: var(--navy); font-size: 13px; font-weight: 800; transform: translate(-50%, -50%); }
+.tl-node.on { background: var(--sky); color: #fff; box-shadow: 0 0 0 6px rgba(0,186,242,.2); }
+.src-list { columns: 2; column-gap: 36px; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+.src-list div { break-inside: avoid; margin-bottom: 8px; } .src-list b { color: var(--navy); }
+.dark .c-pale .t, .dark .c-white .t { color: var(--navy); }
+.dark .c-pale .p, .dark .c-white .p { color: var(--ink-2); }
+.dark .c-pale .mini, .dark .c-white .mini { color: var(--muted); }
+.dark .c-pale .eb, .dark .c-white .eb { color: #0089c2; }
+
+/* ---- motion: smooth, staggered, Apple-like ---- */
+.s { transform: translateX(28px) scale(.985); transition: opacity .75s var(--ease), transform 1s var(--ease), visibility 0s .75s; }
+.s.on { transform: none; }
+.s.past { transform: translateX(-28px) scale(.985); }
+.s .a { transform: translateY(16px); filter: blur(4px); }
+.s.on .a { animation: up .9s var(--ease) both; }
+@keyframes up { from { opacity: 0; transform: translateY(16px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+.s .st { opacity: 0; }
+.s.on .st { animation: rise .8s var(--ease) both; animation-delay: calc(.18s + var(--i, 0) * 60ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+.s.on .st.a { filter: none; }
+.s.on .bar { animation: grow 1.1s var(--ease) both; animation-delay: calc(.3s + var(--i, 0) * 90ms); transform-origin: left center; }
+@keyframes grow { from { transform: scaleX(0); opacity: .3; } to { transform: none; opacity: 1; } }
+.s.on .tl-line { animation: draw 1.4s var(--ease) both .2s; transform-origin: left center; }
+@keyframes draw { from { transform: scaleX(0); } to { transform: none; } }
+.s.on .tl-node { animation: pop .6s cubic-bezier(.34,1.56,.64,1) both; animation-delay: calc(.4s + var(--i, 0) * 250ms); }
+@keyframes pop { from { opacity: 0; transform: translate(-50%, -50%) scale(.3); } to { opacity: 1; transform: translate(-50%, -50%); } }
+.c { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.c:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(1,43,114,.45); }
+.c-white:hover { box-shadow: 0 0 0 1px var(--line), 0 18px 40px -22px rgba(1,43,114,.35); }
+.mx tbody tr { transition: background-color .3s; }
+.mx tbody tr:not(.us):hover td { background: #f3f9fd; }
+@media (prefers-reduced-motion: reduce) { .s, .s.past { transform: none; } .s .a, .s .st { filter: none; opacity: 1; transform: none; } }
+.logo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 4px; }
+.logo-c { height: 74px; border-radius: 14px; background: var(--mist); display: grid; place-items: center; padding: 0 14px; transition: transform .45s var(--ease), background-color .3s, box-shadow .45s var(--ease); }
+.logo-c.wide { grid-column: span 2; } .logo-c.wide img { max-height: 26px; }
+.logo-c img[alt=JWIL] { max-height: 46px; }
+.logo-c img { max-height: 32px; max-width: 100%; object-fit: contain; transition: transform .45s var(--ease); }
+.logo-c:hover { background: #fff; box-shadow: 0 0 0 1px var(--line), 0 14px 30px -18px rgba(1,43,114,.4); transform: translateY(-3px); }
+.logo-c:hover img { transform: scale(1.06); }
+.s.on .logo-c { animation: logoIn .7s var(--ease) both; animation-delay: calc(.35s + var(--i, 0) * 55ms); }
+@keyframes logoIn { from { opacity: 0; transform: translateY(12px) scale(.92); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+.ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; }
+.ic svg { width: 21px; height: 21px; }
+
+.chart { padding: 20px 22px; display: flex; flex-direction: column; }
+.ch-t { font-size: 15px; color: var(--ink); }
+.cc { flex: 1; display: flex; align-items: flex-end; gap: 22px; padding: 14px 6px 0; border-bottom: 1px solid var(--line); min-height: 150px; margin-bottom: 26px; }
+.cc-col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; cursor: default; }
+.cc-col i { width: 24px; border-radius: 4px 4px 0 0; display: block; transform-origin: bottom; }
+.s.on .cc-col i { animation: colGrow 1.1s var(--ease) both .35s; }
+@keyframes colGrow { from { transform: scaleY(0); } to { transform: none; } }
+.cc-v { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.cc-l { position: absolute; bottom: -22px; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.hb { display: grid; grid-template-columns: 170px 1fr 54px; gap: 12px; align-items: center; padding: 5px 0; cursor: default; }
+.hb-l { font-size: 13px; font-weight: 600; color: var(--ink); } .hb-l small { display: block; font-weight: 500; color: var(--muted); font-size: 11px; }
+.hb-track { height: 16px; border-left: 1px solid var(--line); display: flex; align-items: center; }
+.hb-track .bar { height: 14px; border-radius: 0 4px 4px 0; padding: 0; display: block; }
+.hb-v { font-size: 13.5px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+.hb:hover .hb-l, [data-tip]:hover .cc-v { color: #1F5FD1; }
+.split { display: flex; height: 26px; gap: 2px; margin-top: 14px; }
+.split i { display: block; height: 100%; } .split i:first-child { border-radius: 4px 0 0 4px; } .split i:last-child { border-radius: 0 4px 4px 0; }
+.legend { display: flex; gap: 16px; margin-top: 10px; font-size: 12.5px; color: var(--ink-2); } .legend span { display: inline-flex; align-items: center; gap: 6px; } .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.tip { position: fixed; z-index: 30; pointer-events: none; background: var(--ink); color: #fff; font-size: 12.5px; font-weight: 600; padding: 7px 10px; border-radius: 8px; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; white-space: nowrap; }
+.tip.on { opacity: 1; transform: none; }
+.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 10px; height: 100%; }
+.bmc > div { border-radius: 16px; padding: 14px 16px; overflow: hidden; }
+.bmc h4 { margin: 0 0 8px; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.bmc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.bmc li { font-size: 12.5px; line-height: 1.35; padding-left: 12px; position: relative; }
+.bmc li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .45; }
+.arch { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1.25fr 34px 1fr; align-items: stretch; gap: 0; }
+.arch .col { display: flex; flex-direction: column; gap: 12px; } .arch .node { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.arch .col > b { font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #0089c2; }
+.arch .node { border-radius: 14px; padding: 12px 16px; font-size: 15px; font-weight: 600; }
+.arch .node small { display: block; font-size: 11.5px; font-weight: 500; opacity: .72; margin-top: 2px; }
+.arch .arr { display: grid; place-items: center; }
+
+.amb { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.amb i { position: absolute; border-radius: 50%; filter: blur(50px); opacity: .5; animation: ambd 16s ease-in-out infinite alternate; animation-play-state: paused; }
+.amb i:nth-child(1) { width: 520px; height: 520px; right: -140px; top: -160px; background: radial-gradient(circle, rgba(0,186,242,.55), transparent 70%); }
+.amb i:nth-child(2) { width: 460px; height: 460px; left: -160px; bottom: -180px; background: radial-gradient(circle, rgba(36,72,255,.35), transparent 70%); animation-duration: 20s; animation-direction: alternate-reverse; }
+.amb i:nth-child(3) { width: 14px; height: 14px; filter: none; opacity: .7; left: 62%; top: 18%; background: var(--sky); box-shadow: 0 0 18px var(--sky); animation: ambdot 9s ease-in-out infinite alternate; animation-play-state: paused; }
+.s.on .amb i { animation-play-state: running; }
+@keyframes ambd { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(-60px,40px) scale(1.12); } 100% { transform: translate(40px,80px) scale(.94); } }
+@keyframes ambdot { 0% { transform: translate(0,0); } 100% { transform: translate(-220px,120px); } }
+.s .in { z-index: 1; }
+.s.on .c-img img:not(.zoom), .s.on img[src*="soundbox"], .s.on img[src*="coin"] { animation: up .85s var(--ease) both, float 6s 1s ease-in-out infinite; }
+.s.on .crop img { animation: peek 9s ease-in-out infinite alternate; }
+@keyframes peek { 0%, 20% { transform: translateY(0); } 100% { transform: translateY(-14%); } }
+.s.on .big { text-shadow: 0 0 0 transparent; }
+@media (prefers-reduced-motion: reduce) { .amb i, .s.on .crop img { animation: none !important; } }
+
+.s[data-sec]::before { content: attr(data-sec); position: absolute; left: 56px; bottom: 15px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); z-index: 2; }
+.s.dark[data-sec]::before { color: rgba(255,255,255,.45); }
+.s[data-sec="Title"]::before, .s[data-sec="Thank you"]::before { content: none; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="deck" id="deck">
+<section data-sec="Title" class="s dark" data-notes="Hi, I'm Dheena. This is Kaasu: every shop's cash, planned."><div class="in">
+<div class="logo-w a"><img src="/brand/paytm-logo-white.svg" alt="Paytm"><i></i>Kaasu</div>
+<div class="ab a" style="right:56px;top:42px;font-size:28px;font-weight:300;letter-spacing:-.02em">2026</div>
+<div class="ab" style="left:56px;top:250px;width:600px">
+  <div class="eb a d1">Paytm Buildathon · Chennai · Track 1</div>
+  <h1 class="t xl a d2">Every shop's cash, planned.</h1>
+  <div class="a d3" style="margin-top:20px;font-size:16px;color:rgba(255,255,255,.75)">Savings · Udhaar · Smart loans · On the Soundbox</div>
+</div>
+<div class="c c-img ab a d2" style="right:56px;top:96px;width:520px;height:470px;background:radial-gradient(circle at 50% 42%,#1f62c2,#0c3b8f 70%)">
+  <img class="float" src="img/coin.svg" alt="Gold rupee coin" style="position:absolute;left:30px;top:20px;width:460px">
+  <div class="c c-sky ab" style="left:20px;bottom:20px;right:20px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:15px">Kaasu means money</span><span class="ta" style="font-size:17px;font-weight:600">காசு</span></div>
+</div>
+<div class="ab a d4" style="left:56px;bottom:46px;display:flex;gap:40px;font-size:13px;color:rgba(255,255,255,.7)">
+  <div>Presenter<br><b style="color:#fff;font-size:14.5px">Dheena Dhayalan R</b></div>
+  <div>Forward Deployed Designer<br><img src="/brand/rps-logo-white.svg" alt="Rock Paper Scissors" style="height:15px;margin-top:5px"></div>
+</div></div></section>
+<section data-sec="Introduction" class="s " data-notes="Ten seconds. Engineer by training, 8 patents, designer at a fintech design agency."><div class="in">
+<div class="grid" style="grid-template-columns:400px 1fr;gap:16px;height:100%">
+  <div class="grid" style="grid-template-rows:auto 1fr;gap:14px">
+    <div class="c c-pale a" style="padding:28px">
+      <div class="eb">Hi, I'm</div>
+      <h2 class="t" style="font-size:42px">Dheena Dhayalan R</h2>
+      <p class="p" style="margin-top:12px;font-size:15px">Engineering graduate. Forward Deployed Designer at Rock Paper Scissors, a fintech design agency.</p>
+      <img src="/brand/rps-logo-black.svg" alt="Rock Paper Scissors" style="height:17px;margin-top:18px">
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px">
+      <div class="c c-navy"><div class="big">8</div><div class="lbl">Patents in engineering</div></div>
+      <div class="c c-sky"><div class="big">₹25<small>L+</small></div><div class="lbl">Won for IEEE projects</div></div>
+      <div class="c c-white"><div class="big" style="font-size:30px;color:var(--navy)">Elsevier</div><div class="lbl">Research book chapter</div><div class="mini">MIT Square</div></div>
+      <div class="c c-white"><div class="big" style="font-size:30px;color:var(--navy)">Hackathons</div><div class="lbl">Winner, several times</div></div>
+    </div>
+  </div>
+  <div class="c c-white a d1" style="padding:26px;display:flex;flex-direction:column">
+    <div class="eb">Fintech and brand teams we design for</div>
+    <div class="logo-grid"><div class="logo-c wide"><img src="logos/c/bajajfinance.svg" alt="Bajaj Finance"></div><div class="logo-c"><img src="logos/c/nuvama.png" alt="Nuvama"></div><div class="logo-c"><img src="logos/c/maxiom.svg" alt="Maxiom Wealth"></div><div class="logo-c"><img src="logos/c/turtlemint.png" alt="Turtlemint"></div><div class="logo-c"><img src="logos/c/finfinity.svg" alt="Finfinity"></div><div class="logo-c"><img src="logos/c/mstock.svg" alt="mStock"></div><div class="logo-c"><img src="logos/c/ltimindtree.svg" alt="LTIMindtree"></div><div class="logo-c"><img src="logos/c/medanta.svg" alt="Medanta"></div><div class="logo-c"><img src="logos/c/yamaha.png" alt="Yamaha"></div><div class="logo-c wide"><img src="logos/c/royalenfield.png" alt="Royal Enfield"></div><div class="logo-c"><img src="logos/c/acquire.svg" alt="Acquire"></div><div class="logo-c"><img src="logos/c/tracebale.png" alt="TraceBale"></div><div class="logo-c"><img src="logos/c/jwil.png" alt="JWIL"></div></div>
+    <hr class="rule lt">
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:10px;margin-top:auto">
+      <div class="c c-pale" style="padding:14px"><img src="logos/c/nuvama.png" alt="" style="height:18px;max-width:100%;object-fit:contain;object-position:left"><div class="lbl">Wealth platform</div><div class="mini">Web app + design system</div></div><div class="c c-pale" style="padding:14px"><img src="logos/c/maxiom.svg" alt="" style="height:18px;max-width:100%;object-fit:contain;object-position:left"><div class="lbl">AI wealth app</div><div class="mini">50% fewer steps</div></div><div class="c c-pale" style="padding:14px"><img src="logos/c/turtlemint.png" alt="" style="height:18px;max-width:100%;object-fit:contain;object-position:left"><div class="lbl">Insurance app</div><div class="mini">Buy, renew, claim</div></div><div class="c c-pale" style="padding:14px"><img src="logos/c/finfinity.svg" alt="" style="height:18px;max-width:100%;object-fit:contain;object-position:left"><div class="lbl">Lending fintech</div><div class="mini">Brand + web app</div></div>
+    </div>
+  </div>
+</div></div></section>
+<section data-sec="Problem statement" class="s " data-notes="One man, one date, one number. Murugan is ₹32,520 short for Pongal, and four timing problems explain why."><div class="in">
+<div class="grid" style="grid-template-columns:1.05fr 1fr;gap:16px;height:100%">
+  <div class="c c-img a" style="background:linear-gradient(140deg,#0c3b8f,#1f62c2 60%,#00baf2);position:relative;padding:30px">
+    <div class="eb" style="color:#bfeeff">Problem statement</div>
+    <h2 class="t" style="color:#fff;font-size:40px">Murugan sells ₹11,240 a day and still runs out of money.</h2>
+    <div class="bubble" style="margin-top:20px;max-width:380px;position:relative"><span class="ta">"வியாபாரம் நல்லா இருக்கு. ஆனா தேவைப்படும் நாள்ல பணம் இல்ல."</span><small>"Business is good. The money isn't there on the day I need it." · Murugan Stores, Velachery, Chennai</small></div>
+    <img src="img/soundbox.png" alt="Paytm Soundbox" style="position:absolute;right:24px;bottom:20px;height:250px">
+    <div class="grid" style="grid-template-columns:repeat(2,176px);gap:10px;position:absolute;left:30px;bottom:30px">
+      <div class="c c-glass" style="padding:12px 14px"><div class="big" style="font-size:28px">₹80,000</div><div class="mini">Pongal stock due 6 Jan</div></div>
+      <div class="c c-glass" style="padding:12px 14px"><div class="big" style="font-size:28px">₹47,480</div><div class="mini" style="color:rgba(255,255,255,.8)">He'll have at today's pace</div></div>
+      <div class="c c-glass" style="padding:12px 14px"><div class="big" style="font-size:28px;color:#ffb3c4;white-space:nowrap">−₹32,520</div><div class="mini" style="color:rgba(255,255,255,.8)">Short at today's pace</div></div>
+      <div class="c c-glass" style="padding:12px 14px"><div class="big" style="font-size:28px">53 days</div><div class="mini" style="color:rgba(255,255,255,.8)">Left to fix it</div></div>
+    </div>
+  </div>
+  <div class="c c-navy a d1" style="padding:28px">
+    <div class="eb">Root causes · timing, not sales</div>
+    <div class="num-list" style="grid-template-columns:1fr;margin-top:10px">
+      <div style="grid-template-columns:60px 1fr;border-right:0;padding-right:0"><span class="n" style="font-size:38px">01</span><div><b>Festivals come early</b><p class="p">Stock is paid weeks before festival sales arrive.</p></div></div>
+      <div style="grid-template-columns:60px 1fr;border-right:0;padding:18px 0"><span class="n" style="font-size:38px">02</span><div><b>Profit goes home</b><p class="p">The family takes each Sunday's profit before the big bill comes.</p></div></div>
+      <div style="grid-template-columns:60px 1fr;border-right:0;padding-right:0"><span class="n" style="font-size:38px">03</span><div><b>Udhaar stays unpaid</b><p class="p">Asking regulars to pay "might offend them and they move to another store".</p></div></div>
+      <div style="grid-template-columns:60px 1fr;border-right:0;padding:18px 0"><span class="n" style="font-size:38px">04</span><div><b>Credit comes late and costly</b><p class="p">The gap is filled in a panic: a ₹35,000 loan at the worst price.</p></div></div>
+    </div>
+  </div>
+</div></div></section>
+<section data-sec="Why it matters" class="s " data-notes="The research. Paytm owns the counter, kiranas still own grocery, yet their money management is broken."><div class="in">
+<div style="display:grid;grid-template-rows:auto 1fr;gap:14px;height:100%">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Why it matters · research data</div><h2 class="t a d1" style="font-size:38px">Payments are solved. Money isn't.</h2></div><span class="mini a d1" style="max-width:420px;text-align:right">Sources: Paytm Q2 FY27 &amp; Q4 FY26 results, Redseer, NPCI, PwC × Kirana Club (508 stores), Datum, CPM India (4,593 stores), AICPDF, Outlook Business</span></div>
+<div class="grid a d2" style="grid-template-columns:1fr 1fr 1.3fr;gap:14px">
+  <div class="c c-white chart"><b class="ch-t">Soundboxes on counters</b><div class="mini">Crore devices</div><div class="cc"><div class="cc-col" data-tip="Q2 FY26: 1.37 Cr"><span class="cc-v">1.37 Cr</span><i style="height:72.6%;background:#1F5FD1"></i><span class="cc-l">Q2 FY26</span></div><div class="cc-col" data-tip="Q2 FY27: 1.64 Cr"><span class="cc-v">1.64 Cr</span><i style="height:87.0%;background:#1F5FD1"></i><span class="cc-l">Q2 FY27</span></div></div><div class="mini">+27 lakh in a year</div></div>
+  <div class="grid" style="grid-template-rows:1fr 1fr 1fr;gap:10px">
+    <div class="c c-navy" ><div class="big">4.9<small> Cr</small></div><div class="lbl">Paytm merchants</div><div class="mini" style="margin-top:4px">₹7.1 lakh cr payments a quarter, +26%</div></div>
+    <div class="c c-pale" ><div class="big">91%</div><div class="lbl">Grocery still sold by kiranas</div><div class="mini" style="margin-top:4px">20.7 bn UPI payments a month</div></div>
+    <div class="c c-sky" ><div class="big">85%</div><div class="lbl">Merchant loans to Paytm device owners</div><div class="mini" style="margin-top:4px">₹25–30 lakh cr MSME credit gap</div></div>
+  </div>
+  <div class="c c-white chart"><b class="ch-t">Kiranas under pressure</b><div class="mini" style="margin-bottom:12px">Share of stores or buyers, surveys 2024–2026 · about 2 lakh kiranas closed (AICPDF claim)</div>
+    <div class="hb" data-tip="Buyers moved ¼ of kirana shopping online: 82%" style="grid-template-columns:1fr;gap:4px;padding:6px 0"><span class="hb-l" style="font-weight:500">Buyers moved ¼ of kirana shopping online</span><span style="display:flex;align-items:center;gap:10px"><span class="hb-track" style="flex:1"><i class="bar" style="width:82%;background:#1F5FD1"></i></span><span class="hb-v">82%</span></span></div><div class="hb" data-tip="Kiranas saw food and FMCG sales fall: 52%" style="grid-template-columns:1fr;gap:4px;padding:6px 0"><span class="hb-l" style="font-weight:500">Kiranas saw food and FMCG sales fall</span><span style="display:flex;align-items:center;gap:10px"><span class="hb-track" style="flex:1"><i class="bar" style="width:52%;background:#1F5FD1"></i></span><span class="hb-v">52%</span></span></div><div class="hb" data-tip="Fall in Tier 1 footfall: 28%" style="grid-template-columns:1fr;gap:4px;padding:6px 0"><span class="hb-l" style="font-weight:500">Fall in Tier 1 footfall</span><span style="display:flex;align-items:center;gap:10px"><span class="hb-track" style="flex:1"><i class="bar" style="width:28%;background:#1F5FD1"></i></span><span class="hb-v">28%</span></span></div><div class="hb" data-tip="Kiranas planning any tech spend: 22%" style="grid-template-columns:1fr;gap:4px;padding:6px 0"><span class="hb-l" style="font-weight:500">Kiranas planning any tech spend</span><span style="display:flex;align-items:center;gap:10px"><span class="hb-track" style="flex:1"><i class="bar" style="width:22%;background:#1F5FD1"></i></span><span class="hb-v">22%</span></span></div><div class="hb" data-tip="Small businesses reaching formal credit: 14%" style="grid-template-columns:1fr;gap:4px;padding:6px 0"><span class="hb-l" style="font-weight:500">Small businesses reaching formal credit</span><span style="display:flex;align-items:center;gap:10px"><span class="hb-track" style="flex:1"><i class="bar" style="width:14%;background:#1F5FD1"></i></span><span class="hb-v">14%</span></span></div>
+  </div>
+</div></div></div></section>
+<section data-sec="How we solve it" class="s dark" data-notes="Kaasu, Tamil for money. Own money first, loan only the gap. The Soundbox says it, the merchant says yes, the PIN moves money."><div class="in">
+<div class="grid" style="grid-template-columns:1fr 300px 330px;gap:16px;height:100%">
+  <div style="display:flex;flex-direction:column">
+    <div class="eb a">How we solve it · Paytm Kaasu</div>
+    <h2 class="t a d1">Kaasu plans the shop's cash, 53 days ahead.</h2>
+    <p class="p a d2" style="margin-top:10px">காசு, Tamil for money. Runs on the Soundbox and the Paytm for Business app he already uses. No new hardware.</p>
+    <div class="grid a d3" style="grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px">
+      <div class="c c-glass" style="padding:12px"><span class="tag sky">1</span><div class="lbl">Soundbox speaks in Tamil at 7 am</div></div>
+      <div class="c c-glass" style="padding:12px"><span class="tag sky">2</span><div class="lbl">He says "aam", or presses OK on older boxes</div></div>
+      <div class="c c-glass" style="padding:12px"><span class="tag sky">3</span><div class="lbl">UPI PIN on the phone moves the money</div></div>
+      <div class="c c-glass" style="padding:12px"><span class="tag sky">4</span><div class="lbl">Auto-saves every night at 9 pm</div></div>
+    </div>
+    <div class="c c-white a d4" style="margin-top:auto;padding:18px 20px">
+      <div class="eb">The money plan · ₹32,520 gap</div>
+      <div class="stack" style="display:grid;gap:6px">
+        <div style="background:var(--mist);padding:9px 14px"><b>His own savings</b><span class="v" style="font-size:20px;color:var(--navy)">₹600 × 52 days = ₹31,200</span></div>
+        <div style="background:var(--mist);padding:9px 14px"><b>Udhaar collected on payday</b><span class="v" style="font-size:20px;color:var(--navy)">₹3,370 expected</span></div>
+        <div style="background:var(--navy);color:#fff;padding:9px 14px"><b>Planned loan, gap only</b><span class="v" style="font-size:20px">₹11,000 · ₹190/day from 17 Jan</span></div>
+      </div>
+      <div class="mini" style="margin-top:8px">Instead of ₹35,000 in a panic. Customers' Pongal pre-bookings can take it to zero.</div>
+    </div>
+  </div>
+  <div class="c c-img a d2" style="display:grid;place-items:center"><img src="img/soundbox-on.png" alt="Soundbox speaking" style="height:330px"></div>
+  <div class="c c-img a d3" style="display:grid;place-items:center"><img class="phone zoom" src="img/p-short.png" alt="Pongal plan screen" style="height:560px"></div>
+</div></div></section>
+<section data-sec="How we solve it" class="s " data-notes="Nine features. The first six were not found in any earlier Paytm hackathon entry or product. The last three extend things that partly exist."><div class="in">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">How we solve it · features</div><h2 class="t a d1" style="font-size:36px">Nine ways Kaasu brings money in. Tap a screen.</h2></div><span class="tag sky a d1">Top 6 new · checked 15 Nov 2026</span></div>
+<div class="grid" style="grid-template-columns:repeat(9,1fr);gap:10px;margin-top:18px">
+<div class="c c-white a d1" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-fund.png" alt="Pongal pre-booking"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Pongal pre-booking</b><div class="mini" style="margin-top:3px;line-height:1.35">Regulars pre-pay festival hampers; settles to the shop T+1.</div></div><div class="c c-white a d2" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-circle.png" alt="Buy together"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Buy together</b><div class="mini" style="margin-top:3px;line-height:1.35">4 neighbouring shops pool orders for a 6% bulk price.</div></div><div class="c c-white a d3" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-bill.png" alt="Check a bill"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Check a bill</b><div class="mini" style="margin-top:3px;line-height:1.35">Gemini Vision reads distributor bills: ₹446 of missed discounts found.</div></div><div class="c c-white a d4" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-score.png" alt="Save Score"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Save Score</b><div class="mini" style="margin-top:3px;line-height:1.35">Regular savers get cheaper loans: score 730, 1.2% a month.</div></div><div class="c c-white a d5" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-rain.png" alt="Rain Shield"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Rain Shield</b><div class="mini" style="margin-top:3px;line-height:1.35">IMD red alert pauses repayments 3 days and pays ₹3,000 cover.</div></div><div class="c c-white a d1" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-udhaar.png" alt="Payday udhaar"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Payday udhaar</b><div class="mini" style="margin-top:3px;line-height:1.35">Paytm, not the shop, reminds each customer on their payday.</div></div><div class="c c-pale a d2" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-bharosa2.png" alt="Bharosa"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Bharosa</b><div class="mini" style="margin-top:3px;line-height:1.35">Customers confirm udhaar; trusted udhaar paid to the shop today (₹2,577).</div></div><div class="c c-pale a d3" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-staff.png" alt="Staff advance"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Staff advance</b><div class="mini" style="margin-top:3px;line-height:1.35">Helper asks the Soundbox; up to 50% of earned wage, no interest.</div></div><div class="c c-pale a d4" style="padding:10px 10px 12px"><div class="crop" style="height:300px;background:#eaf6fd"><img class="zoom" src="img/p-galla.png" alt="Galla check"></div><b style="display:block;margin-top:10px;font-size:14px;color:var(--navy)">Galla check</b><div class="mini" style="margin-top:3px;line-height:1.35">Spoken cash count vs expected: ₹210 short, 6–9 pm pattern, no blame.</div></div>
+</div>
+<div class="mini a d5" style="margin-top:12px">Partly exists elsewhere: customer-visible khata (PhonePe), Paytm Postpaid, wage advances (Square, GajiGesa abroad), POS cash-drawer tools. Kaasu adds per-entry confirmation, udhaar takeover, voice requests on the Soundbox and patterns instead of blame.</div></div></section>
+<section data-sec="Architecture and RBI" class="s " data-notes="Left to right: the shop and its customers, Paytm's existing platform, the Kaasu service, and the regulated partners who hold money and lend."><div class="in">
+<div class="eb a">How it works · architecture</div>
+<h2 class="t a d1">Architecture and tech stack: Kaasu runs on what Paytm already has.</h2>
+<div class="arch a d2" style="margin-top:20px;height:400px">
+  <div class="col"><b>Users</b><div class="node c-white st">Paytm Soundbox<small>Tamil voice · OK button</small></div><div class="node c-white st">Paytm for Business app<small>Journeys · UPI PIN</small></div><div class="node c-white st">Customer's Paytm app<small>Confirm udhaar · pre-book</small></div><div class="node c-white st">Helper<small>Asks the Soundbox</small></div></div>
+  <div class="arr"><svg viewBox="0 0 34 20" width="30" aria-hidden="true"><path class="flow" d="M2 10H28M22 4l7 6-7 6" stroke="#0A9BD0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="col"><b>Paytm platform</b><div class="node c-pale st">Soundbox fleet<small>Own 4G SIM · OTA updates</small></div><div class="node c-pale st">Merchant account<small>Payments history · KYC</small></div><div class="node c-pale st">UPI + Payment Aggregator<small>Settles T+1</small></div><div class="node c-pale st">Notifications<small>In Paytm's name</small></div></div>
+  <div class="arr"><svg viewBox="0 0 34 20" width="30" aria-hidden="true"><path class="flow" d="M2 10H28M22 4l7 6-7 6" stroke="#0A9BD0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="col"><b>Kaasu service</b><div class="node c-navy st">Cash engine<small>Rules compute every rupee</small></div><div class="node c-navy st">Planner<small>Festival goals · daily save · gap-only loan</small></div><div class="node c-navy st">AI layer<small>Gemini Flash + Vision · Sarvam fallback</small></div><div class="node c-navy st">Guardrail + consent<small>Numbers checked · DPDP consent log</small></div></div>
+  <div class="arr"><svg viewBox="0 0 34 20" width="30" aria-hidden="true"><path class="flow" d="M2 10H28M22 4l7 6-7 6" stroke="#0A9BD0" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="col"><b>Regulated partners</b><div class="node c-white st">Partner bank<small>Savings pots (RD / sweep)</small></div><div class="node c-white st">NBFC / bank lenders<small>Loans with KFS</small></div><div class="node c-white st">Postpaid lender<small>Bharosa</small></div><div class="node c-white st">Insurer · IMD alerts<small>Rain Shield</small></div></div>
+</div>
+<div class="grid a d4" style="grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px">
+  <div class="c c-navy" style="padding:10px 14px"><b style="font-size:13px">RBI-ready by design</b><div class="mini" style="margin-top:2px">Paytm is the distributor; regulated partners hold money and lend</div></div><div class="c c-white" style="padding:10px 14px"><b style="font-size:13px">Digital Lending Directions 2025</b><div class="mini" style="margin-top:2px">KFS + APR, cooling-off, paid and repaid directly, no pool account</div></div><div class="c c-white" style="padding:10px 14px"><b style="font-size:13px">Payment Aggregator rules 2025</b><div class="mini" style="margin-top:2px">Pre-bookings settle to the shop T+1, never held in escrow</div></div><div class="c c-white" style="padding:10px 14px"><b style="font-size:13px">DPDP Act · Code on Wages</b><div class="mini" style="margin-top:2px">Consent for reminders; wage deductions within the 50% limit</div></div>
+</div></div></section>
+<section data-sec="Competition and USP" class="s dark" data-notes="Everyone answers. Few act. Nobody else plans the shop's cash ahead, by voice, on the counter. That is our USP."><div class="in">
+<div class="grid" style="grid-template-columns:1.2fr 1fr;gap:16px;height:100%">
+  <div class="c c-white a" style="padding:24px">
+    <div class="eb">Competition · capabilities covered out of 4</div>
+    <div class="mini" style="margin-bottom:10px">Answers · acts · brings money in · plans cash ahead by voice (partly = 0.5). Public sources, Nov 2026.</div>
+    <div class="hb" data-tip="Paytm Kaasu: 4"><span class="hb-l">Paytm Kaasu</span><span class="hb-track"><i class="bar" style="width:100.0%;background:#1F5FD1"></i></span><span class="hb-v">4</span></div><div class="hb" data-tip="Square · Shopify (US): 2.5"><span class="hb-l">Square · Shopify (US)</span><span class="hb-track"><i class="bar" style="width:62.5%;background:#C9D3E1"></i></span><span class="hb-v">2.5</span></div><div class="hb" data-tip="Pine Labs agents: 2.5"><span class="hb-l">Pine Labs agents</span><span class="hb-track"><i class="bar" style="width:62.5%;background:#C9D3E1"></i></span><span class="hb-v">2.5</span></div><div class="hb" data-tip="BharatPe assistant: 1.5"><span class="hb-l">BharatPe assistant</span><span class="hb-track"><i class="bar" style="width:37.5%;background:#C9D3E1"></i></span><span class="hb-v">1.5</span></div><div class="hb" data-tip="Reelo / LoyalStack: 1.5"><span class="hb-l">Reelo / LoyalStack</span><span class="hb-track"><i class="bar" style="width:37.5%;background:#C9D3E1"></i></span><span class="hb-v">1.5</span></div><div class="hb" data-tip="KiranaPro Vani: 1.5"><span class="hb-l">KiranaPro Vani</span><span class="hb-track"><i class="bar" style="width:37.5%;background:#C9D3E1"></i></span><span class="hb-v">1.5</span></div><div class="hb" data-tip="OkCredit / Khatabook: 1"><span class="hb-l">OkCredit / Khatabook</span><span class="hb-track"><i class="bar" style="width:25.0%;background:#C9D3E1"></i></span><span class="hb-v">1</span></div><div class="hb" data-tip="Paytm AI Soundbox: 1"><span class="hb-l">Paytm AI Soundbox</span><span class="hb-track"><i class="bar" style="width:25.0%;background:#C9D3E1"></i></span><span class="hb-v">1</span></div><div class="hb" data-tip="PhonePe Business: 0"><span class="hb-l">PhonePe Business</span><span class="hb-track"><i class="bar" style="width:0.0%;background:#C9D3E1"></i></span><span class="hb-v">0</span></div>
+    <div class="mini" style="margin-top:12px">Also checked: 12 earlier Paytm Build for India entries. Mumbai 2026 winner "Money SOS" plans a cash gap; Kaasu adds the festival pot, udhaar and Soundbox voice. Of 10 ideas scored on uniqueness, impact, Paytm fit and feasibility, this scored 19/20; a sales chatbot scored 13.</div>
+  </div>
+  <div style="display:flex;flex-direction:column">
+    <div class="eb a">USP</div>
+    <h2 class="t a d1" style="font-size:38px">Others answer questions. Kaasu plans the cash.</h2>
+    <div class="grid a d2" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:20px">
+      <div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">01</span><div class="lbl" style="margin-top:4px">Plans ahead, doesn't just answer</div></div><div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">02</span><div class="lbl" style="margin-top:4px">Own money first, loan only the gap</div></div><div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">03</span><div class="lbl" style="margin-top:4px">On 1.64 Cr devices already on counters</div></div><div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">04</span><div class="lbl" style="margin-top:4px">Paytm asks for udhaar, not the shop</div></div><div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">05</span><div class="lbl" style="margin-top:4px">Maths decides, AI explains, PIN moves money</div></div><div class="c c-glass" style="padding:14px 16px"><span class="n" style="font-size:24px;color:var(--sky-2);font-weight:300">06</span><div class="lbl" style="margin-top:4px">Tamil voice, OK button on older boxes</div></div>
+    </div>
+  </div>
+</div></div></section>
+<section data-sec="Business model canvas" class="s " data-notes="The business model canvas. Revenue figures are our assumptions for a 10 lakh shop rollout."><div class="in">
+<div style="display:grid;grid-template-rows:auto 1fr;gap:14px;height:100%">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Business model canvas</div><h2 class="t a d1" style="font-size:36px">How Kaasu creates and captures value.</h2></div><span class="tag sky a d1">≈ ₹131 Cr a year at 10 lakh shops</span></div>
+<div class="bmc a d2">
+  <div class="c-white st" style="grid-column:1/3;grid-row:1/3"><h4>Key partners</h4><ul><li>Partner banks for savings pots</li><li>NBFC and bank lenders</li><li>Postpaid lender for Bharosa</li><li>IRDAI-licensed insurers</li><li>Gemini, Sarvam AI</li><li>Distributors</li></ul></div>
+  <div class="c-pale st" style="grid-column:3/5;grid-row:1"><h4>Key activities</h4><ul><li>Cash-flow planning engine</li><li>Tamil voice briefs</li><li>Udhaar reminders in Paytm's name</li><li>Loan and insurance distribution</li></ul></div>
+  <div class="c-pale st" style="grid-column:3/5;grid-row:2"><h4>Key resources</h4><ul><li>1.64 Cr Soundboxes</li><li>4.9 Cr merchants' payment data</li><li>Paytm app + Pi model</li><li>Lending and insurance partners</li></ul></div>
+  <div class="c-navy st" style="grid-column:5/7;grid-row:1/3"><h4>Value proposition</h4><ul><li>Sees the festival gap 53 days early</li><li>Own money first, loan only the gap</li><li>Udhaar back without awkward asks</li><li>Tamil voice on a device he already has</li><li>Safe: PIN, KFS, consent</li></ul></div>
+  <div class="c-pale st" style="grid-column:7/9;grid-row:1"><h4>Customer relationships</h4><ul><li>Daily voice brief</li><li>Consent-first automation</li><li>Save Score that grows</li></ul></div>
+  <div class="c-pale st" style="grid-column:7/9;grid-row:2"><h4>Channels</h4><ul><li>Paytm Soundbox</li><li>Paytm for Business app</li><li>Customers' Paytm app</li><li>Paytm field sales</li></ul></div>
+  <div class="c-white st" style="grid-column:9/11;grid-row:1/3"><h4>Customer segments</h4><ul><li>Kiranas and small shops with a Soundbox</li><li>Their regular customers</li><li>Shop helpers</li><li>Lenders and insurers (B2B)</li></ul></div>
+  <div class="c-white st" style="grid-column:1/6;grid-row:3"><h4>Cost structure</h4><ul><li>AI + voice ≈ ₹15 per shop a month (cached)</li><li>Engineering and partner integration</li><li>Compliance, support, field training</li></ul></div>
+  <div class="c-sky st" style="grid-column:6/11;grid-row:3"><h4>Revenue streams</h4><ul><li>₹49 a month Kaasu plan → ₹588 a shop a year</li><li>Loan distribution fee ≈ 3% → ₹99</li><li>Bharosa partner fee ≈ 2% → ₹624</li><li>Insurance commission · deposit referral · more UPI on Paytm</li></ul></div>
+</div></div></div></section>
+<section data-sec="Thank you" class="s dark" data-notes="Close on the ask, then stop. Sources are on screen if a judge asks."><div class="in">
+<div class="grid" style="grid-template-columns:1.25fr 1fr;gap:18px;height:100%">
+  <div style="display:flex;flex-direction:column">
+    <div class="logo-w a"><img src="/brand/paytm-logo-white.svg" alt="Paytm"><i></i>Kaasu</div>
+    <h2 class="t xl a d1" style="margin-top:46px;font-size:68px">Let's pilot it in Chennai this Pongal.</h2>
+    <div class="grid a d2" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px">
+      <div class="c c-sky"><div class="big" style="font-size:36px">1,000</div><div class="lbl">Chennai shops in the pilot</div></div>
+      <div class="c c-glass"><div class="big" style="font-size:36px">−69%</div><div class="lbl">Smaller festival loan</div></div>
+      <div class="c c-glass"><div class="big" style="font-size:36px">₹0</div><div class="lbl">New hardware or interest on advances</div></div>
+    </div>
+    <p class="p a d3" style="margin-top:16px">Impact: shops plan instead of panic; customers keep their dignity and build a credit trail; helpers skip the moneylender; Paytm gets stickier Soundboxes, safer loans and new Postpaid users.</p>
+    <div class="a d4" style="margin-top:auto;display:flex;align-items:center;gap:14px;font-size:14px;color:rgba(255,255,255,.75)"><img src="/brand/rps-logo-white.svg" alt="Rock Paper Scissors" style="height:16px">Dheena Dhayalan R · Thank you</div>
+  </div>
+  <div class="c c-glass a d2" style="padding:22px">
+    <div class="eb">Sources · research 14–15 Nov 2026</div>
+    <div class="src-list" style="columns:1;font-size:11.5px;color:rgba(255,255,255,.75)"><div><b style='color:#fff'>Paytm</b> · Q2 FY27 results and call: Soundbox base, merchant GMV, merchant AI subscription plans</div><div><b style='color:#fff'>Paytm</b> · Q4 FY26 results: registered merchants; Q2 FY26 lending mix</div><div><b style='color:#fff'>YourStory</b> · Inside Paytm's Q2, AI Soundbox (Nov 2025)</div><div><b style='color:#fff'>Analytics India Magazine</b> · Paytm AI Soundbox in 11 languages</div><div><b style='color:#fff'>Redseer</b> · Kirana share of grocery, 2025</div><div><b style='color:#fff'>Inc42</b> · UPI hits 20.7 billion transactions, Oct 2025</div><div><b style='color:#fff'>Upstox</b> · PwC × Kirana Club survey, 508 retailers</div><div><b style='color:#fff'>Datum Intelligence</b> · Buyers shifting kirana purchases</div><div><b style='color:#fff'>Business Standard</b> · AICPDF on 2 lakh kirana closures (Oct 2024)</div><div><b style='color:#fff'>Mediabrief</b> · CPM India Kirana 2025, 4,593 retailers</div><div><b style='color:#fff'>The Hans India</b> · Grant Thornton Bharat kirana survey, 1,000+ stores</div><div><b style='color:#fff'>Outlook Business · NewKerala</b> · MSME credit gap; 14% formal credit</div><div><b style='color:#fff'>Business Today</b> · How kirana owners get dues paid back</div><div><b style='color:#fff'>Sarvam AI</b> · Voice agents from about ₹1 a minute</div><div><b style='color:#fff'>Competitors</b> · BharatPe, PhonePe Business, OkCredit, Khatabook, Reelo, LoyalStack, Square, Shopify, Toast, Pine Labs, KiranaPro</div><div><b style='color:#fff'>Prior art</b> · PhonePe Khata, Paytm Postpaid (Suryoday, Sep 2025), GajiGesa, Square payroll advance</div><div><b style='color:#fff'>Hackathon check</b> · 12 earlier Paytm Build for India entries incl. Money SOS (Mumbai 2026)</div><div><b style='color:#fff'>Rules</b> · RBI Digital Lending Directions 2025; Payment Aggregator Master Direction Sep 2025; RBI FAQ on Paytm Payments Bank 2024; DPDP Act 2023; Code on Wages 2019</div></div>
+  </div>
+</div></div></section>
+
+</div></div>
+
+<div class="hud"><div class="bar" id="bar"></div><span>← → · click a screen to zoom · N notes · F full screen</span><div class="dots" id="dots"></div><span style="display:flex;gap:6px"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><button id="fs">Full screen</button></span></div>
+<div class="notes" id="notes" hidden></div>
+<div class="lb" id="lb" hidden><img id="lbImg" alt=""></div>
+
+<script type="module">
+import { simulate, loanFor, SHOP } from "/sim.js";
+const $ = (id) => document.getElementById(id);
+const rs = (n) => "₹" + Math.round(n).toLocaleString("en-IN");
+document.querySelectorAll('section.s').forEach(s => { const a = document.createElement('div'); a.className = 'amb'; a.innerHTML = '<i></i><i></i><i></i>'; s.prepend(a); });
+const deck = $("deck"), slides = [...deck.children]; let i = 0;
+function fit() { const k = Math.min(innerWidth / 1280, (innerHeight - 44) / 720); deck.style.transform = `scale(${k})`; }
+
+// ---- motion helpers ----
+const STAG = ".c, .mx tbody tr, .num-list > div, .stack > div, .tag, .leg > div";
+slides.forEach((s) => {
+  let k = 0; s.querySelectorAll(STAG).forEach((el) => { if (el.closest(".lb")) return; el.classList.add("st"); el.style.setProperty("--i", k++); });
+  s.querySelectorAll(".bar").forEach((el, j) => el.style.setProperty("--i", j));
+  s.querySelectorAll(".tl-node").forEach((el, j) => el.style.setProperty("--i", j));
+  s.querySelectorAll(".logo-c").forEach((el, j) => el.style.setProperty("--i", j));
+  s.querySelectorAll(".big:not([data-count])").forEach((el) => { const n = el.firstChild; if (n && n.nodeType === 3) el.dataset.orig = n.nodeValue; });
+});
+function countUp(s) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  s.querySelectorAll(".big[data-orig]").forEach((el) => {
+    const m = el.dataset.orig.match(/^([^\d]*)([\d][\d,]*\.?\d*)(.*)$/); if (!m) return;
+    const [, pre, num, post] = m, dec = (num.split(".")[1] || "").length, comma = num.includes(","), to = parseFloat(num.replace(/,/g, ""));
+    const node = el.firstChild, t0 = performance.now(), dur = 1100;
+    const fmt = (v) => comma ? Math.round(v).toLocaleString("en-IN") : v.toFixed(dec);
+    const st = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); node.nodeValue = pre + fmt(to * e) + post; if (k < 1) requestAnimationFrame(st); else node.nodeValue = el.dataset.orig; };
+    requestAnimationFrame(st);
+  });
+}
+
+// hover tooltips for chart marks
+const tip = document.createElement("div"); tip.className = "tip"; document.body.appendChild(tip);
+document.addEventListener("mouseover", (e) => { const t = e.target.closest("[data-tip]"); if (!t) { tip.classList.remove("on"); return; } tip.textContent = t.dataset.tip; tip.classList.add("on"); });
+document.addEventListener("mousemove", (e) => { tip.style.left = (e.clientX + 14) + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+
+function show(n) {
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, j) => { s.classList.toggle("on", j === i); s.classList.toggle("past", j < i); });
+  [...$("dots").children].forEach((d, j) => d.classList.toggle("on", j === i));
+  $("bar").style.width = ((i + 1) / slides.length * 100) + "%";
+  $("notes").textContent = slides[i].dataset.notes || "";
+  try { history.replaceState(null, "", "#" + (i + 1)); } catch {}
+  const s = slides[i]; countUp(s);
+  s.querySelectorAll("[data-count]").forEach((el) => { const to = +el.dataset.count, suf = el.dataset.suffix || "", t0 = performance.now();
+    const st = (t) => { const k = Math.min(1, (t - t0) / 1200); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))) + suf; if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); });
+  const f = s.querySelector("iframe[data-src]"); if (f && !f.src) f.src = f.dataset.src;
+}
+slides.forEach((s, j) => { const d = document.createElement("i"); d.onclick = () => show(j); $("dots").appendChild(d); });
+addEventListener("keydown", (e) => {
+  if (!$("lb").hidden) { $("lb").hidden = true; return; }
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(i + 1); }
+  else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+  else if (/^n$/i.test(e.key)) $("notes").hidden = !$("notes").hidden;
+  else if (/^f$/i.test(e.key)) fs();
+});
+let tx = null; addEventListener("touchstart", (e) => (tx = e.touches[0].clientX)); addEventListener("touchend", (e) => { if (tx == null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) show(i + (d < 0 ? 1 : -1)); tx = null; });
+function fs() { const d = document.documentElement; if (!document.fullscreenElement) d.requestFullscreen?.().catch(() => {}); else document.exitFullscreen(); }
+$("prev").onclick = () => show(i - 1); $("next").onclick = () => show(i + 1); $("fs").onclick = fs;
+addEventListener("resize", fit); fit();
+deck.addEventListener("click", (e) => { const z = e.target.closest(".zoom"); if (!z) return; $("lbImg").src = z.src; $("lbImg").alt = z.alt; $("lb").hidden = false; });
+$("lb").onclick = () => ($("lb").hidden = true);
+if ($("reloadDemo")) $("reloadDemo").onclick = () => ($("demoFrame").src = "/?r=" + Date.now());
+
+try { // the pot fills, from the same cash engine as the app
+let save = 600, fundOn = false;
+$("saveChips").innerHTML = [0, 400, 600, 800].map(v => `<button class="chip ${v === save ? "on" : ""}" data-v="${v}">${rs(v)}</button>`).join("");
+$("saveChips").onclick = (e) => { const b = e.target.closest("[data-v]"); if (!b) return; save = +b.dataset.v; [...$("saveChips").children].forEach(c => c.classList.toggle("on", c === b)); jar(); };
+$("fundOn").onclick = () => { fundOn = !fundOn; $("fundOn").classList.toggle("on", fundOn); $("fundOn").setAttribute("aria-pressed", fundOn); jar(); };
+function jar() {
+  const G = SHOP.goal.amount, base = simulate({}), pace = G - base.shortfall;
+  const after = simulate({ dailySave: save, collectUdhaar: true }).shortfall, own = base.shortfall - after;
+  const fund = fundOn ? Math.min(28800, after) : 0, rest = after - fund, loan = loanFor(rest);
+  const L = [["#c9d6ea", "Money at today's pace", pace, rs(pace)], ["#012b72", "His savings + udhaar", own, rs(own)], ["#f0a500", "Customers' Pongal Fund", fund, rs(fund)], ["#00baf2", "Planned loan, gap only", rest, loan ? rs(loan) : "₹0"]];
+  let y = 350; $("jarFill").innerHTML = L.map(([c, , v]) => { const hh = v / G * 310; y -= hh; return `<rect x="0" y="${y.toFixed(1)}" width="340" height="${hh.toFixed(1)}" fill="${c}"/>`; }).join("");
+  $("legend").innerHTML = L.map(([c, l, , v]) => `<div><i style="background:${c}"></i><span>${l}</span><b>${v}</b></div>`).join("") +
+    `<div style="grid-template-columns:1fr;margin-top:8px;color:var(--green);font-weight:800;font-size:19px">${loan ? `Loan ${rs(loan)}, not ${rs(loanFor(base.shortfall))} in a panic` : "No loan needed at all"}</div>`;
+}
+jar();
+
+// rain
+const rain = $("rain"); rain.innerHTML = Array.from({ length: 70 }, () => `<i style="left:${(Math.random() * 100).toFixed(1)}%;animation-delay:${(Math.random() * 1.2).toFixed(2)}s;animation-duration:${(0.7 + Math.random() * 0.6).toFixed(2)}s"></i>`).join("");
+[...$("rainSteps").children].forEach(p => (p.style.opacity = .35));
+$("rainGo").onclick = () => {
+  rain.classList.add("on"); $("rainGo").disabled = true; $("rainGo").textContent = "Rain Shield active";
+  [...$("rainSteps").children].forEach((p, k) => setTimeout(() => { p.style.opacity = 1; p.style.background = k > 1 ? "rgba(18,168,118,.4)" : "rgba(224,52,92,.4)"; }, 450 * (k + 1)));
+};
+
+// live AI bill check
+$("billGo").onclick = async () => {
+  $("billGo").disabled = true; $("billGo").textContent = "AI is reading the bill…";
+  try { const r = await (await fetch("/api/bill", { method: "POST", body: JSON.stringify({ sample: true }) })).json();
+    $("billOut").style.display = "block";
+    $("billOut").innerHTML = `<div style="display:flex;align-items:baseline;justify-content:space-between"><b style="font-size:19px;color:var(--navy)">${r.distributor}</b><span class="cap">${r.source.startsWith("gemini") ? "read live by AI" : "sample"}</span></div>` +
+      r.rows.filter(x => x.missed).map(x => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eef0f4;font-size:16px"><span>${x.name}</span><b style="color:var(--red)">−${rs(x.missed)}</b></div>`).join("") +
+      `<div style="display:flex;justify-content:space-between;padding-top:10px;font-size:22px;font-weight:800"><span>Money found</span><span style="color:var(--green)">${rs(r.missed)}</span></div>`;
+    $("billGo").textContent = "Bill checked ✓";
+  } catch { $("billGo").disabled = false; $("billGo").textContent = "Try again"; }
+};
+} catch (e) {}
+show((parseInt((location.hash || "#1").slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

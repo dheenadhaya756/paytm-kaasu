@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paytm Kaasu · Film</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Anek+Tamil:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root { --blue: #2448ff; --sky: #00baf2; --navy: #0b1a4a; --soft: #b9c8f5; --ease: cubic-bezier(.22,1,.36,1); --spring: cubic-bezier(.34,1.56,.64,1); }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f3f6fd; font-family: Inter, "Segoe UI", sans-serif; color: var(--navy); -webkit-font-smoothing: antialiased; letter-spacing: -.02em; }
+.ta { font-family: "Anek Tamil", sans-serif; letter-spacing: 0; }
+#stage { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(180deg, #e9f0ff, #f6f8fe); }
+/* morphing blue blobs */
+.blob { position: absolute; border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%; filter: blur(60px); opacity: .9; animation: morph calc(var(--s, 10) * 1s) ease-in-out infinite alternate, wander calc(var(--w, 14) * 1s) ease-in-out infinite alternate; }
+@keyframes morph { 0% { border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%; } 50% { border-radius: 60% 40% 35% 65% / 55% 60% 40% 45%; } 100% { border-radius: 35% 65% 55% 45% / 40% 55% 45% 60%; } }
+@keyframes wander { from { translate: 0 0; scale: 1; } to { translate: var(--dx, 120px) var(--dy, -80px); scale: var(--sc, 1.15); } }
+.scene { position: absolute; inset: 0; opacity: 0; animation: sIn .7s var(--ease) calc(var(--t0) * 1s) both, sOut .6s ease-in calc((var(--t1) - .6) * 1s) forwards; }
+@keyframes sIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sOut { to { opacity: 0; } }
+.bg { position: absolute; inset: 0; opacity: 0; animation: sIn 1.2s ease calc((var(--t0) + var(--d, 0)) * 1s) both; }
+/* typography */
+.c { position: absolute; left: 0; right: 0; text-align: center; }
+.w { display: inline-block; opacity: .18; filter: blur(6px); animation: lit .7s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) forwards; margin: 0 .12em; }
+@keyframes lit { 0% { opacity: .18; filter: blur(6px); transform: translateY(14px); } 100% { opacity: 1; filter: none; transform: none; } }
+.in { opacity: 0; animation: up .9s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes up { from { opacity: 0; transform: translateY(30px); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
+.pop { opacity: 0; animation: pop .8s var(--spring) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: none; } }
+.out { animation: fo .5s ease-in calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
+@keyframes fo { to { opacity: 0; transform: scale(.94); filter: blur(8px); } }
+.giant { position: absolute; left: 0; right: 0; text-align: center; font-weight: 600; letter-spacing: -.06em; line-height: 1; opacity: 0; background: linear-gradient(180deg, #8fb6ff, #2448ff); -webkit-background-clip: text; background-clip: text; color: transparent; animation: giant 2.4s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes giant { 0% { opacity: 0; transform: scale(3.2); filter: blur(20px); } 30% { opacity: 1; transform: scale(1); filter: none; } 80% { opacity: 1; transform: scale(.92); } 100% { opacity: 0; transform: scale(.35); filter: blur(4px); } }
+.giant.stay { animation-name: giantStay; }
+@keyframes giantStay { 0% { opacity: 0; transform: scale(3.2); filter: blur(20px); } 45% { opacity: 1; transform: scale(1); filter: none; } 100% { opacity: 1; transform: scale(.96); } }
+/* the white search pill that types */
+.search { position: absolute; left: 50%; translate: -50% 0; height: 110px; border-radius: 999px; background: #fff; box-shadow: 0 30px 70px -30px rgba(36,72,255,.55), 0 0 0 1px rgba(36,72,255,.08); display: flex; align-items: center; gap: 22px; padding: 0 44px 0 34px; font-size: 44px; font-weight: 500; white-space: nowrap; overflow: hidden; opacity: 0; animation: grow 1s var(--spring) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes grow { from { opacity: 0; width: 110px; } 40% { opacity: 1; } to { opacity: 1; width: var(--wd, 900px); } }
+.search .ic { width: 40px; height: 40px; border-radius: 50%; background: var(--blue); box-shadow: inset 0 0 0 9px #8fb0ff; flex: none; }
+.type { display: inline-block; overflow: hidden; white-space: nowrap; clip-path: inset(0 100% 0 0); animation: type calc(var(--n, 20) * .055s) steps(var(--n, 20)) calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
+@keyframes type { to { clip-path: inset(0 0 0 0); } }
+.ol { position: absolute; display: inline-flex; align-items: center; padding: 18px 46px; border-radius: 999px; border: 4px solid var(--blue); background: rgba(255,255,255,.75); color: var(--blue); font-size: 64px; font-weight: 600; box-shadow: 0 20px 50px -24px rgba(36,72,255,.6); }
+.chip { display: inline-flex; align-items: center; padding: 22px 38px; border-radius: 999px; background: #fff; color: var(--blue); font-size: 32px; font-weight: 500; box-shadow: 0 20px 40px -22px rgba(36,72,255,.55); white-space: nowrap; }
+.arrow { font-size: 60px; color: var(--blue); margin: 0 26px; font-weight: 300; }
+.track { position: absolute; top: 470px; left: 0; display: flex; align-items: center; opacity: 0; animation: sIn .6s ease calc((var(--t0) + var(--d, 0)) * 1s) both, trk calc(var(--s, 8) * 1s) var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes trk { from { translate: 1500px 0; } to { translate: var(--to, -400px) 0; } }
+.glassbar { position: absolute; border-radius: 14px; background: linear-gradient(90deg, rgba(90,110,255,.9), rgba(140,170,255,.65)); box-shadow: 0 20px 40px -20px rgba(36,72,255,.6); animation: float calc(var(--s, 5) * 1s) ease-in-out infinite alternate; }
+.glassbar.lite { background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+@keyframes float { from { translate: 0 0; } to { translate: var(--dx, 0px) var(--dy, -26px); } }
+.tag { position: absolute; padding: 18px 34px; border-radius: 18px; color: #fff; font-size: 40px; font-weight: 600; background: linear-gradient(90deg, #4b62ff, #7b9bff); box-shadow: 0 24px 50px -20px rgba(36,72,255,.7); }
+.check { position: absolute; left: 50%; top: 50%; width: 170px; height: 170px; margin: -85px 0 0 -85px; border-radius: 50%; background: var(--blue); display: grid; place-items: center; box-shadow: 0 30px 60px -20px rgba(36,72,255,.7); }
+.check svg path { stroke-dasharray: 120; stroke-dashoffset: 120; animation: tick .7s ease calc((var(--t0) + var(--d, 0) + .4) * 1s) forwards; }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.wave path { stroke-dasharray: 900; stroke-dashoffset: 900; animation: tick 2s ease calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
+.num { font-weight: 600; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+.phone { position: absolute; filter: drop-shadow(0 40px 60px rgba(36,72,255,.35)); }
+.logos img { height: 40px; max-width: 210px; object-fit: contain; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script>
+const T = JSON.parse(decodeURIComponent((location.search.match(/[?&]t=([^&]+)/) || [])[1] || "null")) ||
+  { s01: [0, 11], s02: [11, 26], s03: [26, 41], s04: [41, 50], s05: [50, 68], s06: [68, 82], s07: [82, 92], s08: [92, 107], s09: [107, 122] };
+const L = (id, html) => `<section class="scene" style="--t0:${T[id][0]};--t1:${T[id][1]}">${html}</section>`;
+const d = (n) => `--d:${n}`;
+// word-by-word light-up
+const W = (text, d0, step = .14, cls = "") => text.split(" ").map((w, i) => `<span class="w ${cls}" style="--d:${(d0 + i * step).toFixed(2)}">${w}</span>`).join("");
+const typed = (text, d0) => `<span class="type" style="--d:${d0};--n:${text.length}">${text}</span>`;
+const blobs = (set) => set.map(([x, y, w, h, c, s = 10, dx = 120, dy = -80, sc = 1.15]) => `<div class="blob" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${c};--s:${s};--w:${s + 4};--dx:${dx}px;--dy:${dy}px;--sc:${sc}"></div>`).join("");
+const B1 = "radial-gradient(circle at 40% 40%, #2a3cff, #3b6cff 45%, #8fb6ff 75%)", B2 = "radial-gradient(circle at 50% 50%, #5b8cff, #a9c6ff 70%)", B3 = "radial-gradient(circle at 50% 50%, #00baf2, #8fdcff 70%)";
+
+const html = [
+// 01 · hook: a search pill types, words light up
+L("s01", `
+  <div class="bg" style="${d(0)}">${blobs([[260, 160, 1400, 760, B1, 9, 80, 40], [1100, 520, 700, 520, B2, 11, -140, -60]])}</div>
+  <div class="search" style="${d(0.6)};top:300px;--wd:1040px"><span class="ic"></span>${typed("Money received: ₹80, ₹240, ₹1,100…", 1.4)}</div>
+  <div class="c" style="top:520px;font-size:62px;font-weight:600;color:#fff">${W("1.64 crore Soundboxes say it every day.", 3.6)}</div>
+  <div class="c in" style="${d(6.6)};top:700px"><span class="ol" style="position:static">None say what's coming.</span></div>
+`),
+// 02 · Murugan
+L("s02", `
+  <div class="bg" style="${d(0)}">${blobs([[-200, 400, 900, 700, B2, 10, 160, -120], [1300, -200, 800, 700, B3, 12, -120, 120, 1.25]])}</div>
+  <div class="giant stay" style="${d(0)};top:150px;font-size:210px">Meet Murugan.</div>
+  <div class="c" style="top:430px;font-size:40px;color:#3a4a80">${W("Murugan Stores · Velachery, Chennai", 1.4, .12)}</div>
+  <div class="c in" style="${d(3.6)};top:560px"><div style="display:inline-block;background:#fff;border-radius:34px;padding:34px 50px;box-shadow:0 30px 70px -30px rgba(36,72,255,.45);max-width:1300px">
+    <div class="ta" style="font-size:46px;line-height:1.35;color:var(--navy)">"வியாபாரம் நல்லா இருக்கு. ஆனா தேவைப்படும் நாள்ல பணம் இல்ல."</div>
+    <div style="font-size:28px;color:#6b7aa8;margin-top:12px">"Business is good. The money isn't there on the day I need it."</div></div></div>
+  <div class="c in" style="${d(8)};top:880px;display:flex;justify-content:center;gap:24px"><span class="chip">₹11,240 sales a day</span><span class="chip">Paytm QR + Soundbox</span><span class="chip">Regulars on udhaar</span></div>
+`),
+// 03 · the gap: giant date, numbers, curved text
+L("s03", `
+  <div class="bg" style="${d(0)}">${blobs([[500, 200, 1000, 700, B1, 8, -100, 60, 1.2]])}</div>
+  <div class="giant" style="${d(0)};top:300px;font-size:300px">6 January</div>
+  <div class="c" style="top:200px;font-size:52px;font-weight:600;color:#fff">${W("Pongal stock day.", 2.4)}</div>
+  <div class="in" style="${d(3.4)};position:absolute;left:260px;top:380px;text-align:left;color:#fff"><div style="font-size:30px;opacity:.85">Needs</div><div class="num" style="font-size:150px">₹80,000</div></div>
+  <div class="in" style="${d(4.6)};position:absolute;right:260px;top:380px;text-align:right;color:#fff"><div style="font-size:30px;opacity:.85">Will have</div><div class="num" style="font-size:150px">₹47,480</div></div>
+  <svg class="in" style="${d(6.4)};position:absolute;left:460px;top:600px" width="1000" height="340" viewBox="0 0 1000 340" aria-hidden="true"><path id="arc" d="M60 60 Q500 360 940 60" fill="none"/><text font-size="84" font-weight="700" fill="#fff" font-family="Inter"><textPath href="#arc" startOffset="50%" text-anchor="middle">short by ₹32,520</textPath></text></svg>
+  <div class="c in" style="${d(10)};top:940px"><span class="chip">Only 14% of small businesses reach formal credit</span></div>
+`),
+// 04 · Kaasu: giant word + coin
+L("s04", `
+  <div class="bg" style="${d(0)}">${blobs([[300, 300, 1300, 600, B2, 9, 60, -40]])}</div>
+  <div class="giant" style="${d(0)};top:330px;font-size:340px">So we built</div>
+  <img class="pop" src="/deck/img/coin.svg" alt="" style="${d(2.2)};position:absolute;left:760px;top:120px;width:400px">
+  <div class="giant stay" style="${d(2.6)};top:520px;font-size:280px">Kaasu</div>
+  <div class="c" style="top:850px;font-size:44px;color:#3a4a80">${W("காசு · Tamil for money · on the Soundbox he already has", 4.2, .12)}</div>
+`),
+// 05 · how it works: flowing chips, ஆம், PIN check
+L("s05", `
+  <div class="bg" style="${d(0)}">${blobs([[-100, 100, 1200, 800, B1, 10, 200, 40], [1200, 500, 800, 600, B3, 12, -100, -100]])}</div>
+  <div class="c" style="top:150px;font-size:56px;font-weight:600;color:var(--navy)">${W("53 days early, his Soundbox speaks.", 0.4)}</div>
+  <div class="search" style="${d(1.8)};top:270px;--wd:980px"><span class="ic"></span><span class="ta">${typed("தினமும் ₹600 ஒதுக்கலாமா?", 2.6)}</span></div>
+  <div class="out" style="${d(9.6)};position:absolute;inset:0"><div class="track" style="${d(4.4)};--s:6;--to:-1500px"><span class="chip">Save ₹600 a day</span><span class="arrow">→</span><span class="chip">Collect udhaar</span><span class="arrow">→</span><span class="chip">Borrow only the gap</span><span class="arrow">→</span><span class="chip">Pongal covered</span></div></div>
+  <div class="out" style="${d(10.4)};position:absolute;inset:0">
+    <div class="pop" style="${d(8.6)};position:absolute;left:830px;top:620px;width:260px;height:260px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 30px 60px -20px rgba(36,72,255,.6)"><span class="ta" style="font-size:96px;color:var(--blue);font-weight:600">ஆம்</span></div>
+  </div>
+  <img class="phone in" src="/deck/img/p-pin.png" alt="" style="${d(11)};left:520px;top:400px;width:270px">
+  <div class="check pop" style="${d(12.6)};left:1080px;top:640px"><svg width="90" height="90" viewBox="0 0 90 90"><path d="M22 47l15 15 32-34" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="in" style="${d(13.4)};position:absolute;left:1220px;top:590px;font-size:44px;font-weight:600;color:#fff;width:600px">PIN confirmed.<div style="font-size:30px;font-weight:400;opacity:.85;margin-top:8px">Money never moves on voice alone.</div></div>
+`),
+// 06 · features: floating glass bars + loan shrink
+L("s06", `
+  <div class="bg" style="${d(0)}">${blobs([[400, 200, 1100, 700, B2, 9, -80, 60]])}</div>
+  <div class="glassbar" style="left:420px;top:180px;width:190px;height:40px;--dy:-30px"></div>
+  <div class="glassbar lite" style="left:1300px;top:230px;width:150px;height:60px;--s:6;--dy:24px"></div>
+  <div class="glassbar" style="left:300px;top:760px;width:120px;height:56px;--s:7;--dx:20px"></div>
+  <div class="glassbar lite" style="left:1450px;top:800px;width:220px;height:46px;--s:5"></div>
+  <div class="tag pop" style="${d(0.4)};left:200px;top:300px">Paytm sends the udhaar reminders</div>
+  <div class="tag pop" style="${d(2.2)};left:1060px;top:420px">Floods pause the loan</div>
+  <div class="tag pop" style="${d(4)};left:420px;top:560px">Customers pre-book Pongal</div>
+  <svg class="wave" style="${d(5)};position:absolute;left:1150px;top:640px" width="500" height="120" viewBox="0 0 500 120" aria-hidden="true"><path d="M10 60 C60 0 110 0 160 60 S260 120 310 60 S410 0 490 60" stroke="#5a6dff" stroke-width="6" fill="none" stroke-linecap="round"/></svg>
+  <div class="out" style="${d(7.4)};position:absolute;inset:0;pointer-events:none"></div>
+  <div class="c in" style="${d(8)};top:780px;display:flex;justify-content:center;align-items:center;gap:40px;color:var(--navy)">
+    <span class="num" style="font-size:120px;opacity:.55;text-decoration:line-through;text-decoration-thickness:6px">₹35,000</span><span style="font-size:90px;font-weight:300">→</span><span class="num" style="font-size:150px">₹11,000</span></div>
+`),
+// 07 · architecture: flow chips + RBI pill
+L("s07", `
+  <div class="bg" style="${d(0)}">${blobs([[200, 300, 1500, 600, B3, 10, 80, -60, 1.1]])}</div>
+  <div class="c" style="top:200px;font-size:72px;font-weight:600;color:var(--navy)">${W("Built on what Paytm already runs.", 0.3, .12)}</div>
+  <div class="c in" style="${d(2)};top:470px"><span class="chip">Soundbox + app</span><span class="arrow">→</span><span class="chip">UPI</span><span class="arrow">→</span><span class="chip" style="background:var(--blue);color:#fff">Kaasu engine + AI</span><span class="arrow">→</span><span class="chip">Banks · lenders · insurers</span></div>
+  <div class="c pop" style="${d(5.4)};top:700px"><span class="ol" style="position:static">Built to RBI's rules</span></div>
+`),
+// 08 · research: Answer / Act / Plan giant words, then ₹131 Cr
+L("s08", `
+  <div class="giant" style="${d(0.2)};top:380px;font-size:300px">Answer</div>
+  <div class="giant" style="${d(2.4)};top:380px;font-size:300px">Act</div>
+  <div class="giant" style="${d(4.6)};top:380px;font-size:300px">Bring money in</div>
+  <div class="giant stay" style="${d(6.8)};top:200px;font-size:280px">Plan ahead</div>
+  <div class="c in" style="${d(8.2)};top:560px;font-size:52px;font-weight:600">${W("Nobody else does all four.", 8.4, .14)}</div>
+  <div class="bg" style="${d(10.4)}">${blobs([[300, 500, 1300, 600, B1, 9, 60, -40]])}</div>
+  <div class="c in" style="${d(11)};top:780px;color:#fff"><span class="num" style="font-size:140px">₹131 Cr</span><span style="font-size:38px;margin-left:24px">a year for Paytm, at 10 lakh shops</span></div>
+`),
+// 09 · close: check, line, logo
+L("s09", `
+  <div class="bg" style="${d(0)}">${blobs([[300, 150, 1300, 800, B1, 10, 60, 60]])}</div>
+  <div class="out" style="${d(8.6)};position:absolute;inset:0">
+    <div class="c" style="top:220px;font-size:96px;font-weight:600;color:#fff">${W("6 January.", 0.2)}</div>
+    <div class="c" style="top:370px;font-size:44px;color:#fff">${W("The truck arrives. Murugan pays in full.", 1.4, .12)}</div>
+    <div class="search" style="${d(4)};top:560px;--wd:1240px;font-size:48px"><span class="ic"></span>${typed("Pongal stock paid. Happy Pongal, Murugan.", 4.8)}</div>
+  </div>
+  <div class="check pop" style="${d(9)};top:330px"><svg width="90" height="90" viewBox="0 0 90 90"><path d="M22 47l15 15 32-34" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="bg" style="${d(9.6)};background:#f6f8fe"></div>
+  <div class="c in" style="${d(10)};top:330px"><img src="/brand/paytm-logo.svg" alt="Paytm" style="height:90px;vertical-align:middle"><span style="display:inline-block;width:2px;height:80px;background:#c6d0ea;margin:0 34px;vertical-align:middle"></span><span style="font-size:96px;font-weight:600;color:var(--navy);vertical-align:middle">Kaasu</span></div>
+  <div class="c" style="top:500px;font-size:44px;color:#4a5a8a">${W("Every shop's cash, planned.", 10.8, .14)}</div>
+  <div class="c in logos" style="${d(12)};top:700px;display:flex;justify-content:center;gap:42px;align-items:center;padding:0 120px">${["bajajfinance.svg", "nuvama.png", "turtlemint.png", "mstock.svg", "ltimindtree.svg", "yamaha.png", "royalenfield.png"].map(f => `<img src="/deck/logos/c/${f}" alt="">`).join("")}</div>
+  <div class="c in" style="${d(12.6)};top:860px;font-size:28px;color:#6b7aa8">Dheena Dhayalan R · Forward Deployed Designer · Rock Paper Scissors</div>
+`),
+];
+document.getElementById("scenes").innerHTML = html.join("");
+window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; } };
+if (!/[?&]play/.test(location.search)) window.seek(0);
+</script>
+</body>
+</html>

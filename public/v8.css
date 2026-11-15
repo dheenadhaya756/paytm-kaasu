@@ -1,0 +1,38 @@
+/* ======== v8: Save Score, Rain Shield, payday reminders ======== */
+.score { display: grid; gap: 10px; background: linear-gradient(160deg, #012b72, #0a5ab8); border: 0; color: #fff; }
+.score .eyebrow { color: rgba(255,255,255,.7); }
+.sc-top { display: flex; justify-content: space-between; align-items: flex-end; }
+.sc-num { font-size: 38px; font-weight: 700; letter-spacing: -.04em; line-height: 1; margin-top: 4px; }
+.sc-num small { font-size: 14px; font-weight: 500; opacity: .7; letter-spacing: 0; }
+.sc-rate { text-align: right; } .sc-rate b { display: block; font-size: 22px; color: #7fe0ff; } .sc-rate small { font-size: 11.5px; opacity: .75; }
+.sc-bar { position: relative; height: 8px; border-radius: 4px; background: rgba(255,255,255,.18); }
+.sc-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: linear-gradient(90deg, #00baf2, #7fe0ff); }
+.sc-bar span { position: absolute; top: -3px; width: 2px; height: 14px; background: rgba(255,255,255,.6); }
+.sc-p { margin: 0; font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.9); }
+.sc-p b { color: #fff; }
+.sc-how { display: flex; flex-wrap: wrap; gap: 6px; }
+.sc-how span { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; background: rgba(255,255,255,.12); padding: 4px 9px; border-radius: 99px; }
+.sc-how svg { width: 13px; height: 13px; }
+.score-line { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; background: #eef8fe; border-radius: 18px; padding: 12px 14px; }
+.score-line b { display: block; font-size: 15px; color: var(--p-navy); }
+.score-line small { display: block; font-size: 12.5px; color: #4a5063; margin-top: 2px; }
+
+.rain { display: grid; gap: 10px; }
+.rain.on { background: #fffaf0; border-color: #f4d9a6; }
+.pill.warn { background: var(--amber-t); color: var(--amber); }
+.z-rain { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; margin: 12px 14px 0; background: #fff6e3; border-radius: 18px; padding: 12px; color: #11131a; }
+.z-rain b { display: block; font-size: 14.5px; } .z-rain small { display: block; font-size: 12.5px; color: #6b7183; }
+.rain-btn { max-width: 380px; width: 100%; margin: 10px auto 0; background: #fff6e3; color: #7a4a00; border: 1px dashed #e0b45c; }
+.soundbox-col .rain-btn { display: flex; }
+
+.z-r-t .pd { display: inline-flex; align-items: center; gap: 4px; color: var(--blue-2); font-weight: 500; margin-top: 3px; }
+.z-r-t .pd svg { width: 12px; height: 12px; }
+.u-right .sent { text-align: right; }
+.row-kv small { font-weight: 400; }
+
+/* stop / mute voice */
+.stop-btn { max-width: 380px; width: 100%; margin: 10px auto 0; background: #fff; color: #11131a; border: 1px solid #d9dde6; }
+.soundbox-col .stop-btn { display: flex; }
+.sq { width: 11px; height: 11px; border-radius: 2px; background: currentColor; display: inline-block; }
+.stop-pill { justify-self: center; margin: -4px auto 0; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #d9dde6; background: #fff; color: #11131a; border-radius: 99px; padding: 8px 16px; font-size: 14px; font-weight: 600; }
+#muteBtn.off { background: #fde9ee; color: #d1264f; }

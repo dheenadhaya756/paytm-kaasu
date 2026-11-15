@@ -1,0 +1,59 @@
+/* ======== v5: Paytm brand. Logo colours: navy #233266, sky #54C1F0. App accents: Paytm navy #012B72, Paytm blue #00BAF2. ======== */
+:root {
+  --p-navy: #012b72; --p-navy-2: #233266; --p-sky: #00baf2; --p-sky-2: #54c1f0; --p-sky-d: #0095c8; --p-tint: #e6f7fd;
+  --blue: #0a8fd0; --blue-2: #0779b3; --blue-deep: var(--p-navy); --tint: var(--p-tint); --black: var(--p-navy);
+}
+img.ptm { display: block; height: 100%; width: auto; }
+
+/* top bar */
+.brand { color: var(--p-navy); gap: 10px; }
+.brand img.ptm { height: 22px; }
+.brand-sep { width: 1px; height: 20px; background: #c9d3e4; display: inline-block; }
+.brand-sep.w { background: rgba(255,255,255,.45); }
+.chip { color: var(--p-navy); }
+
+/* soundbox logos */
+.st-logo { height: 22px; }
+.f-logo { height: 24px; margin-top: 10px; }
+.st-strip { background: var(--p-navy); }
+.t-btn.big { background: radial-gradient(circle at 35% 30%, #7fe0ff, var(--p-sky) 55%, var(--p-sky-d)); box-shadow: 0 5px 0 #00709a, 0 7px 10px rgba(0,60,120,.35); }
+.lcd span { color: #63f0ff; }
+.hw.dark { background: var(--p-navy); }
+.hw.blue { background: var(--p-sky); }
+.speech .sb-wave b { background: var(--p-sky); }
+
+/* brand gradients: Paytm navy into Paytm blue */
+.splash { background: linear-gradient(180deg, #012b72 0%, #0a4aa3 45%, #2aa8e6 72%, #cfe9f6 100%); }
+.splash-logo { gap: 12px; }
+.splash-logo img.ptm { height: 34px; }
+.welcome-top { background: linear-gradient(180deg, #012b72 0%, #0a54b0 38%, #39b6ee 70%, #ffffff 100%); }
+.wlogo { gap: 10px; color: #fff; }
+.wlogo img.ptm { height: 26px; }
+.hero { background: linear-gradient(170deg, #012b72 0%, #073f96 55%, #0a64bd 100%); padding-top: 58px; }
+.hero-brand { display: flex; align-items: center; gap: 8px; height: 20px; margin-bottom: 12px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,.85); }
+.hero-brand img.ptm { height: 18px; }
+
+/* buttons and accents */
+.btn-black { background: var(--p-sky); color: #fff; font-weight: 600; }
+.btn-black:disabled { background: #b9e3f3; }
+.btn-grey { background: var(--p-tint); color: var(--p-navy); font-weight: 600; }
+.btn { background: var(--p-sky); }
+.btn.light { background: var(--p-tint); color: var(--p-navy); }
+.j-progress i { background: var(--p-sky); }
+.j-close { color: var(--blue-2); }
+.choice.on { background: var(--p-navy); }
+.check input { accent-color: var(--p-sky); }
+.seg.tone button.on { background: var(--p-navy); }
+.ai-badge { background: var(--p-tint); color: var(--p-navy); }
+.ai-badge.ai { background: var(--p-navy); color: #fff; }
+.msg.me { background: var(--p-navy); }
+.tab.on { color: var(--p-navy); }
+.tab.voice .orb, .mic-orb { background: linear-gradient(160deg, var(--p-sky) 0%, #0a64bd 55%, var(--p-navy) 100%); }
+.tab.voice .orb { box-shadow: 0 10px 20px -6px rgba(0,186,242,.55), 0 0 0 5px #fff; }
+.bubble .pay { background: var(--p-sky); }
+.keypad button { background: var(--p-tint); color: var(--p-navy); }
+.pin-dots i { border-color: var(--p-navy); } .pin-dots i.f { background: var(--p-navy); }
+.ic-pr { background: var(--p-tint); color: var(--blue-2); }
+.secure { background: rgba(255,255,255,.14); }
+.sec-h, .goal-t, .j-h, .done-h, .pane-title { color: var(--p-navy); }
+.lang-title { color: var(--p-navy); }

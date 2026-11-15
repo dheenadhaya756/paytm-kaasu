@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paytm Kaasu · Film</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Anek+Tamil:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #020b2a; --blue: #1f6fff; --sky: #00baf2; --ink: #e8f1ff; --muted: rgba(220,232,255,.6); --line: rgba(90,150,255,.35); --ease: cubic-bezier(.22,1,.36,1); }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); font-family: Inter, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.ta { font-family: "Anek Tamil", sans-serif; }
+#stage { position: absolute; inset: 0; background: radial-gradient(1200px 800px at 70% 20%, #0b2a7a 0%, #04154a 40%, #020b2a 75%); overflow: hidden; }
+.grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(80,130,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(80,130,255,.06) 1px, transparent 1px); background-size: 120px 120px; mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 75%); }
+.scene { position: absolute; inset: 0; opacity: 0; animation: sIn .9s var(--ease) calc(var(--t0) * 1s) both, sOut .8s ease-in calc((var(--t1) - .8) * 1s) forwards; }
+@keyframes sIn { from { opacity: 0; transform: scale(1.03); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes sOut { to { opacity: 0; transform: scale(.985); filter: blur(4px); } }
+/* element entrances: delay is seconds after the scene starts, via --d */
+.in { opacity: 0; animation: up 1s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes up { from { opacity: 0; transform: translateY(24px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+.pop { opacity: 0; animation: pop .9s cubic-bezier(.34,1.56,.64,1) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+.fadeout { animation: fo .6s ease calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
+@keyframes fo { to { opacity: 0; transform: translateY(-14px); filter: blur(6px); } }
+.draw { stroke-dasharray: 1600; stroke-dashoffset: 1600; animation: draw 2.4s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.sphere { position: absolute; border-radius: 50%; background: radial-gradient(circle at 34% 28%, #cfe8ff 0%, #6fb2ff 18%, #2f7bff 42%, #0b3ab8 72%, #06215f 100%); box-shadow: 0 0 60px rgba(47,123,255,.55), inset -10px -14px 30px rgba(0,10,60,.5); }
+.pill { position: absolute; border-radius: 999px; background: linear-gradient(90deg, rgba(47,123,255,0) 0%, rgba(47,123,255,.35) 40%, #5aa2ff 85%, #cfe8ff 100%); box-shadow: 0 0 40px rgba(47,123,255,.45); }
+.drift { animation: drift calc(var(--s, 9) * 1s) ease-in-out infinite alternate; }
+@keyframes drift { from { translate: 0 0; } to { translate: var(--dx, 30px) var(--dy, -40px); } }
+.slide-x { animation: slx calc(var(--s, 6) * 1s) linear infinite; }
+@keyframes slx { from { translate: -300px 0; } to { translate: 2300px 0; } }
+.dot { position: absolute; left: 0; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #9fd0ff; box-shadow: 0 0 14px 4px rgba(90,160,255,.8); offset-rotate: 0deg; animation: travel calc(var(--s, 4) * 1s) linear calc(var(--o, 0) * 1s) infinite; }
+@keyframes travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.spin { animation: spin calc(var(--s, 60) * 1s) linear infinite; } @keyframes spin { to { rotate: 360deg; } }
+.spin-r { animation: spinr calc(var(--s, 60) * 1s) linear infinite; } @keyframes spinr { to { rotate: -360deg; } }
+.glass { position: absolute; border-radius: 22px; background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.04)); box-shadow: inset 0 0 0 1px rgba(160,200,255,.22), 0 30px 80px -30px rgba(0,0,0,.6); backdrop-filter: blur(14px); }
+.label { position: absolute; font-size: 22px; font-weight: 400; color: var(--ink); letter-spacing: -.01em; }
+.label small { display: block; font-size: 15px; color: var(--muted); margin-top: 4px; }
+.corner { position: absolute; right: 70px; top: 60px; font-size: 16px; color: var(--muted); letter-spacing: .02em; }
+.h { position: absolute; font-weight: 300; letter-spacing: -.035em; line-height: 1.05; color: #fff; }
+.big { font-weight: 300; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.phone { position: absolute; filter: drop-shadow(0 40px 60px rgba(0,0,0,.55)); border-radius: 46px; }
+.chip { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px 14px 14px; border-radius: 999px; font-size: 22px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(160,200,255,.25); white-space: nowrap; }
+.chip i { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #cfe8ff, #3b86ff 45%, #0b3ab8); box-shadow: 0 0 18px rgba(59,134,255,.7); display: block; }
+.logo-orbit img { position: absolute; height: 34px; opacity: .92; }
+.wm { position: absolute; left: 70px; top: 56px; height: 34px; display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 500; }
+.wm img { height: 34px; } .wm i { width: 1px; height: 28px; background: rgba(255,255,255,.4); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="grid-bg"></div>
+  <!-- ambient spheres that live across the whole film -->
+  <div class="sphere drift" style="width:120px;height:120px;left:1640px;top:820px;--dx:-60px;--dy:-30px;--s:11"></div>
+  <div class="sphere drift" style="width:46px;height:46px;left:70px;top:960px;--dx:40px;--dy:-30px;--s:8"></div>
+  <div class="sphere drift" style="width:28px;height:28px;left:1500px;top:130px;--dx:-30px;--dy:40px;--s:7"></div>
+  <div id="scenes"></div>
+</div>
+
+<script>
+// Scene timing comes from the voiceover lengths (video/timeline.json via ?t=...), so picture and voice stay in sync.
+const T = JSON.parse(decodeURIComponent((location.search.match(/[?&]t=([^&]+)/) || [])[1] || "null")) ||
+  { s01: [0, 12], s02: [12, 36], s03: [36, 54], s04: [54, 65], s05: [65, 86], s06: [86, 103], s07: [103, 114], s08: [114, 137], s09: [137, 157] };
+const L = (id, html, cls = "") => `<section class="scene ${cls}" style="--t0:${T[id][0]};--t1:${T[id][1]}">${html}</section>`;
+const d = (n) => `--d:${n}`;
+const circuit = (paths, extra = "") => `<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;inset:0" aria-hidden="true">${paths.map((p, k) => `<path class="draw" style="${d(0.2 + k * 0.25)}" d="${p}" fill="none" stroke="rgba(90,150,255,.4)" stroke-width="1.6"/>`).join("")}</svg>` +
+  paths.map((p, k) => `<span class="dot" style="offset-path:path('${p}');--s:${4 + k};--o:${-k * 0.7}"></span>`).join("") + extra;
+
+const html = [
+// 01 · the hook
+L("s01", `
+  <div class="corner">Paytm Buildathon · Chennai</div>
+  ${circuit(["M0 300 H520 L600 380 H980", "M0 760 H340 L420 680 H900", "M1920 240 H1500 L1420 320 H1100", "M1920 820 H1560 L1480 740 H1080"])}
+  <img src="/deck/img/soundbox-on.png" alt="" class="pop" style="${d(0.6)};position:absolute;left:830px;top:250px;height:560px;filter:drop-shadow(0 0 80px rgba(47,123,255,.45))">
+  <div class="label in" style="${d(1.4)};left:150px;top:250px">1.64 crore Soundboxes<small>on India's counters</small></div>
+  <div class="label in" style="${d(3.2)};left:1340px;top:340px">"Money received."<small>every few minutes</small></div>
+  <div class="h in" style="${d(6.2)};left:150px;top:840px;font-size:64px;width:1600px">But none of them says <span style="color:#7fc4ff">what's coming.</span></div>
+`),
+// 02 · Murugan
+L("s02", `
+  <div class="corner">Our story</div>
+  <div class="sphere drift in" style="${d(0.2)};width:340px;height:340px;left:1380px;top:520px;--dx:-20px;--dy:-30px;--s:9"></div>
+  <div class="h in" style="${d(0.3)};left:150px;top:200px;font-size:96px">Meet Murugan.</div>
+  <div class="label in" style="${d(1.4)};left:156px;top:340px;font-size:28px">Murugan Stores · Velachery, Chennai</div>
+  <div class="glass in" style="${d(3)};left:150px;top:470px;width:820px;padding:34px 40px">
+    <div class="ta" style="font-size:38px;line-height:1.35">"வியாபாரம் நல்லா இருக்கு. ஆனா தேவைப்படும் நாள்ல பணம் இல்ல."</div>
+    <div style="font-size:22px;color:var(--muted);margin-top:14px">"Business is good. The money isn't there on the day I need it."</div>
+  </div>
+  <div class="chip in" style="${d(6)};left:1180px;top:240px"><i></i>₹11,240 sales a day</div>
+  <div class="chip in" style="${d(8)};left:1260px;top:340px"><i></i>Paytm QR + Soundbox</div>
+  <div class="chip in" style="${d(10)};left:1140px;top:440px"><i></i>Regulars buy on udhaar</div>
+  <img src="/deck/img/soundbox.png" alt="" class="in" style="${d(4)};position:absolute;left:1440px;top:560px;height:400px">
+`),
+// 03 · the gap
+L("s03", `
+  <div class="corner">The problem</div>
+  <svg width="560" height="560" viewBox="0 0 560 560" style="position:absolute;left:180px;top:250px" aria-hidden="true">
+    <circle cx="280" cy="280" r="230" fill="none" stroke="rgba(90,150,255,.18)" stroke-width="26"/>
+    <circle cx="280" cy="280" r="230" fill="none" stroke="#3b86ff" stroke-width="26" stroke-linecap="round" transform="rotate(-90 280 280)" style="stroke-dasharray:1445;stroke-dashoffset:1445;animation:ring 2.6s var(--ease) calc((var(--t0) + 1.2) * 1s) forwards"/>
+  </svg>
+  <style>@keyframes ring { to { stroke-dashoffset: 592; } }</style>
+  <div class="in" style="${d(1)};position:absolute;left:180px;top:430px;width:560px;text-align:center"><div class="big" style="font-size:96px">₹47,480</div><div style="font-size:22px;color:var(--muted)">at today's pace</div></div>
+  <div class="h in" style="${d(0.4)};left:880px;top:250px;font-size:72px">Pongal stock is due<br>on 6 January.</div>
+  <div class="chip in" style="${d(2.6)};left:880px;top:470px"><i></i>Needs ₹80,000</div>
+  <div class="in" style="${d(5.2)};position:absolute;left:880px;top:570px"><span class="big" style="font-size:120px;color:#ff8aa6">−₹32,520</span><div style="font-size:24px;color:var(--muted)">short in 53 days</div></div>
+  <div class="glass in" style="${d(10)};left:880px;top:820px;padding:20px 28px;font-size:24px">Only <b style="font-weight:600;color:#7fc4ff">14%</b> of small businesses reach formal credit</div>
+`),
+// 04 · Kaasu
+L("s04", `
+  ${circuit(["M0 540 H620", "M1920 540 H1300"])}
+  <div class="pop" style="${d(0.3)};position:absolute;left:660px;top:170px;width:600px"><img src="/deck/img/coin.svg" alt="" class="drift" style="width:600px;--dx:0px;--dy:-16px;--s:4"></div>
+  <div class="wm in" style="${d(1.6)};left:760px;top:800px"><img src="/brand/paytm-logo-white.svg" alt="Paytm"><i></i>Kaasu</div>
+  <div class="label in" style="${d(3)};left:150px;top:470px;font-size:30px"><span class="ta">காசு</span><small>Tamil for money</small></div>
+  <div class="label in" style="${d(4.5)};left:1440px;top:470px;font-size:30px">On the Soundbox<small>he already has</small></div>
+`),
+// 05 · the app
+L("s05", `
+  <div class="corner">How it works</div>
+  <img src="/deck/img/soundbox-on.png" alt="" class="in" style="${d(0.2)};position:absolute;left:130px;top:300px;height:520px">
+  <div class="glass in" style="${d(1.2)};left:520px;top:220px;padding:22px 28px;width:520px"><div class="ta" style="font-size:28px;line-height:1.35">"தினமும் ₹600 ஒதுக்கலாமா?"</div><div style="font-size:18px;color:var(--muted);margin-top:8px">"Shall I keep ₹600 aside every day?"</div></div>
+  <div class="chip in" style="${d(4)};left:560px;top:430px"><i></i>Save ₹600 a day</div>
+  <div class="chip in" style="${d(5.2)};left:600px;top:520px"><i></i>Collect what customers owe</div>
+  <div class="chip in" style="${d(6.4)};left:560px;top:610px"><i></i>Borrow only the gap</div>
+  <div class="pop" style="${d(8.4)};position:absolute;left:700px;top:740px;width:170px;height:170px;border-radius:50%;display:grid;place-items:center;font-size:52px;background:radial-gradient(circle at 35% 30%,#cfe8ff,#3b86ff 45%,#0b3ab8);box-shadow:0 0 60px rgba(59,134,255,.7)" ><span class="ta">ஆம்</span></div>
+  <img class="phone in" src="/deck/img/p-short.png" alt="" style="${d(2)};left:1180px;top:110px;width:380px">
+  <img class="phone in" src="/deck/img/p-pin.png" alt="" style="${d(10.5)};left:1240px;top:150px;width:380px">
+  <img class="phone in" src="/deck/img/p-done.png" alt="" style="${d(14.5)};left:1300px;top:190px;width:380px">
+  <div class="label in" style="${d(11)};left:1660px;top:820px">UPI PIN<small>money never moves on voice alone</small></div>
+`),
+// 06 · features
+L("s06", `
+  <div class="corner">How we are different</div>
+  <div class="pill slide-x" style="width:520px;height:120px;top:150px;--s:7"></div>
+  <div class="pill slide-x" style="width:380px;height:90px;top:860px;--s:9"></div>
+  <div class="glass in" style="${d(0.3)};left:150px;top:300px;width:520px;padding:30px"><b style="font-weight:500;font-size:30px">Udhaar reminders</b><div style="font-size:20px;color:var(--muted);margin-top:8px">Sent by Paytm, on payday. No regular feels insulted.</div></div>
+  <div class="glass in" style="${d(3.4)};left:700px;top:300px;width:520px;padding:30px"><b style="font-weight:500;font-size:30px">Rain Shield</b><div style="font-size:20px;color:var(--muted);margin-top:8px">A Chennai flood pauses the loan, automatically.</div></div>
+  <div class="glass in" style="${d(5.6)};left:1250px;top:300px;width:520px;padding:30px"><b style="font-weight:500;font-size:30px">Pongal pre-booking</b><div style="font-size:20px;color:var(--muted);margin-top:8px">Regular customers pre-pay their hampers.</div></div>
+  <div class="in" style="${d(8.4)};position:absolute;left:150px;top:600px;display:flex;align-items:center;gap:40px">
+    <span class="big" style="font-size:120px;color:rgba(220,232,255,.35);text-decoration:line-through;text-decoration-thickness:4px">₹35,000</span>
+    <svg width="120" height="40" viewBox="0 0 120 40" aria-hidden="true"><path d="M4 20H110M96 6l14 14-14 14" stroke="#7fc4ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="big" style="font-size:140px;color:#fff">₹11,000</span></div>
+  <div class="label in" style="${d(9.4)};left:156px;top:800px;font-size:26px">His loan, planned instead of panicked</div>
+`),
+// 07 · architecture
+L("s07", `
+  <div class="corner">Architecture</div>
+  ${circuit(["M360 540 H760", "M1000 540 H1340", "M1580 540 H1800"])}
+  <div class="glass in" style="${d(0.2)};left:130px;top:430px;width:230px;height:220px;display:grid;place-items:center;text-align:center;padding:16px"><img src="/deck/img/soundbox.png" alt="" style="height:120px"><div style="font-size:19px">Soundbox + app</div></div>
+  <div class="glass in" style="${d(1.4)};left:760px;top:430px;width:240px;height:220px;display:grid;place-items:center;text-align:center;padding:16px"><img src="/brand/paytm-logo-white.svg" alt="" style="height:40px"><div style="font-size:19px">UPI + Soundbox fleet</div></div>
+  <div class="in" style="${d(2.8)};position:absolute;left:1340px;top:420px;width:240px;height:240px;border-radius:50%;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 35% 30%,#cfe8ff,#3b86ff 45%,#0b3ab8);box-shadow:0 0 80px rgba(59,134,255,.6);font-size:30px;font-weight:500">Kaasu<br><span style="font-size:16px;font-weight:400">engine + AI</span></div>
+  <div class="label in" style="${d(4.2)};left:1620px;top:470px;font-size:20px;width:260px">Regulated partners<small>banks · lenders · insurers</small></div>
+  <div class="h in" style="${d(5.4)};left:130px;top:190px;font-size:64px">Built on what Paytm already runs.</div>
+  <div class="chip in" style="${d(7)};left:130px;top:800px"><i></i>Built to RBI's digital lending rules</div>
+`),
+// 08 · research
+L("s08", `
+  <div class="corner">Research</div>
+  <div class="h in" style="${d(0.2)};left:150px;top:170px;font-size:64px">Nobody else does all four.</div>
+  ${["Answers", "Acts", "Brings money in", "Plans ahead"].map((w, k) => `<div class="chip pop" style="${d(1.2 + k * 1.1)};left:${150 + k * 400}px;top:360px"><i></i>${w}</div>`).join("")}
+  <div class="glass in" style="${d(6)};left:150px;top:500px;width:1620px;padding:26px 34px">
+    ${[["Paytm Kaasu", 4, 1], ["Square · Shopify", 2.5, 0], ["Pine Labs agents", 2.5, 0], ["BharatPe assistant", 1.5, 0], ["Paytm AI Soundbox", 1, 0]].map(([n, v, us], k) => `<div style="display:grid;grid-template-columns:320px 1fr 60px;align-items:center;gap:20px;padding:9px 0"><span style="font-size:21px;${us ? "font-weight:600" : "color:var(--muted)"}">${n}</span><span style="height:18px;border-radius:0 6px 6px 0;width:${v / 4 * 100}%;background:${us ? "linear-gradient(90deg,#1f5fd1,#7fc4ff)" : "rgba(160,190,240,.3)"};transform-origin:left;animation:barx 1.2s var(--ease) calc((var(--t0) + ${7 + k * 0.3}) * 1s) both"></span><span style="font-size:21px;text-align:right">${v}</span></div>`).join("")}
+  </div>
+  <style>@keyframes barx { from { transform: scaleX(0); } to { transform: none; } }</style>
+  <div class="in" style="${d(13.5)};position:absolute;left:150px;top:880px;display:flex;align-items:baseline;gap:22px"><span class="big" style="font-size:96px">₹131 Cr</span><span style="font-size:26px;color:var(--muted)">a year for Paytm at 10 lakh shops</span></div>
+`),
+// 09 · close
+L("s09", `
+  <div class="fadeout" style="${d(9.4)};position:absolute;inset:0">
+  <div class="h in" style="${d(0.2)};left:150px;top:200px;font-size:84px">6 January.</div>
+  <div class="label in" style="${d(1.6)};left:156px;top:320px;font-size:30px">The distributor's truck arrives. Murugan pays in full.</div>
+  <img src="/deck/img/soundbox-on.png" alt="" class="in" style="${d(3)};position:absolute;left:1200px;top:140px;height:520px">
+  <div class="glass pop" style="${d(5)};left:150px;top:470px;padding:22px 30px;font-size:34px">"Pongal stock paid. <span style="color:#7fc4ff">Happy Pongal, Murugan.</span>"</div>
+  </div>
+  <div class="logo-orbit in" style="${d(10)};position:absolute;left:960px;top:540px">
+    <div class="spin" style="position:absolute;left:-470px;top:-470px;width:940px;height:940px;border-radius:50%;border:1px solid rgba(120,170,255,.25);--s:70">
+      ${["nuvama.png", "maxiom.svg", "turtlemint.png", "finfinity.png", "mstock.png", "ltimindtree.svg", "yamaha.svg", "royalenfield.svg"].map((f, k) => { const a = k / 8 * Math.PI * 2; return `<img class="spin-r" src="/deck/logos/${f}" alt="" style="--s:70;left:${470 + Math.cos(a) * 470 - 60}px;top:${470 + Math.sin(a) * 470 - 17}px">`; }).join("")}
+    </div>
+  </div>
+  <div class="in" style="${d(10.4)};position:absolute;left:0;right:0;top:700px;text-align:center">
+    <div class="wm" style="position:static;justify-content:center;font-size:44px;height:56px"><img src="/brand/paytm-logo-white.svg" alt="Paytm" style="height:52px"><i style="height:44px"></i>Kaasu</div>
+    <div style="font-size:30px;font-weight:300;margin-top:18px">Every shop's cash, planned.</div>
+    <div style="font-size:18px;color:var(--muted);margin-top:26px">Dheena Dhayalan R · Forward Deployed Designer · Rock Paper Scissors</div>
+  </div>
+`),
+];
+document.getElementById("scenes").innerHTML = html.join("");
+// the closing logo orbit replaces the scene-9 opening visuals
+window.FILM_LENGTH = Math.max(...Object.values(T).map(v => v[1]));
+// deterministic rendering: seek every animation to time t (seconds)
+window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; } };
+if (!/[?&]play/.test(location.search)) window.seek(0);
+</script>
+</body>
+</html>

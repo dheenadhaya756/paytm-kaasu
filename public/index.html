@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaasu · AI CFO for every shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anek+Tamil:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@500&family=Noto+Sans+Kannada:wght@500&family=Noto+Sans+Devanagari:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/v3.css">
+<link rel="stylesheet" href="/v4.css">
+<link rel="stylesheet" href="/v5.css">
+<link rel="stylesheet" href="/v6.css">
+<link rel="stylesheet" href="/v7.css">
+<link rel="stylesheet" href="/v8.css">
+<link rel="stylesheet" href="/v9.css">
+<link rel="stylesheet" href="/v10.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img class="ptm" src="/brand/paytm-logo.svg" alt="Paytm"><span class="brand-sep"></span>Kaasu</div>
+  <div class="topbar-right"><span id="aiStatus" class="chip">AI: checking…</span><button id="muteBtn" class="chip-btn" type="button" aria-pressed="false">Voice: On</button><button id="resetBtn" class="chip-btn" type="button">Reset demo</button></div>
+</header>
+
+<main class="stage">
+  <!-- ================= REAL SOUNDBOX ================= -->
+  <section class="soundbox-col" aria-label="Soundbox">
+    <div class="col-label">On the counter · Paytm Soundbox</div>
+    <div class="scene" aria-label="White Paytm Soundbox with a QR standee on top">
+      <div class="cube" id="cube">
+        <div class="standee">
+          <div class="st-logo"><img class="ptm" src="/brand/paytm-logo.svg" alt="Paytm"></div>
+          <div class="st-qr"><svg viewBox="0 0 90 90" aria-hidden="true"><g id="qrGroup"></g></svg></div>
+          <div class="st-name">Murugan Stores</div>
+          <div class="st-strip">Scan &amp; pay with any UPI app</div>
+        </div>
+        <div class="face front">
+          <div class="lcd"><span id="sbTop">RS 80 RECEIVED</span></div>
+          <div class="grille"></div>
+          <div class="f-logo"><img class="ptm" src="/brand/paytm-logo.svg" alt="Paytm"></div>
+        </div>
+        <div class="face back"></div>
+        <div class="face right"><div class="r-grip"></div></div>
+        <div class="face left"></div>
+        <div class="face top">
+          <span class="t-btn sm">−</span><span class="t-btn sm">+</span>
+          <button type="button" class="t-btn big" id="pressBtn" aria-label="Press the Paytm Button to say yes"><span>OK</span></button>
+          <span class="t-btn pw" aria-hidden="true"></span>
+        </div>
+        <div class="face bottom"></div>
+      </div>
+      <div class="floor" aria-hidden="true"></div>
+    </div>
+
+    <div class="speech" id="speech">
+      <div class="speech-h"><div class="sb-wave" id="sbWave" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div><span>Soundbox says</span></div>
+      <p class="sb-text ta" id="sbText">காலை வணக்கம் முருகன். இன்றைய பணத் திட்டம் தயார்.</p>
+      <p class="sb-text-en" id="sbTextEn">Good morning Murugan. Today's cash plan is ready.</p>
+    </div>
+
+    <div class="sb-controls v4">
+      <div class="seg" role="group" aria-label="Voice language">
+        <button type="button" class="on" data-lang="ta" id="langTa">தமிழ்</button>
+        <button type="button" data-lang="en" id="langEn">English</button>
+      </div>
+      <button id="playBrief" class="hw" type="button"><span class="ico play" aria-hidden="true"></span>Play brief</button>
+      <button id="sayHaan" class="hw dark" type="button"><span class="ico mic" aria-hidden="true"></span>Say "haan"<small>AI Soundbox</small></button>
+      <button id="pressBtn2" class="hw blue" type="button"><span class="dot" aria-hidden="true"></span>Press button<small>Older Soundbox</small></button>
+    </div>
+    <button type="button" class="hw stop-btn" id="stopBtn"><span class="sq" aria-hidden="true"></span>Stop voice</button>
+    <button type="button" class="hw rain-btn" id="rainBtn"><span class="ico" aria-hidden="true">☂</span>Demo: Chennai red alert (Rain Shield)</button>
+    <p class="sb-hint" id="sbHint">Either way, money moves only after the PIN on the phone.</p>
+
+    <div class="story">
+      <div class="story-h">Murugan Stores · Velachery, Chennai</div>
+      <p>Sells about Rs 11,000 a day on Paytm QR. Pongal stock of <b>Rs 80,000</b> is due on <b>6 January</b>. Every Sunday he takes home what's left. In January, the money isn't there.</p>
+    </div>
+  </section>
+
+  <!-- ================= PHONE ================= -->
+  <section class="phone-col" aria-label="Merchant app">
+    <div class="col-label">In the business app</div>
+    <div class="phone">
+      <div class="screen-wrap">
+        <div class="statusbar" id="statusbar" aria-hidden="true">
+          <span class="time">9:41</span><span class="island"></span>
+          <span class="sys">
+            <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0L8 11.5Z"/><path d="M3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.3 1.3a4.7 4.7 0 0 0-6.6 0L3.4 6.8Z"/><path d="M1.1 4.5a9.8 9.8 0 0 1 13.8 0l-1.3 1.3a8 8 0 0 0-11.2 0L1.1 4.5Z"/></svg>
+            <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="2"/><rect x="24.5" y="4" width="1.8" height="4" rx=".9" opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <!-- 1. Language -->
+        <div class="screen splash" id="scrLang">
+          <div class="splash-logo" aria-hidden="true"><img class="ptm" src="/brand/paytm-logo-white.svg" alt="Paytm"><span>Kaasu</span></div>
+          <div class="lang-sheet" role="dialog" aria-labelledby="langTitle">
+            <div class="lang-title" id="langTitle">Choose your language</div>
+            <button type="button" class="lang" data-pick="en">English</button>
+            <button type="button" class="lang ta" data-pick="ta">தமிழ்</button>
+            <button type="button" class="lang ml" data-pick="ml">മലയാളം</button>
+            <button type="button" class="lang hi" data-pick="hi">हिन्दी</button>
+            <button type="button" class="lang kn" data-pick="kn">ಕನ್ನಡ</button>
+          </div>
+        </div>
+
+        <!-- 2. Welcome -->
+        <div class="screen welcome" id="scrWelcome" hidden>
+          <div class="welcome-top">
+            <div class="wlogo"><img class="ptm" src="/brand/paytm-logo-white.svg" alt="Paytm"><span class="brand-sep w"></span>Kaasu</div>
+            <svg class="hero-art" viewBox="0 0 400 320" role="img" aria-label="A gold rupee coin: Kaasu keeps your shop's money safe and planned">
+<defs>
+  <radialGradient id="cFace" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#ffd257"/><stop offset="1" stop-color="#f0a21c"/></radialGradient>
+  <linearGradient id="cEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d98a10"/><stop offset="1" stop-color="#a86200"/></linearGradient>
+  <radialGradient id="cGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7fe0ff" stop-opacity=".45"/><stop offset="1" stop-color="#7fe0ff" stop-opacity="0"/></radialGradient>
+</defs>
+<circle cx="200" cy="160" r="160" fill="url(#cGlow)"/>
+<ellipse cx="206" cy="292" rx="120" ry="12" fill="#011a48" opacity=".18"/>
+<circle cx="200" cy="160" r="134" fill="none" stroke="#00baf2" stroke-width="1.5" stroke-dasharray="2 8" stroke-linecap="round" opacity=".7"/>
+<g opacity="0.95">
+  <ellipse cx="96" cy="98" rx="26" ry="26" fill="url(#cEdge)"/>
+  <circle cx="96" cy="92" r="26" fill="url(#cFace)"/>
+  <circle cx="96" cy="92" r="20.8" fill="none" stroke="#e59a12" stroke-width="1.5" opacity=".55"/>
+  <path d="M77.3 84.2A20.3 20.3 0 0 1 103.8 73.3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="96" y="101.4" text-anchor="middle" font-size="27" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<g opacity="1">
+  <ellipse cx="318" cy="243" rx="34" ry="34" fill="url(#cEdge)"/>
+  <circle cx="318" cy="236" r="34" fill="url(#cFace)"/>
+  <circle cx="318" cy="236" r="27.2" fill="none" stroke="#e59a12" stroke-width="1.5" opacity=".55"/>
+  <path d="M293.5 225.8A26.5 26.5 0 0 1 328.2 211.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="318" y="248.2" text-anchor="middle" font-size="36" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<g opacity="1">
+  <ellipse cx="200" cy="166" rx="100" ry="100" fill="url(#cEdge)"/>
+  <circle cx="200" cy="150" r="100" fill="url(#cFace)"/>
+  <circle cx="200" cy="150" r="80.0" fill="none" stroke="#e59a12" stroke-width="3.5" opacity=".55"/>
+  <path d="M128.0 120.0A78.0 78.0 0 0 1 230.0 78.0" stroke="#fff" stroke-width="7.0" stroke-linecap="round" fill="none" opacity=".55"/>
+  <text x="200" y="186.0" text-anchor="middle" font-size="105" font-weight="700" fill="#b86e00" font-family="Inter, Segoe UI, Arial, sans-serif">₹</text>
+</g>
+<path d="M326 74C327.8 84.2 327.8 84.2 338 86C327.8 87.8 327.8 87.8 326 98C324.2 87.8 324.2 87.8 314 86C324.2 84.2 324.2 84.2 326 74z" fill="#ffffff"/><path d="M82 217C83.35 224.65 83.35 224.65 91 226C83.35 227.35 83.35 227.35 82 235C80.65 227.35 80.65 227.35 73 226C80.65 224.65 80.65 224.65 82 217z" fill="#00baf2"/><path d="M286 44C286.9 49.1 286.9 49.1 292 50C286.9 50.9 286.9 50.9 286 56C285.1 50.9 285.1 50.9 280 50C285.1 49.1 285.1 49.1 286 44z" fill="#ffd257"/>
+</svg>
+          </div>
+          <div class="welcome-body">
+            <h1 class="welcome-h" id="welcomeH">Your shop's cash, planned for you. Every day, every festival.</h1>
+            <button type="button" class="btn-black" id="getStarted">Get Started</button>
+            <button type="button" class="btn-grey" id="haveAccount">I already have an account</button>
+            <p class="w-meaning"><b>Kaasu</b> means money, <span class="ta">காசு</span>. Your shop's money, planned ahead.</p>
+            <p class="terms">By continuing you agree to our Terms of Service and Privacy Policy</p>
+          </div>
+        </div>
+
+        <!-- 3. Main with tabs -->
+        <div class="screen main" id="scrMain" hidden>
+          <div class="pane" id="paneHome"></div>
+          <div class="pane" id="paneSavings" hidden></div>
+          <div class="pane" id="paneLoans" hidden></div>
+          <div class="pane" id="paneUdhaar" hidden></div>
+          <nav class="tabbar" aria-label="Main">
+            <button type="button" class="tab on" data-tab="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+            <button type="button" class="tab" data-tab="Savings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"/><path d="M16 11h.01"/></svg><span>Savings</span></button>
+            <button type="button" class="tab voice" id="voiceTab" aria-label="Ask Kaasu AI"><span class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></span><span>Ask AI</span></button>
+            <button type="button" class="tab" data-tab="Loans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 8 5H4z"/></svg><span>Loans</span></button>
+            <button type="button" class="tab" data-tab="Udhaar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span>Udhaar</span></button>
+          </nav>
+        </div>
+
+        <!-- 4. Journey -->
+        <div class="screen journey" id="scrJourney" hidden>
+          <div class="j-head">
+            <button type="button" class="j-back" id="jBack" aria-label="Back">‹</button>
+            <div><div class="j-title" id="jTitle">Pongal plan</div><div class="j-step" id="jStep">Step 1 of 5</div></div>
+            <button type="button" class="j-close" id="jClose">Close</button>
+          </div>
+          <div class="j-progress"><i id="jBar"></i></div>
+          <div class="j-body" id="jBody"></div>
+          <div class="j-foot">
+            <button type="button" class="btn-black" id="jNext">Continue</button>
+            <button type="button" class="btn-link" id="jAlt" hidden></button>
+          </div>
+        </div>
+
+        <!-- 5. Done -->
+        <div class="screen done" id="scrDone" hidden>
+          <div class="done-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2 class="done-h" id="doneH">Your Pongal plan is active</h2>
+          <p class="done-p" id="doneP"></p>
+          <div class="card summary" id="doneSummary"></div>
+          <button type="button" class="btn-black" id="doneHome">Back to home</button>
+        </div>
+
+        <div class="scrim" id="scrim" hidden></div>
+        <!-- Shop QR sheet -->
+        <div class="sheet qr-sheet" id="qrSheet" hidden>
+          <div class="grabber" aria-hidden="true"></div>
+          <div class="sheet-h"><b>Your shop QR</b><button type="button" class="chip-btn" id="closeQr">Close</button></div>
+          <div class="qr-big"><img class="ptm" src="/brand/paytm-logo.svg" alt="Paytm"><svg viewBox="0 0 90 90" aria-hidden="true"><g id="qrGroup2"></g></svg><b>Murugan Stores</b><small>Scan &amp; pay with any UPI app · demo QR</small></div>
+        </div>
+        <!-- Voice agent sheet -->
+        <div class="sheet voice-sheet" id="voiceSheet" hidden>
+          <div class="grabber" aria-hidden="true"></div>
+          <div class="sheet-h"><div><b>Ask Kaasu AI</b><small class="sheet-sub">Anything about your shop's money · Tamil or English</small></div><button type="button" class="chip-btn" id="closeVoice">Close</button></div>
+          <div class="convo" id="convo">
+            <div class="msg bot" id="voiceHello">Vanakkam! Ask me anything, like "Can I buy a fridge this month?" Speak or type.</div>
+          </div>
+          <div class="suggest">
+            <button type="button" class="sug ta">பொங்கலுக்கு பணம் போதுமா?</button>
+            <button type="button" class="sug">Can I buy a fridge for Rs 18,000 this month?</button>
+            <button type="button" class="sug">Why do I need a loan at all?</button>
+            <button type="button" class="sug" id="closingNote">Today's closing note</button>
+          </div>
+          <button type="button" class="mic-orb" id="askMic" aria-label="Tap and ask by voice"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0" fill="none" stroke="currentColor" stroke-width="2"/><rect x="11" y="17" width="2" height="4" rx="1"/></svg></button>
+          <div class="mic-label" id="micLabel">Tap and ask</div>
+          <button type="button" class="stop-pill" id="stopBtn2"><span class="sq" aria-hidden="true"></span>Stop voice</button>
+          <div class="ask-row"><label for="askInput" class="sr">Type a question</label><input id="askInput" type="text" placeholder="Or type your question" autocomplete="off"><button id="askBtn" class="icon-btn solid" type="button" aria-label="Send question">↑</button></div>
+        </div>
+
+        <!-- PIN confirmation: every money action -->
+        <div class="sheet pin-sheet" id="pinSheet" hidden>
+          <div class="grabber" aria-hidden="true"></div>
+          <div class="pin-h">Enter your Paytm PIN</div>
+          <p class="pin-p" id="pinWhat">To start your Pongal plan</p>
+          <div class="pin-dots" aria-live="polite"><i></i><i></i><i></i><i></i></div>
+          <div class="keypad" id="keypad">
+            <button type="button">1</button><button type="button">2</button><button type="button">3</button>
+            <button type="button">4</button><button type="button">5</button><button type="button">6</button>
+            <button type="button">7</button><button type="button">8</button><button type="button">9</button>
+            <button type="button" data-k="cancel" style="font-size:15px">Cancel</button><button type="button">0</button><button type="button" data-k="del" aria-label="Delete">⌫</button>
+          </div>
+          <div class="pin-warn">No money moves without your PIN. Paytm and Kaasu will never ask for your PIN or OTP on a call.</div>
+        </div>
+
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

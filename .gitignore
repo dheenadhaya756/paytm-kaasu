@@ -1,0 +1,26 @@
+# secrets
+.env
+.env.*
+# dependencies and caches
+node_modules/
+cache/
+server.log
+__pycache__/
+# large or intermediate media
+video/demo-raw/
+video/*-silent.mp4
+video/demo-comp.mp4
+video/vo/
+backup/
+
+# outdated material from before the rename
+Gullak-*
+pitch/
+tools/gen_gullak.py
+tools/_sarvam_out.txt
+tools/v[0-9]*.py
+tools/check_present.py
+tools/make_present.py
+tools/shop_art.py
+tools/deck_market.py
+tools/deck_v2.py
