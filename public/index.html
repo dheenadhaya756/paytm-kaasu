@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kaasu · AI CFO for every shop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anek+Tamil:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@500&family=Noto+Sans+Kannada:wght@500&family=Noto+Sans+Devanagari:wght@500&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="/v9.css">
 <link rel="stylesheet" href="/v10.css">
 <link rel="stylesheet" href="/v13.css">
+<link rel="stylesheet" href="/v14.css">
 </head>
 <body>
 <header class="topbar">
@@ -25,7 +26,7 @@
 
 <main class="stage">
   <!-- ================= REAL SOUNDBOX ================= -->
-  <section class="soundbox-col" aria-label="Soundbox">
+  <section class="soundbox-col" id="soundboxCol" aria-label="Soundbox">
     <div class="col-label">On the counter · Paytm Soundbox</div>
     <div class="scene pos-scene" aria-label="Paytm AI Soundbox: a sky-blue handheld device with a touchscreen and a receipt printer">
       <div class="pos" id="cube">
@@ -55,23 +56,6 @@
       <p class="sb-text-en" id="sbTextEn">Good morning Murugan. Today's cash plan is ready.</p>
     </div>
 
-    <div class="sb-controls v4">
-      <div class="seg" role="group" aria-label="Voice language">
-        <button type="button" class="on" data-lang="ta" id="langTa">தமிழ்</button>
-        <button type="button" data-lang="en" id="langEn">English</button>
-      </div>
-      <button id="playBrief" class="hw" type="button"><span class="ico play" aria-hidden="true"></span>Play brief</button>
-      <button id="sayHaan" class="hw dark" type="button"><span class="ico mic" aria-hidden="true"></span>Say "haan"<small>AI Soundbox</small></button>
-      <button id="pressBtn2" class="hw blue" type="button"><span class="dot" aria-hidden="true"></span>Press button<small>Older Soundbox</small></button>
-    </div>
-    <button type="button" class="hw stop-btn" id="stopBtn"><span class="sq" aria-hidden="true"></span>Stop voice</button>
-    <button type="button" class="hw rain-btn" id="rainBtn"><span class="ico" aria-hidden="true">☂</span>Demo: Chennai red alert (Rain Shield)</button>
-    <p class="sb-hint" id="sbHint">Either way, money moves only after the PIN on the phone.</p>
-
-    <div class="story">
-      <div class="story-h">Murugan Stores · Velachery, Chennai</div>
-      <p>Sells about Rs 11,000 a day on Paytm QR. Pongal stock of <b>Rs 80,000</b> is due on <b>6 January</b>. Every Sunday he takes home what's left. In January, the money isn't there.</p>
-    </div>
   </section>
 
   <!-- ================= PHONE ================= -->
@@ -231,7 +215,30 @@
       </div>
     </div>
   </section>
+
+  <!-- ================= DEMO CONTROLS ================= -->
+  <section class="ctrl-col" id="ctrlCol" aria-label="Demo controls">
+    <div class="col-label">Demo controls</div>
+    <div class="sb-controls v4">
+      <div class="seg" role="group" aria-label="Voice language">
+        <button type="button" class="on" data-lang="ta" id="langTa">தமிழ்</button>
+        <button type="button" data-lang="en" id="langEn">English</button>
+      </div>
+      <button id="playBrief" class="hw" type="button"><span class="ico play" aria-hidden="true"></span>Play brief</button>
+      <button id="sayHaan" class="hw dark" type="button"><span class="ico mic" aria-hidden="true"></span>Say "haan"<small>AI Soundbox</small></button>
+      <button id="pressBtn2" class="hw blue" type="button"><span class="dot" aria-hidden="true"></span>Press button<small>Older Soundbox</small></button>
+    </div>
+    <button type="button" class="hw stop-btn" id="stopBtn"><span class="sq" aria-hidden="true"></span>Stop voice</button>
+    <button type="button" class="hw rain-btn" id="rainBtn"><span class="ico" aria-hidden="true">☂</span>Demo: Chennai red alert (Rain Shield)</button>
+    <p class="sb-hint" id="sbHint">Either way, money moves only after the PIN on the phone.</p>
+
+    <div class="story">
+      <div class="story-h">Murugan Stores · Velachery, Chennai</div>
+      <p>Sells about Rs 11,000 a day on Paytm QR. Pongal stock of <b>Rs 80,000</b> is due on <b>6 January</b>. Every Sunday he takes home what's left. In January, the money isn't there.</p>
+    </div>
+  </section>
 </main>
+<a class="sb-jump" href="#soundboxCol" id="sbJump">Soundbox</a>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script type="module" src="/app.js"></script>

@@ -922,8 +922,27 @@ $("askMic").addEventListener("click", () => {
   if (!ok) { $("askMic").classList.remove("listening"); $("micLabel").textContent = "Tap and speak"; }
 });
 $("resetBtn").addEventListener("click", () => { location.hash = ""; location.reload(); });
-fetch("/api/health").then(r => r.json()).then(h => { $("aiStatus").textContent = h.offline ? "AI: offline mode" : "AI: Gemini connected"; $("aiStatus").className = "chip" + (h.offline ? " off" : ""); })
+fetch("/api/health").then(r => r.json()).then(h => { $("aiStatus").textContent = h.offline ? "AI: offline mode" : ["Gemini", h.sarvam && "Sarvam"].filter(Boolean).join(" + ") + " connected"; $("aiStatus").className = "chip" + (h.offline ? " off" : ""); })
   .catch(() => { $("aiStatus").textContent = "AI: offline mode"; $("aiStatus").className = "chip off"; });
 
 renderPanes(); loadBrief();
 if (location.hash === "#home") { showScreen("scrMain"); showTab("Home"); }
+
+// ---- fit the whole demo to any screen ----
+// Wide screens: device | phone | controls, zoomed to fit the window with no scrolling.
+// Narrow or portrait screens: stacked, and on phones the app fills the screen.
+(function fitStage() {
+  const stage = document.querySelector(".stage"), top = document.querySelector(".topbar");
+  const W = 1180, H = 900;
+  function fit() {
+    const w = innerWidth, h = innerHeight, wide = w >= 900 && w / h > 1.05;
+    document.body.classList.toggle("fit-stage", wide);
+    document.body.classList.toggle("mobile", !wide && w < 600);
+    if (wide) {
+      const avail = h - (top ? top.offsetHeight : 56) - 12;
+      const z = Math.min((w - 32) / W, avail / H, 1.25);
+      stage.style.zoom = z.toFixed(3);
+    } else stage.style.zoom = "";
+  }
+  addEventListener("resize", fit); addEventListener("orientationchange", fit); fit();
+})();

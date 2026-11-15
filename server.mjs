@@ -305,7 +305,7 @@ export async function handler(req, res) {
     }
     if (url.pathname === "/api/bill" && req.method === "POST") return send(res, 200, await checkBill(await readJson(req, 8e6)));
     if (url.pathname === "/favicon.ico") { res.writeHead(204); return res.end(); }
-    if (url.pathname === "/api/health") return send(res, 200, { ok: true, offline: OFFLINE, models: TEXT_MODELS, tts: TTS_MODEL });
+    if (url.pathname === "/api/health") return send(res, 200, { ok: true, offline: OFFLINE, gemini: !!KEY, sarvam: !!SARVAM_KEY, models: TEXT_MODELS, tts: TTS_MODEL });
     let p = path.normalize(path.join(PUB, url.pathname === "/" ? "index.html" : url.pathname));
     if (p.startsWith(PUB) && fs.existsSync(p) && fs.statSync(p).isDirectory()) p = path.join(p, "index.html");
     if (!p.startsWith(PUB) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) return send(res, 404, "Not found", "text/plain");

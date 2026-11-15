@@ -1,0 +1,48 @@
+/* ======== v14: responsive stage ======== */
+.ctrl-col .col-label, .soundbox-col .col-label, .phone-col .col-label { text-align: center; }
+.sb-jump { display: none; }
+
+/* ---- wide screens: three columns, zoomed to fit (zoom is set by app.js) ---- */
+body.fit-stage { overflow: hidden; height: 100dvh; }
+body.fit-stage .stage { display: grid; grid-template-columns: 330px 404px 360px; gap: 40px; justify-content: center; align-items: start; padding: 6px 16px 0; width: 1180px; margin: 0 auto; }
+body.fit-stage .scene.pos-scene { height: 470px; margin: 0 auto 10px; transform: scale(.92); transform-origin: top center; }
+body.fit-stage .soundbox-col .speech { margin-top: -12px; max-height: 360px; overflow: auto; scrollbar-width: none; }
+body.fit-stage .screen-wrap { height: 820px; }
+body.fit-stage .ctrl-col .sb-controls { margin-top: 0; max-width: none; }
+body.fit-stage .ctrl-col .story { margin-top: 14px; }
+body.fit-stage .ctrl-col { display: flex; flex-direction: column; gap: 10px; }
+
+/* ---- tablets and portrait: stacked, phone first ---- */
+body:not(.fit-stage) .stage { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 8px 16px 40px; }
+body:not(.fit-stage) .phone-col { order: 1; width: 100%; max-width: 404px; }
+body:not(.fit-stage) .soundbox-col { order: 2; width: 100%; max-width: 420px; scroll-margin-top: 70px; }
+body:not(.fit-stage) .ctrl-col { order: 3; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 10px; }
+body:not(.fit-stage) .screen-wrap { height: min(820px, calc(100dvh - 120px)); }
+
+/* ---- phones: the app is the screen ---- */
+body.mobile .topbar { padding: 8px 12px; }
+body.mobile .topbar-right .chip { display: none; }
+body.mobile .stage { padding: 0 0 40px; gap: 18px; }
+body.mobile .phone-col { max-width: none; }
+body.mobile .phone-col .col-label { display: none; }
+body.mobile .phone { max-width: none; border-radius: 0; padding: 0; box-shadow: none; }
+body.mobile .screen-wrap { height: calc(100dvh - 52px); border-radius: 0; }
+body.mobile .statusbar { display: none; }
+body.mobile .soundbox-col, body.mobile .ctrl-col { padding: 0 16px; }
+body.mobile .sb-jump { display: inline-flex; position: fixed; right: 14px; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 60; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: #012b72; color: #fff; font-weight: 600; font-size: 14px; text-decoration: none; box-shadow: 0 10px 24px -8px rgba(1,43,114,.6); }
+body.mobile .sb-jump::before { content: ""; width: 10px; height: 14px; border-radius: 3px; background: #36b9f2; box-shadow: inset 0 0 0 2px #fff; }
+
+/* controls moved to their own column: carry over their styles */
+.ctrl-col > .sb-hint { color: var(--muted); font-size: 12.5px; text-align: center; margin: 8px 0 0; }
+.ctrl-col .sb-controls { display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px; max-width: 380px; margin: 14px auto 0; padding: 0; }
+.ctrl-col .seg { background: var(--grey-btn); }
+.ctrl-col .seg button { color: var(--ink-2); }
+.ctrl-col .seg button.on { background: var(--paper); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.ctrl-col > .sb-hint { color: var(--muted); font-size: 12.5px; text-align: center; margin: 8px 0 0; }
+.ctrl-col .rain-btn { display: flex; }
+.ctrl-col .stop-btn { display: flex; }
+/* controls: a clean 2 × 2 grid */
+body .ctrl-col .sb-controls, body .ctrl-col .sb-controls.v4 { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: none; gap: 8px; margin: 0; max-width: none; padding: 0; }
+body .ctrl-col .sb-controls > * { grid-column: auto !important; grid-row: auto !important; min-height: 52px; }
+body .ctrl-col .sb-controls .seg { display: grid; grid-template-columns: 1fr 1fr; }
+body .ctrl-col .sb-controls .hw { flex-direction: row; justify-content: center; }
