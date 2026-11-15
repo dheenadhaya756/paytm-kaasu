@@ -9,7 +9,7 @@ with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome"); pg = b.new_page(viewport={"width": 1920, "height": 1080}, device_scale_factor=1)
     pg.goto(URL); pg.wait_for_timeout(3000)
     n = pg.evaluate("document.getElementById('deck').children.length")
-    pg.add_style_tag(content="#notes,#dots,#prev,#next,#fs,#bar,.tip{display:none!important}")
+    pg.add_style_tag(content="#notes,#dots,#prev,#next,#fs,#bar,.tip,.hud{display:none!important}")
     for k in range(n):
         pg.evaluate(f"document.getElementById('dots').children[{k}].click()"); pg.wait_for_timeout(2600)
         f = os.path.join(ROOT, "video", f"deck_{k+1:02d}.png"); pg.screenshot(path=f); shots.append(f)
