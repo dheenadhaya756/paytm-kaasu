@@ -301,19 +301,21 @@ async function stt(b64, mime, lang) {
   const buf = Buffer.from(b64, "base64");
   if (buf.length < 2000) return { text: "", source: "too-short" };
   try {
-    const { text, model } = await geminiText({
+    const model = TEXT_MODELS[0];           // one quick try, then Sarvam
+    const j = await gemini(model, {
       contents: [{ parts: [
-        { inlineData: { mimeType: (mime || "audio/webm").split(";")[0], data: b64 } },
+        { inlineData: { mimeType: (mime || "audio/wav").split(";")[0], data: b64 } },
         { text: "Transcribe this short voice question from an Indian shopkeeper. Write Tamil words in Tamil script and English words in English. Return only the exact words spoken, nothing else. If there is no speech, return an empty string." },
       ] }],
       generationConfig: { temperature: 0 },
-    });
+    }, 8000);
+    const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
     const clean = (text || "").replace(/^["'\s]+|["'\s]+$/g, "").trim();
     if (clean) return { text: clean, source: model };
   } catch (e) { console.warn("[stt] gemini", String(e.message).slice(0, 120)); }
   try {
     const c = await sarvam(); if (!c) return { text: "", source: "none" };
-    const file = new File([buf], "question.webm", { type: (mime || "audio/webm").split(";")[0] });
+    const file = new File([buf], /wav/.test(mime || "") ? "question.wav" : "question.webm", { type: (mime || "audio/webm").split(";")[0] });
     const r = await c.speechToText.transcribe({ file, model: "saaras:v3", mode: "codemix", language_code: lang === "ta" ? "ta-IN" : "unknown" });
     console.log("[stt] sarvam saaras:v3");
     return { text: (r.transcript || "").trim(), source: "sarvam" };

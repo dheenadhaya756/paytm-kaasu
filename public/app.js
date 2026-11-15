@@ -764,7 +764,9 @@ async function loadBrief() {
 let currentAudio = null;
 function setWave(mode) { $("sbWave").className = "sb-wave" + (mode ? " " + mode : ""); }
 let muted = false;
+let voiceToken = 0;
 function stopVoice() {
+  voiceToken++; pendingAudio = null;
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   setWave("");
@@ -779,20 +781,38 @@ function getVoice(text) {
 }
 let pendingAudio = null;
 document.addEventListener("pointerdown", () => { if (pendingAudio) { const a = pendingAudio; pendingAudio = null; a.play().catch(() => {}); } }, true);
+// Split speech into short parts so the first sentence plays almost at once.
+function speechParts(text) {
+  const sent = String(text || "").split(/(?<=[.?!।])\s+/).map(x => x.trim()).filter(Boolean);
+  const out = []; let cur = "";
+  for (const x of sent) { if (!out.length && !cur) { out.push(x); continue; } cur = cur ? cur + " " + x : x; if (cur.length > 90) { out.push(cur); cur = ""; } }
+  if (cur) out.push(cur);
+  return out.length ? out : [String(text || "")];
+}
 async function speak(text, lang) {
   stopVoice();
   if (muted) return;                       // Voice switched off: show text only
-  setWave("live");
-  const url = await getVoice(text);
-  if (url) {
-    currentAudio = new Audio(url); currentAudio.onended = () => setWave("");
-    try { await currentAudio.play(); return; }
-    catch (e) { if (e && e.name === "NotAllowedError") { pendingAudio = currentAudio; toast("Tap anywhere to hear the Soundbox"); return; } }
+  const my = voiceToken; setWave("live");
+  const parts = speechParts(text); parts.slice(0, 2).forEach(getVoice);
+  for (let i = 0; i < parts.length; i++) {
+    if (my !== voiceToken) return;
+    if (i + 1 < parts.length) getVoice(parts[i + 1]);
+    const url = await getVoice(parts[i]);
+    if (my !== voiceToken) return;
+    if (!url) { browserSpeak(parts.slice(i).join(" "), lang); return; }
+    const a = new Audio(url); currentAudio = a;
+    try { await a.play(); }
+    catch (e) { if (e && e.name === "NotAllowedError") { pendingAudio = a; toast("Tap anywhere to hear the Soundbox"); } return; }
+    await new Promise(r => { a.onended = r; a.onpause = () => { if (!a.ended) r(); }; });
   }
-  if ("speechSynthesis" in window) { const u = new SpeechSynthesisUtterance(text); u.lang = lang === "ta" ? "ta-IN" : "en-IN";
-    const v = speechSynthesis.getVoices().find(v => v.lang.startsWith(u.lang.slice(0, 2))); if (v) u.voice = v; u.onend = () => setWave(""); speechSynthesis.speak(u); } else setWave("");
+  if (my === voiceToken) setWave("");
 }
-function warmVoice() { const b = state.brief; if (!b) return; [b.spoken_ta, b.spoken_en].forEach(getVoice); }
+function browserSpeak(text, lang) {
+  if (!("speechSynthesis" in window)) return setWave("");
+  const u = new SpeechSynthesisUtterance(text); u.lang = lang === "ta" ? "ta-IN" : "en-IN";
+  const v = speechSynthesis.getVoices().find(v => v.lang.startsWith(u.lang.slice(0, 2))); if (v) u.voice = v; u.onend = () => setWave(""); speechSynthesis.speak(u);
+}
+function warmVoice() { const b = state.brief; if (!b) return; [b.spoken_ta, b.spoken_en].forEach(x => speechParts(x).slice(0, 2).forEach(getVoice)); }
 const YES = /(haan|han|haa|ஆம்|ஆமா|சரி|sari|aam|yes|ok|okay|हाँ|हां)/i;
 function listen(onText, lang) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -930,6 +950,20 @@ document.querySelectorAll(".voice-sheet .sug").forEach(b => b.addEventListener("
   }
   ask(b.textContent);
 }));
+// 16 kHz mono WAV: small, and read by Gemini in about a second
+async function toWav16k(blob) {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  const audio = await ac.decodeAudioData(await blob.arrayBuffer()); ac.close();
+  const len = Math.max(1, Math.ceil(audio.duration * 16000));
+  const oc = new OfflineAudioContext(1, len, 16000); const src = oc.createBufferSource(); src.buffer = audio; src.connect(oc.destination); src.start();
+  const pcm = (await oc.startRendering()).getChannelData(0);
+  const buf = new ArrayBuffer(44 + pcm.length * 2), v = new DataView(buf);
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, "RIFF"); v.setUint32(4, 36 + pcm.length * 2, true); w(8, "WAVE"); w(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, 16000, true); v.setUint32(28, 32000, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, "data"); v.setUint32(40, pcm.length * 2, true);
+  for (let i = 0; i < pcm.length; i++) { const s = Math.max(-1, Math.min(1, pcm[i])); v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+  return new Blob([buf], { type: "audio/wav" });
+}
 // Ask AI by voice: the app records the question itself (works in every modern browser),
 // stops when the merchant goes quiet or taps again, and the server turns it into text.
 const dict = { on: false, rec: null, stream: null, chunks: [], ctx: null, raf: 0, spoke: false, quietSince: 0, started: 0 };
@@ -958,9 +992,11 @@ async function dictStart() {
     const blob = new Blob(dict.chunks, { type: dict.rec.mimeType || type || "audio/webm" }); dictCleanup();
     if (!dict.send) return;
     if (!dict.spoke || blob.size < 2000) { $("micLabel").textContent = "Tap and ask"; toast("Didn't hear anything. Tap the mic and speak."); return; }
-    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(",")[1]); fr.readAsDataURL(blob); });
+    let wav = blob, mime = blob.type;
+    try { wav = await toWav16k(blob); mime = "audio/wav"; } catch { /* send the original */ }
+    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(",")[1]); fr.readAsDataURL(wav); });
     try {
-      const out = await (await fetch("/api/stt", { method: "POST", body: JSON.stringify({ audio: b64, mime: blob.type, lang: state.lang }) })).json();
+      const out = await (await fetch("/api/stt", { method: "POST", body: JSON.stringify({ audio: b64, mime, lang: state.lang }) })).json();
       $("micLabel").textContent = "Tap and ask";
       if (out.text) { $("askInput").value = ""; ask(out.text); } else toast("Couldn't catch that. Please try again or type.");
     } catch { $("micLabel").textContent = "Tap and ask"; toast("Couldn't reach Kaasu. Please type your question."); }
@@ -977,7 +1013,7 @@ async function dictStart() {
     const rms = Math.sqrt(sum / buf.length), now = performance.now();
     $("askMic").style.setProperty("--lvl", Math.min(1, rms * 8).toFixed(2));
     if (rms > 0.035) { dict.spoke = true; dict.quietSince = now; }
-    if (dict.spoke && now - dict.quietSince > 1800) return dictStop(true);
+    if (dict.spoke && now - dict.quietSince > 1200) return dictStop(true);
     if (!dict.spoke && now - dict.started > 10000) { dictStop(false); toast("Didn't hear anything. Tap the mic and speak."); return; }
     if (now - dict.started > 25000) return dictStop(true);
     dict.raf = requestAnimationFrame(tick);
