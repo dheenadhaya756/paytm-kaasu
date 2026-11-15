@@ -29,7 +29,7 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
 @keyframes pop { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: none; } }
 .out { animation: fo .5s ease-in calc((var(--t0) + var(--d, 0)) * 1s) forwards; }
 @keyframes fo { to { opacity: 0; transform: scale(.94); filter: blur(8px); } }
-.giant { position: absolute; left: 0; right: 0; text-align: center; font-weight: 600; letter-spacing: -.06em; line-height: 1; opacity: 0; background: linear-gradient(180deg, #8fb6ff, #2448ff); -webkit-background-clip: text; background-clip: text; color: transparent; animation: giant 2.4s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
+.giant { position: absolute; left: 0; right: 0; text-align: center; font-weight: 600; letter-spacing: -.06em; line-height: 1.12; padding: .04em .08em .2em; opacity: 0; background: linear-gradient(180deg, #8fb6ff, #2448ff); -webkit-background-clip: text; background-clip: text; color: transparent; animation: giant 2.4s var(--ease) calc((var(--t0) + var(--d, 0)) * 1s) both; }
 @keyframes giant { 0% { opacity: 0; transform: scale(3.2); filter: blur(20px); } 30% { opacity: 1; transform: scale(1); filter: none; } 80% { opacity: 1; transform: scale(.92); } 100% { opacity: 0; transform: scale(.35); filter: blur(4px); } }
 .giant.stay { animation-name: giantStay; }
 @keyframes giantStay { 0% { opacity: 0; transform: scale(3.2); filter: blur(20px); } 45% { opacity: 1; transform: scale(1); filter: none; } 100% { opacity: 1; transform: scale(.96); } }
@@ -110,7 +110,7 @@ L("s04", `
 L("s05", `
   <div class="bg" style="${d(0)}">${blobs([[-100, 100, 1200, 800, B1, 10, 200, 40], [1200, 500, 800, 600, B3, 12, -100, -100]])}</div>
   <div class="c" style="top:150px;font-size:56px;font-weight:600;color:var(--navy)">${W("53 days early, his Soundbox speaks.", 0.4)}</div>
-  <div class="search" style="${d(1.8)};top:270px;--wd:980px"><span class="ic"></span><span class="ta">${typed("தினமும் ₹600 ஒதுக்கலாமா?", 2.6)}</span></div>
+  <div class="search" style="${d(1.8)};top:270px;--wd:980px"><span class="ic"></span><span class="ta">${typed("தினமும் ₹600 சேமிக்கலாமா?", 2.6)}</span></div>
   <div class="out" style="${d(9.6)};position:absolute;inset:0"><div class="track" style="${d(4.4)};--s:6;--to:-1500px"><span class="chip">Save ₹600 a day</span><span class="arrow">→</span><span class="chip">Collect udhaar</span><span class="arrow">→</span><span class="chip">Borrow only the gap</span><span class="arrow">→</span><span class="chip">Pongal covered</span></div></div>
   <div class="out" style="${d(10.4)};position:absolute;inset:0">
     <div class="pop" style="${d(8.6)};position:absolute;left:830px;top:620px;width:260px;height:260px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 30px 60px -20px rgba(36,72,255,.6)"><span class="ta" style="font-size:96px;color:var(--blue);font-weight:600">ஆம்</span></div>

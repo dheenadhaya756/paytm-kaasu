@@ -522,7 +522,7 @@ sl.append(S("dark", "No new device. No new app. A brain on Paytm's servers.", f'
 </div>'''))
 
 # ---------------------------------------------------------------- 15 ONE MORNING (value-chain timeline)
-steps = [("7:00", "Soundbox speaks", '<span class="ta">"₹32,520 குறையும். தினமும் ₹600 ஒதுக்கலாமா?"</span>', '<img src="img/soundbox-on.png" alt="" style="height:96px">', 170, "up"),
+steps = [("7:00", "Soundbox speaks", '<span class="ta">"₹32,520 குறையும். தினமும் ₹600 சேமிக்கலாமா?"</span>', '<img src="img/soundbox-on.png" alt="" style="height:96px">', 170, "up"),
          ("7:01", "He says Haan", 'Or presses OK on older boxes', '<div style="width:86px;height:86px;border-radius:50%;background:var(--sky);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:700" class="ta">ஆம்</div>', 470, "down"),
          ("7:02", "PIN on the phone", 'Money never moves on voice alone', '<img class="zoom" src="img/p-pin.png" alt="PIN" style="height:110px">', 790, "up"),
          ("9 pm", "Pongal covered", '₹600 auto-saved every night', '<img class="zoom" src="img/p-done.png" alt="Plan active" style="height:110px">', 1100, "down")]

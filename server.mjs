@@ -118,7 +118,7 @@ function fallbackBrief(f) {
   return {
     source: "offline",
     spoken_en: `Good morning ${f.owner}. Pongal stock of ${inr(f.goalAmount)} is due on 6 January. At this pace you will be short by ${inr(f.shortfallWithoutPlan)}. If we keep ${inr(f.dailySave)} aside every day, and collect ${inr(f.udhaarExpected)} of udhaar, most of it is covered. ${loanLine} Shall I start? Say haan.`,
-    spoken_ta: `காலை வணக்கம் ${f.owner}. ஜனவரி 6 அன்று பொங்கல் சரக்குக்கு ${inr(f.goalAmount)} தேவை. இப்படியே போனால் ${inr(f.shortfallWithoutPlan)} குறையும். தினமும் ${inr(f.dailySave)} ஒதுக்கி, ${inr(f.udhaarExpected)} உதார் வசூல் செய்தால், பெரும்பகுதி சரியாகிவிடும். தொடங்கட்டுமா? "ஆம்" என்று சொல்லுங்கள்.`,
+    spoken_ta: `காலை வணக்கம் ${f.owner}. ஜனவரி 6 அன்று பொங்கல் சரக்குக்கு ${inr(f.goalAmount)} தேவை. இப்படியே போனால் ${inr(f.shortfallWithoutPlan)} குறையும். தினமும் ${inr(f.dailySave)} சேமித்து, ${inr(f.udhaarExpected)} கடன் வசூல் செய்தால், பெரும்பகுதி சரியாகிவிடும். தொடங்கட்டுமா? "ஆம்" என்று சொல்லுங்கள்.`,
     actions: [
       { type: "save", title: `Keep ${inr(f.dailySave)} aside every day`, why: `${inr(f.dailySave)} a day for ${f.daysToGoal} days fills the Pongal pot with ${inr(f.potAtGoal)}. You still take home the rest.`, amount: f.dailySave },
       { type: "collect", title: `Collect ${inr(f.udhaarTotal)} of udhaar`, why: `${f.udhaarCustomers} customers owe you. Gentle Paytm reminders usually bring back about ${inr(f.udhaarExpected)}.`, amount: f.udhaarTotal },
@@ -136,7 +136,7 @@ async function brief(plan) {
   const schema = {
     type: "OBJECT",
     properties: {
-      spoken_ta: { type: "STRING", description: "What the Soundbox says, in simple spoken Tamil WRITTEN IN TAMIL SCRIPT (தமிழ் எழுத்துக்கள்), never in English letters. Under 60 words. Mention the shortfall, the daily saving, udhaar and (if any) the loan. End by asking the merchant to say ஆம்." },
+      spoken_ta: { type: "STRING", description: "What the Soundbox says, in simple spoken Tamil WRITTEN IN TAMIL SCRIPT (தமிழ் எழுத்துக்கள்), never in English letters. Use natural shop Tamil: say கடன் for udhaar and சேமிக்க for saving (for example 'தினமும் ₹600 சேமிக்கலாமா?'). Under 60 words. Mention the shortfall, the daily saving, udhaar and (if any) the loan. End by asking the merchant to say ஆம்." },
       spoken_en: { type: "STRING", description: "The same message in simple Indian English. Under 60 words." },
       actions: { type: "ARRAY", items: { type: "OBJECT", properties: {
         type: { type: "STRING", enum: ["save", "collect", "loan"] },

@@ -411,7 +411,7 @@ const FLOWS = {
         return { h: `<h2 class="j-h">${r.missed ? `${rs(r.missed)} of discounts missing` : "All schemes were applied"}</h2>
           <p class="j-p">${esc(r.distributor)}${r.billNo ? " · " + esc(r.billNo) : ""} · ${r.source.startsWith("gemini") ? "read by AI" : "sample result"}</p>
           <div class="card">${r.rows.map(x => row(`${esc(x.name)} <small>${x.qty} × ${rs(x.rate)} · ${x.scheme}</small>`, x.missed ? `−${rs(x.missed)}` : "OK", x.missed ? "bad" : "good")).join("")}</div>
-          ${r.missed ? `<div class="preview-l">Message to the distributor</div><div class="bubble"><div class="ta">வணக்கம், பில் ${esc(r.billNo)}-ல் ${rs(r.missed)} scheme தள்ளுபடி சேர்க்கப்படவில்லை. அடுத்த பில்லில் சரி செய்ய முடியுமா? நன்றி, முருகன் ஸ்டோர்ஸ்.</div><div class="sub">Hello, bill ${esc(r.billNo)} is missing ${rs(r.missed)} of scheme discounts. Can you adjust it in the next bill? Thanks, Murugan Stores.</div></div>` : ""}`,
+          ${r.missed ? `<div class="preview-l">Message to the distributor</div><div class="bubble"><div class="ta">வணக்கம், பில் ${esc(r.billNo)}-ல் ${rs(r.missed)} தள்ளுபடி சேர்க்கப்படவில்லை. அடுத்த பில்லில் சரி செய்ய முடியுமா? நன்றி, முருகன் ஸ்டோர்ஸ்.</div><div class="sub">Hello, bill ${esc(r.billNo)} is missing ${rs(r.missed)} of scheme discounts. Can you adjust it in the next bill? Thanks, Murugan Stores.</div></div>` : ""}`,
           next: r.missed ? "Send claim to distributor" : "Done" }; },
     ],
     finish(d) { state.billClaim = (state.billClaim || 0) + d.result.missed;
@@ -747,7 +747,7 @@ $("keypad").addEventListener("click", (e) => {
 function localBrief() {
   const n = numbers();
   return { source: "engine",
-    spoken_ta: `காலை வணக்கம் முருகன். ஜனவரி 6 அன்று பொங்கல் சரக்குக்கு ${inr(GOAL)} தேவை. இப்படியே போனால் ${inr(n.shortfall)} குறையும். தினமும் ${inr(state.dailySave)} ஒதுக்கி, உதார் வசூல் செய்தால், பெரும்பகுதி சரியாகிவிடும். தொடங்கட்டுமா? "ஆம்" என்று சொல்லுங்கள்.`,
+    spoken_ta: `காலை வணக்கம் முருகன். ஜனவரி 6 அன்று பொங்கல் சரக்குக்கு ${inr(GOAL)} தேவை. இப்படியே போனால் ${inr(n.shortfall)} குறையும். தினமும் ${inr(state.dailySave)} சேமித்து, கடன் வசூல் செய்தால், பெரும்பகுதி சரியாகிவிடும். தொடங்கட்டுமா? "ஆம்" என்று சொல்லுங்கள்.`,
     spoken_en: `Good morning Murugan. Pongal stock of ${inr(GOAL)} is due on 6 January. At this pace you will be short by ${inr(n.shortfall)}. Keep ${inr(state.dailySave)} aside every day and collect your udhaar, and most of it is covered. Shall I start? Say haan.` };
 }
 function setSpeech(main, sub) { $("sbText").textContent = main; $("sbText").classList.toggle("ta", /[஀-௿]/.test(main)); $("sbTextEn").textContent = sub || ""; }
@@ -907,11 +907,11 @@ $("askBtn").addEventListener("click", () => { ask($("askInput").value); $("askIn
 $("askInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { ask(e.target.value); e.target.value = ""; } });
 document.querySelectorAll(".voice-sheet .sug").forEach(b => b.addEventListener("click", () => {
   if (b.id === "closingNote") {
-    const ta = "முருகன், இன்று கடை முடிந்தது. இன்று cash எவ்வளவு வந்தது? யாருக்காவது உதார் கொடுத்தீர்களா?";
+    const ta = "முருகன், இன்று கடை முடிந்தது. இன்று கல்லாவில் எவ்வளவு பணம் வந்தது? யாருக்காவது கடன் கொடுத்தீர்களா?";
     const en = "Murugan, closing time. How much cash came in today? Did you give anyone udhaar?";
     addMsg(T(ta, en), "bot"); speak(T(ta, en), state.lang);
     setTimeout(() => addMsg("Cash 3,000. Lakshmi 200 udhaar.", "me"), 1500);
-    setTimeout(() => addMsg(T("சரி. இன்றைய cash ₹3,000, லக்ஷ்மிக்கு ₹200 உதார் குறித்துக்கொண்டேன்.", "Noted: ₹3,000 cash today and ₹200 udhaar for Lakshmi. Your plan is updated."), "bot"), 2600);
+    setTimeout(() => addMsg(T("சரி. இன்றைய கல்லா ₹3,000, லக்ஷ்மிக்கு ₹200 கடன் குறித்துக்கொண்டேன்.", "Noted: ₹3,000 cash today and ₹200 udhaar for Lakshmi. Your plan is updated."), "bot"), 2600);
     return;
   }
   ask(b.textContent);
