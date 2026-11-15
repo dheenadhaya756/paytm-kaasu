@@ -930,11 +930,49 @@ document.querySelectorAll(".voice-sheet .sug").forEach(b => b.addEventListener("
   }
   ask(b.textContent);
 }));
-$("askMic").addEventListener("click", () => {
-  $("askMic").classList.add("listening"); $("micLabel").textContent = "Listening…";
-  const ok = listen((t) => { $("askMic").classList.remove("listening"); $("micLabel").textContent = "Tap and speak"; if (t) ask(t); }, state.lang);
-  if (!ok) { $("askMic").classList.remove("listening"); $("micLabel").textContent = "Tap and speak"; }
-});
+// Ask AI by voice: proper dictation. Keeps listening through pauses, shows words live,
+// sends when the merchant taps again or goes quiet for ~2.5 s after speaking.
+const dict = { rec: null, on: false, text: "", silence: null, idle: null };
+function dictStop(send) {
+  if (!dict.on) return; dict.on = false;
+  clearTimeout(dict.silence); clearTimeout(dict.idle);
+  try { dict.rec && dict.rec.stop(); } catch {}
+  $("askMic").classList.remove("listening"); $("micLabel").textContent = "Tap and ask";
+  const q = dict.text.trim(); dict.text = "";
+  if (send && q) { $("askInput").value = ""; ask(q); }
+}
+function dictStart() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast("Voice input needs Chrome or Edge. You can type instead."); $("askInput").focus(); return; }
+  stopVoice();                                       // don't let the Soundbox voice be heard as the question
+  dict.on = true; dict.text = ""; $("askInput").value = "";
+  $("askMic").classList.add("listening"); $("micLabel").textContent = "Listening… tap to send";
+  const begin = () => {
+    const r = new SR(); dict.rec = r;
+    r.lang = state.lang === "ta" ? "ta-IN" : "en-IN"; r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
+    let finalPart = dict.text;
+    r.onresult = (e) => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const tr = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finalPart += (finalPart ? " " : "") + tr.trim(); else interim += tr;
+      }
+      dict.text = finalPart; $("askInput").value = (finalPart + " " + interim).trim();
+      clearTimeout(dict.idle); clearTimeout(dict.silence);
+      dict.silence = setTimeout(() => { dict.text = $("askInput").value; dictStop(true); }, 2500);
+    };
+    r.onerror = (e) => {
+      if (e.error === "not-allowed" || e.error === "service-not-allowed") { toast("Please allow the microphone for this site, then tap again."); dictStop(false); }
+      else if (e.error === "audio-capture") { toast("No microphone found. You can type instead."); dictStop(false); }
+    };
+    r.onend = () => { if (dict.on) { try { begin(); } catch { dictStop(true); } } };   // Chrome ends sessions on its own: keep going
+    r.start();
+  };
+  try { begin(); } catch { dictStop(false); return; }
+  dict.idle = setTimeout(() => { if (dict.on && !$("askInput").value.trim()) { toast("Didn't hear anything. Tap the mic and speak."); dictStop(false); } }, 12000);
+}
+$("askMic").addEventListener("click", () => (dict.on ? (dict.text = $("askInput").value, dictStop(true)) : dictStart()));
+$("closeVoice").addEventListener("click", () => dictStop(false));
 $("resetBtn").addEventListener("click", () => { location.hash = ""; location.reload(); });
 fetch("/api/health").then(r => r.json()).then(h => { $("aiStatus").textContent = h.offline ? "AI: offline mode" : ["Gemini", h.sarvam && "Sarvam"].filter(Boolean).join(" + ") + " connected"; $("aiStatus").className = "chip" + (h.offline ? " off" : ""); })
   .catch(() => { $("aiStatus").textContent = "AI: offline mode"; $("aiStatus").className = "chip off"; });
