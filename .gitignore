@@ -24,3 +24,6 @@ tools/make_present.py
 tools/shop_art.py
 tools/deck_market.py
 tools/deck_v2.py
+
+.vercel
+.env*
