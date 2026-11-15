@@ -766,11 +766,11 @@ CSS += """
 .legend { display: flex; gap: 16px; margin-top: 10px; font-size: 12.5px; color: var(--ink-2); } .legend span { display: inline-flex; align-items: center; gap: 6px; } .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 .tip { position: fixed; z-index: 30; pointer-events: none; background: var(--ink); color: #fff; font-size: 12.5px; font-weight: 600; padding: 7px 10px; border-radius: 8px; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; white-space: nowrap; }
 .tip.on { opacity: 1; transform: none; }
-.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 10px; height: 100%; }
+.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 8px; height: 100%; }
 .bmc > div { border-radius: 16px; padding: 14px 16px; overflow: hidden; }
 .bmc h4 { margin: 0 0 8px; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 .bmc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
-.bmc li { font-size: 12.5px; line-height: 1.35; padding-left: 12px; position: relative; }
+.bmc li { font-size: 12px; line-height: 1.3; padding-left: 12px; position: relative; }
 .bmc li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .45; }
 .arch { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1.25fr 34px 1fr; align-items: stretch; gap: 0; }
 .arch .col { display: flex; flex-direction: column; gap: 12px; } .arch .node { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -815,8 +815,8 @@ sl.append(S("", "Left to right: the shop and its customers, Paytm's existing pla
 def blk(title, items, cls, style=""):
     return f'<div class="{cls} st" style="{style}"><h4>{title}</h4><ul>{"".join(f"<li>{x}</li>" for x in items)}</ul></div>'
 sl.append(S("", "The business model canvas. Revenue figures are our assumptions for a 10 lakh shop rollout.", f'''
-<div style="display:grid;grid-template-rows:auto 1fr;gap:14px;height:100%">
-<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Business model canvas</div><h2 class="t a d1" style="font-size:36px">How Kaasu creates and captures value.</h2></div><span class="tag sky a d1">≈ ₹131 Cr a year at 10 lakh shops</span></div>
+<div style="display:grid;grid-template-rows:auto 1fr auto;gap:12px;height:100%">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Business model canvas</div><h2 class="t a d1" style="font-size:36px">How Kaasu creates and captures value.</h2></div><span class="tag sky a d1">₹131 Cr a year at 10 lakh shops · maths below</span></div>
 <div class="bmc a d2">
   {blk("Key partners", ["Partner banks for savings pots", "NBFC and bank lenders", "Postpaid lender for Bharosa", "IRDAI-licensed insurers", "Gemini, Sarvam AI", "Distributors"], "c-white", "grid-column:1/3;grid-row:1/3")}
   {blk("Key activities", ["Cash-flow planning engine", "Tamil voice briefs", "Udhaar reminders in Paytm's name", "Loan and insurance distribution"], "c-pale", "grid-column:3/5;grid-row:1")}
@@ -825,9 +825,23 @@ sl.append(S("", "The business model canvas. Revenue figures are our assumptions 
   {blk("Customer relationships", ["Daily voice brief", "Consent-first automation", "Save Score that grows"], "c-pale", "grid-column:7/9;grid-row:1")}
   {blk("Channels", ["Paytm Soundbox", "Paytm for Business app", "Customers' Paytm app", "Paytm field sales"], "c-pale", "grid-column:7/9;grid-row:2")}
   {blk("Customer segments", ["Kiranas and small shops with a Soundbox", "Their regular customers", "Shop helpers", "Lenders and insurers (B2B)"], "c-white", "grid-column:9/11;grid-row:1/3")}
-  {blk("Cost structure", ["AI + voice ≈ ₹15 per shop a month (cached)", "Engineering and partner integration", "Compliance, support, field training"], "c-white", "grid-column:1/6;grid-row:3")}
-  {blk("Revenue streams", ["₹49 a month Kaasu plan → ₹588 a shop a year", "Loan distribution fee ≈ 3% → ₹99", "Bharosa partner fee ≈ 2% → ₹624", "Insurance commission · deposit referral · more UPI on Paytm"], "c-sky", "grid-column:6/11;grid-row:3")}
-</div></div>'''))
+  <div class="st" style="grid-column:1/11;grid-row:3;padding:0;display:grid;grid-template-columns:1fr 1fr 1fr 1.15fr;gap:10px">
+    {"".join(f'<div class="c-white" style="border-radius:16px;padding:12px 14px"><h4 style="color:#0089c2">{h}</h4><div class="mathl">{a}</div><div class="mathl">{b}</div><div class="mathr">= {r}</div></div>' for h, a, b, r in [
+      ("Revenue 1 · Kaasu plan", "₹49 a month × 12 = ₹588 a shop", "₹588 × 10,00,000 shops", "₹58.8 Cr"),
+      ("Revenue 2 · Loan fee", "30% of shops = 3,00,000 loans × ₹11,000 = ₹330 Cr lent", "₹330 Cr × 3% distribution fee", "₹9.9 Cr"),
+      ("Revenue 3 · Bharosa fee", "₹2,600 udhaar a month × 12 = ₹31,200 a shop", "₹31,200 × 10,00,000 × 2% partner fee", "₹62.4 Cr")])}
+    <div style="border-radius:16px;padding:12px 16px;background:var(--sky);color:#fff"><h4 style="color:#fff;opacity:.85">Total a year</h4>
+      <div class="mathl" style="color:#fff">₹58.8 + ₹9.9 + ₹62.4 Cr</div>
+      <div style="font-size:30px;font-weight:500;letter-spacing:-.03em;line-height:1.1;margin-top:2px">= ₹131.1 Cr</div>
+      <div class="mathl" style="color:rgba(255,255,255,.9);margin-top:4px">Cost: AI ₹15 a month × 12 × 10 lakh = ₹18 Cr → <b>₹113 Cr net</b></div></div>
+  </div>
+</div>
+<div class="mini a d3" style="margin-top:-4px">10 lakh shops = about 6% of 1.64 Cr Soundboxes. Prices, take rates and adoption are our assumptions for a pilot to test. Not counted: insurance commission, deposit referrals, more UPI on Paytm.</div>
+</div>'''))
+CSS += """
+.mathl { font-size: 12px; line-height: 1.4; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.mathr { font-size: 22px; font-weight: 500; color: var(--navy); letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+"""
 
 # ---------------------------------------------------------------- 31 RESEARCH DATA · MARKET (charts)
 sl.append(S("", "Research data. Paytm already owns the counter, and kiranas still own grocery. Hover any bar for the value.", f'''

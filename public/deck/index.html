@@ -193,11 +193,11 @@ hr.rule { border: 0; border-top: 1px solid rgba(255,255,255,.18); margin: 18px 0
 .legend { display: flex; gap: 16px; margin-top: 10px; font-size: 12.5px; color: var(--ink-2); } .legend span { display: inline-flex; align-items: center; gap: 6px; } .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 .tip { position: fixed; z-index: 30; pointer-events: none; background: var(--ink); color: #fff; font-size: 12.5px; font-weight: 600; padding: 7px 10px; border-radius: 8px; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; white-space: nowrap; }
 .tip.on { opacity: 1; transform: none; }
-.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 10px; height: 100%; }
+.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 8px; height: 100%; }
 .bmc > div { border-radius: 16px; padding: 14px 16px; overflow: hidden; }
 .bmc h4 { margin: 0 0 8px; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 .bmc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
-.bmc li { font-size: 12.5px; line-height: 1.35; padding-left: 12px; position: relative; }
+.bmc li { font-size: 12px; line-height: 1.3; padding-left: 12px; position: relative; }
 .bmc li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .45; }
 .arch { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1.25fr 34px 1fr; align-items: stretch; gap: 0; }
 .arch .col { display: flex; flex-direction: column; gap: 12px; } .arch .node { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -205,6 +205,9 @@ hr.rule { border: 0; border-top: 1px solid rgba(255,255,255,.18); margin: 18px 0
 .arch .node { border-radius: 14px; padding: 12px 16px; font-size: 15px; font-weight: 600; }
 .arch .node small { display: block; font-size: 11.5px; font-weight: 500; opacity: .72; margin-top: 2px; }
 .arch .arr { display: grid; place-items: center; }
+
+.mathl { font-size: 12px; line-height: 1.4; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.mathr { font-size: 22px; font-weight: 500; color: var(--navy); letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
 
 .amb { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .amb i { position: absolute; border-radius: 50%; filter: blur(50px); opacity: .5; animation: ambd 16s ease-in-out infinite alternate; animation-play-state: paused; }
@@ -370,8 +373,8 @@ hr.rule { border: 0; border-top: 1px solid rgba(255,255,255,.18); margin: 18px 0
   </div>
 </div></div></section>
 <section data-sec="Business model canvas" class="s " data-notes="The business model canvas. Revenue figures are our assumptions for a 10 lakh shop rollout."><div class="in">
-<div style="display:grid;grid-template-rows:auto 1fr;gap:14px;height:100%">
-<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Business model canvas</div><h2 class="t a d1" style="font-size:36px">How Kaasu creates and captures value.</h2></div><span class="tag sky a d1">≈ ₹131 Cr a year at 10 lakh shops</span></div>
+<div style="display:grid;grid-template-rows:auto 1fr auto;gap:12px;height:100%">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="eb a">Business model canvas</div><h2 class="t a d1" style="font-size:36px">How Kaasu creates and captures value.</h2></div><span class="tag sky a d1">₹131 Cr a year at 10 lakh shops · maths below</span></div>
 <div class="bmc a d2">
   <div class="c-white st" style="grid-column:1/3;grid-row:1/3"><h4>Key partners</h4><ul><li>Partner banks for savings pots</li><li>NBFC and bank lenders</li><li>Postpaid lender for Bharosa</li><li>IRDAI-licensed insurers</li><li>Gemini, Sarvam AI</li><li>Distributors</li></ul></div>
   <div class="c-pale st" style="grid-column:3/5;grid-row:1"><h4>Key activities</h4><ul><li>Cash-flow planning engine</li><li>Tamil voice briefs</li><li>Udhaar reminders in Paytm's name</li><li>Loan and insurance distribution</li></ul></div>
@@ -380,9 +383,16 @@ hr.rule { border: 0; border-top: 1px solid rgba(255,255,255,.18); margin: 18px 0
   <div class="c-pale st" style="grid-column:7/9;grid-row:1"><h4>Customer relationships</h4><ul><li>Daily voice brief</li><li>Consent-first automation</li><li>Save Score that grows</li></ul></div>
   <div class="c-pale st" style="grid-column:7/9;grid-row:2"><h4>Channels</h4><ul><li>Paytm Soundbox</li><li>Paytm for Business app</li><li>Customers' Paytm app</li><li>Paytm field sales</li></ul></div>
   <div class="c-white st" style="grid-column:9/11;grid-row:1/3"><h4>Customer segments</h4><ul><li>Kiranas and small shops with a Soundbox</li><li>Their regular customers</li><li>Shop helpers</li><li>Lenders and insurers (B2B)</li></ul></div>
-  <div class="c-white st" style="grid-column:1/6;grid-row:3"><h4>Cost structure</h4><ul><li>AI + voice ≈ ₹15 per shop a month (cached)</li><li>Engineering and partner integration</li><li>Compliance, support, field training</li></ul></div>
-  <div class="c-sky st" style="grid-column:6/11;grid-row:3"><h4>Revenue streams</h4><ul><li>₹49 a month Kaasu plan → ₹588 a shop a year</li><li>Loan distribution fee ≈ 3% → ₹99</li><li>Bharosa partner fee ≈ 2% → ₹624</li><li>Insurance commission · deposit referral · more UPI on Paytm</li></ul></div>
-</div></div></div></section>
+  <div class="st" style="grid-column:1/11;grid-row:3;padding:0;display:grid;grid-template-columns:1fr 1fr 1fr 1.15fr;gap:10px">
+    <div class="c-white" style="border-radius:16px;padding:12px 14px"><h4 style="color:#0089c2">Revenue 1 · Kaasu plan</h4><div class="mathl">₹49 a month × 12 = ₹588 a shop</div><div class="mathl">₹588 × 10,00,000 shops</div><div class="mathr">= ₹58.8 Cr</div></div><div class="c-white" style="border-radius:16px;padding:12px 14px"><h4 style="color:#0089c2">Revenue 2 · Loan fee</h4><div class="mathl">30% of shops = 3,00,000 loans × ₹11,000 = ₹330 Cr lent</div><div class="mathl">₹330 Cr × 3% distribution fee</div><div class="mathr">= ₹9.9 Cr</div></div><div class="c-white" style="border-radius:16px;padding:12px 14px"><h4 style="color:#0089c2">Revenue 3 · Bharosa fee</h4><div class="mathl">₹2,600 udhaar a month × 12 = ₹31,200 a shop</div><div class="mathl">₹31,200 × 10,00,000 × 2% partner fee</div><div class="mathr">= ₹62.4 Cr</div></div>
+    <div style="border-radius:16px;padding:12px 16px;background:var(--sky);color:#fff"><h4 style="color:#fff;opacity:.85">Total a year</h4>
+      <div class="mathl" style="color:#fff">₹58.8 + ₹9.9 + ₹62.4 Cr</div>
+      <div style="font-size:30px;font-weight:500;letter-spacing:-.03em;line-height:1.1;margin-top:2px">= ₹131.1 Cr</div>
+      <div class="mathl" style="color:rgba(255,255,255,.9);margin-top:4px">Cost: AI ₹15 a month × 12 × 10 lakh = ₹18 Cr → <b>₹113 Cr net</b></div></div>
+  </div>
+</div>
+<div class="mini a d3" style="margin-top:-4px">10 lakh shops = about 6% of 1.64 Cr Soundboxes. Prices, take rates and adoption are our assumptions for a pilot to test. Not counted: insurance commission, deposit referrals, more UPI on Paytm.</div>
+</div></div></section>
 <section data-sec="Thank you" class="s dark" data-notes="Close on the ask, then stop. Sources are on screen if a judge asks."><div class="in">
 <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:18px;height:100%">
   <div style="display:flex;flex-direction:column">
