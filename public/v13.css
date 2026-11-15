@@ -43,3 +43,9 @@
 .pos-port { width: 50px; height: 6px; border-radius: 3px; background: #0d5f99; }
 .scene.pos-scene .floor { bottom: 0px; width: 300px; margin-left: -150px; }
 @media (prefers-reduced-motion: reduce) { .pos { transition: none; } }
+/* grip removed: the device ends at the screen */
+.pos-grip { display: none; }
+.scene.pos-scene { height: 490px; }
+.pos-body { height: 392px; border-radius: 30px 30px 34px 34px; }
+.pos-body::after { bottom: 24px; }
+.scene.pos-scene .floor { bottom: 20px; }
