@@ -1026,6 +1026,7 @@ CSS += """
 """
 JS_AMB = "document.querySelectorAll('section.s').forEach(s => { const a = document.createElement('div'); a.className = 'amb'; a.innerHTML = '<i></i><i></i><i></i>'; s.prepend(a); });"
 tail = tail.replace("const deck = $(\"deck\")", JS_AMB + chr(10) + "const deck = $(\"deck\")", 1)
+exec(open(os.path.join(ROOT, "tools", "deck_diagrams.py"), encoding="utf-8").read())
 SEC = {}
 order = []
 def put(sec, *idx):
