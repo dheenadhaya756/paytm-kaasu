@@ -681,7 +681,7 @@ function renderFlow() {
   $("jTitle").textContent = f.title;
   $("jStep").textContent = total > 1 ? `Step ${fl.step + 1} of ${total}` : "";
   $("jBar").style.width = ((fl.step + 1) / total * 100) + "%";
-  $("jBack").style.visibility = fl.step > 0 ? "visible" : "hidden";
+  $("jBack").setAttribute("aria-label", fl.step > 0 ? "Back" : "Exit");
   const key = fl.id + ":" + fl.step;
   $("jBody").innerHTML = v.h;
   if (renderFlow.last !== key) { $("jBody").scrollTop = 0; animate($("jBody"), (renderFlow.dir || 1) > 0 ? "step-fwd" : "step-back", 420); }
@@ -894,7 +894,7 @@ $("scrMain").addEventListener("click", (e) => {
 });
 $("jNext").addEventListener("click", () => flowNext(false));
 $("jAlt").addEventListener("click", () => flowNext(true));
-$("jBack").addEventListener("click", () => { state.flow.step = Math.max(0, state.flow.step - 1); renderFlow.dir = -1; renderFlow(); });
+$("jBack").addEventListener("click", () => { if (!state.flow || state.flow.step === 0) return $("jClose").click(); state.flow.step -= 1; renderFlow.dir = -1; renderFlow(); });
 $("jClose").addEventListener("click", backToMain);
 async function runBill(payload) {
   const d = state.flow.data; d.loading = true; d.error = null; renderFlow();
