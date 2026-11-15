@@ -769,16 +769,30 @@ function stopVoice() {
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   setWave("");
 }
+// Voice: audio is fetched ahead and kept ready, so playback starts the moment the merchant taps.
+const voiceCache = new Map();               // text -> Promise<object URL | null>
+function getVoice(text) {
+  if (!text) return Promise.resolve(null);
+  if (!voiceCache.has(text)) voiceCache.set(text, fetch("/api/tts", { method: "POST", body: JSON.stringify({ text }) })
+    .then(r => (r.ok ? r.blob() : null)).then(b => (b && b.size > 1000 ? URL.createObjectURL(b) : null)).catch(() => null));
+  return voiceCache.get(text);
+}
+let pendingAudio = null;
+document.addEventListener("pointerdown", () => { if (pendingAudio) { const a = pendingAudio; pendingAudio = null; a.play().catch(() => {}); } }, true);
 async function speak(text, lang) {
   stopVoice();
   if (muted) return;                       // Voice switched off: show text only
   setWave("live");
-  try { const r = await fetch("/api/tts", { method: "POST", body: JSON.stringify({ text }) });
-    if (r.ok) { currentAudio = new Audio(URL.createObjectURL(await r.blob())); currentAudio.onended = () => setWave(""); await currentAudio.play(); return; } } catch { /* fall back */ }
+  const url = await getVoice(text);
+  if (url) {
+    currentAudio = new Audio(url); currentAudio.onended = () => setWave("");
+    try { await currentAudio.play(); return; }
+    catch (e) { if (e && e.name === "NotAllowedError") { pendingAudio = currentAudio; toast("Tap anywhere to hear the Soundbox"); return; } }
+  }
   if ("speechSynthesis" in window) { const u = new SpeechSynthesisUtterance(text); u.lang = lang === "ta" ? "ta-IN" : "en-IN";
     const v = speechSynthesis.getVoices().find(v => v.lang.startsWith(u.lang.slice(0, 2))); if (v) u.voice = v; u.onend = () => setWave(""); speechSynthesis.speak(u); } else setWave("");
 }
-function warmVoice() { const b = state.brief; if (!b) return; [b.spoken_ta, b.spoken_en].forEach(t => fetch("/api/tts", { method: "POST", body: JSON.stringify({ text: t }) }).catch(() => {})); }
+function warmVoice() { const b = state.brief; if (!b) return; [b.spoken_ta, b.spoken_en].forEach(getVoice); }
 const YES = /(haan|han|haa|ஆம்|ஆமா|சரி|sari|aam|yes|ok|okay|हाँ|हां)/i;
 function listen(onText, lang) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;

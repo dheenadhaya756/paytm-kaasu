@@ -215,24 +215,26 @@ function wav(pcm, rate = 24000) {
   h.writeUInt32LE(rate * 2, 28); h.writeUInt16LE(2, 32); h.writeUInt16LE(16, 34); h.write("data", 36); h.writeUInt32LE(pcm.length, 40);
   return Buffer.concat([h, pcm]);
 }
+let geminiTtsBlockedUntil = 0;
 async function tts(text) {
   const file = path.join(CACHE, crypto.createHash("sha1").update(TTS_MODEL + text).digest("hex") + ".wav");
   if (fs.existsSync(file)) return fs.readFileSync(file);
   if (OFFLINE) return null;
   let j, last;
-  for (const m of TTS_MODELS) {
+  const skipGemini = Date.now() < geminiTtsBlockedUntil;   // quota hit recently: go straight to Sarvam
+  for (const m of skipGemini ? [] : TTS_MODELS) {
     try {
       j = await gemini(m, {
         contents: [{ parts: [{ text: "Say warmly and clearly, like a friendly shop assistant: " + text }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } },
       }, 45000);
       break;
-    } catch (e) { last = e; console.warn("[tts]", e.message.slice(0, 120)); }
+    } catch (e) { last = e; console.warn("[tts]", e.message.slice(0, 120)); if (/ 429/.test(e.message)) geminiTtsBlockedUntil = Date.now() + 15 * 60 * 1000; }
   }
   if (!j) {
     const sv = await sarvamSpeech(text);
-    if (sv) { fs.writeFileSync(file, sv); return sv; }
-    throw last;
+    if (sv) { try { fs.writeFileSync(file, sv); } catch {} return sv; }
+    throw last || new Error("tts unavailable");
   }
   const part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
   if (!part) return null;
