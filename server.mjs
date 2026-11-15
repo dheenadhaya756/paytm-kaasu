@@ -9,7 +9,7 @@ import { recommend, simulate, loanFor, inr, SHOP } from "./public/sim.js";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PUB = path.join(ROOT, "public");
-const CACHE = path.join(ROOT, "cache");
+const CACHE = process.env.VERCEL ? "/tmp/kaasu-cache" : path.join(ROOT, "cache"); // Vercel only allows writes in /tmp
 fs.mkdirSync(CACHE, { recursive: true });
 
 // ---- config from .env ----
@@ -292,7 +292,8 @@ async function checkBill(body) {
 }
 function send(res, code, body, type = "application/json") { res.writeHead(code, { "content-type": type, "cache-control": "no-store" }); res.end(type === "application/json" ? JSON.stringify(body) : body); }
 
-http.createServer(async (req, res) => {
+// One handler for both the local server and the Vercel function (api/index.mjs).
+export async function handler(req, res) {
   const url = new URL(req.url, "http://x");
   try {
     if (url.pathname === "/api/brief" && req.method === "POST") return send(res, 200, await brief(await readJson(req)));
@@ -310,4 +311,5 @@ http.createServer(async (req, res) => {
     if (!p.startsWith(PUB) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) return send(res, 404, "Not found", "text/plain");
     return send(res, 200, fs.readFileSync(p), TYPES[path.extname(p)] || "application/octet-stream");
   } catch (e) { console.error(e); return send(res, 500, { error: "server error" }); }
-}).listen(PORT, () => console.log(`Kaasu running at http://localhost:${PORT}  (AI: ${OFFLINE ? "offline mode" : "Gemini"})`));
+}
+if (!process.env.VERCEL) http.createServer(handler).listen(PORT, () => console.log(`Kaasu running at http://localhost:${PORT}  (AI: ${OFFLINE ? "offline mode" : "Gemini"})`));

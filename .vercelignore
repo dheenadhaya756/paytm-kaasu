@@ -1,0 +1,9 @@
+.env
+cache
+backup
+video/demo-raw
+video/*-silent.mp4
+video/demo-comp.mp4
+video/vo
+pitch
+Gullak-*

@@ -3,12 +3,13 @@ Soft detuned pad following Am - F - C - G, a slow arpeggio, and a Soundbox-style
 import os, wave
 import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SR, LEN = 44100, 122.0
+SR = 44100
+LEN = float(os.environ.get("LEN", "122"))
 t = np.arange(int(SR * LEN)) / SR
 out = np.zeros_like(t)
 N = lambda name: {"A2": 110.0, "C3": 130.81, "E3": 164.81, "F2": 87.31, "A3": 220.0, "G2": 98.0, "B2": 123.47, "D3": 146.83, "C4": 261.63, "E4": 329.63, "G3": 196.0, "A4": 440.0, "F3": 174.61, "D4": 293.66, "B3": 246.94, "G4": 392.0, "E5": 659.25, "B4": 493.88}[name]
 chords = [["A2", "C3", "E3", "A3"], ["F2", "A3", "C4", "F3"], ["C3", "E3", "G3", "C4"], ["G2", "B2", "D3", "G3"]]
-bar = 7.6  # seconds per chord
+bar = float(os.environ.get("BAR", "7.6"))  # seconds per chord
 def env(start, dur, a=2.5, r=3.0):
     e = np.zeros_like(t); s, en = int(start * SR), int(min(LEN, start + dur + r) * SR)
     x = t[s:en] - start
@@ -33,7 +34,7 @@ def chime(at, gain=0.22):
     for f, dl in ((1318.5, 0.0), (1975.5, 0.14)):
         st = at + dl; pe = np.exp(-np.clip(t - st, 0, None) * 4.0) * (t >= st)
         out += pe * gain * (np.sin(2 * np.pi * f * t) + 0.3 * np.sin(2 * np.pi * f * 2 * t))
-for at in (1.0, 112.2):  # "money received" at the open, "Pongal stock paid" at the close
+for at in [float(x) for x in os.environ.get("CHIMES", "1.0,112.2").split(",")]:  # "money received" at the open, "Pongal stock paid" at the close
     chime(at)
 # gentle low-pass via moving average, fade in/out, normalise
 out = np.convolve(out, np.ones(6) / 6, mode="same")
@@ -41,6 +42,6 @@ fade = np.minimum(1, np.minimum(t / 2.5, (LEN - t) / 4.0)); out *= fade
 out = out / np.max(np.abs(out)) * 0.6
 pcm = (out * 32767).astype(np.int16)
 os.makedirs(os.path.join(ROOT, "video"), exist_ok=True)
-with wave.open(os.path.join(ROOT, "video", "music.wav"), "wb") as w:
+with wave.open(os.path.join(ROOT, "video", os.environ.get("OUT", "music.wav")), "wb") as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
 print("music.wav", LEN, "s")
