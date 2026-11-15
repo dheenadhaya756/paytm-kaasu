@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paytm Kaasu: How it works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Anek+Tamil:wght@500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm; }
+:root { --navy: #012b72; --sky: #00baf2; --pale: #e6f6fd; --ink: #14182b; --ink2: #47506a; --muted: #7c869c; --line: #e3e9f2; --red: #d6335a; --green: #0f9d6e; }
+* { box-sizing: border-box; }
+body { font-family: Inter, "Segoe UI", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.55; margin: 0; }
+.ta { font-family: "Anek Tamil", sans-serif; }
+h1 { font-size: 30pt; line-height: 1.05; letter-spacing: -.03em; color: var(--navy); margin: 0; font-weight: 600; }
+h2 { font-size: 17pt; color: var(--navy); margin: 26px 0 8px; letter-spacing: -.02em; font-weight: 600; break-after: avoid; }
+h2 .n { color: var(--sky); margin-right: 8px; }
+h3 { font-size: 11.5pt; margin: 16px 0 4px; color: var(--ink); break-after: avoid; }
+p { margin: 6px 0; }
+.lead { font-size: 12pt; color: var(--ink2); }
+.section { break-before: page; }
+.cover { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(160deg, #012b72, #0b4fb0 60%, #00baf2); color: #fff; border-radius: 18px; padding: 34px 36px; }
+.cover h1 { color: #fff; font-size: 40pt; }
+.cover .brand { display: flex; align-items: center; gap: 12px; font-size: 16pt; font-weight: 600; }
+.cover .brand img { height: 26px; }
+.cover .kicker { font-size: 9pt; letter-spacing: .14em; text-transform: uppercase; color: #a8e8ff; font-weight: 700; }
+.cover .sub { font-size: 13pt; color: rgba(255,255,255,.88); max-width: 470px; margin-top: 14px; }
+.cover .dev { align-self: flex-end; height: 330px; }
+.box { border-radius: 12px; padding: 12px 14px; margin: 10px 0; break-inside: avoid; }
+.box.pale { background: var(--pale); }
+.box.navy { background: var(--navy); color: #fff; }
+.box.navy b { color: #9fe3ff; }
+.box.line { border: 1px solid var(--line); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.stat { border-radius: 10px; background: var(--pale); padding: 10px 12px; break-inside: avoid; }
+.stat b { display: block; font-size: 17pt; font-weight: 600; color: var(--navy); letter-spacing: -.02em; }
+.stat small { display: block; color: var(--ink2); font-size: 8.5pt; line-height: 1.35; }
+.stat i { display: block; color: var(--muted); font-size: 7.5pt; font-style: normal; margin-top: 3px; }
+table { width: 100%; border-collapse: collapse; font-size: 9.2pt; margin: 8px 0; break-inside: auto; }
+th { text-align: left; background: #f2f6fb; color: var(--ink2); font-size: 8pt; letter-spacing: .06em; text-transform: uppercase; padding: 6px 8px; }
+td { padding: 7px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+tr { break-inside: avoid; }
+td b { color: var(--navy); }
+.steps { counter-reset: s; display: grid; gap: 8px; }
+.steps > div { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; break-inside: avoid; }
+.steps > div::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 10pt; }
+.flow { display: flex; align-items: stretch; gap: 6px; margin: 10px 0; break-inside: avoid; }
+.flow > div { flex: 1; border-radius: 10px; padding: 8px 10px; font-size: 8.6pt; background: var(--pale); }
+.flow > div b { display: block; color: var(--navy); font-size: 9.2pt; }
+.flow > span { align-self: center; color: var(--sky); font-weight: 700; }
+.shots { display: flex; gap: 10px; justify-content: center; margin: 10px 0; break-inside: avoid; }
+.shots figure { margin: 0; text-align: center; font-size: 8pt; color: var(--muted); }
+.shots img { height: 230px; border-radius: 14px; box-shadow: 0 8px 18px -10px rgba(1,43,114,.4); }
+.bar { height: 12px; border-radius: 0 4px 4px 0; background: #1f5fd1; display: inline-block; vertical-align: middle; }
+.tag { display: inline-block; font-size: 7.5pt; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: #dff5ec; color: var(--green); }
+.tag.amber { background: #fff1d6; color: #9a5b00; }
+.small { font-size: 8.5pt; color: var(--muted); }
+.quote { border-left: 3px solid var(--sky); padding: 4px 12px; margin: 10px 0; }
+.math { font-family: Consolas, "SF Mono", monospace; font-size: 9.5pt; background: #f4f7fc; border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="brand"><img src="../public/brand/paytm-logo-white.svg" alt="Paytm"><span style="opacity:.5">|</span>Kaasu</div>
+  <div>
+    <div class="kicker">Paytm Buildathon · Chennai · Track 1: Merchant Growth AI</div>
+    <h1 style="margin-top:12px">How Kaasu works</h1>
+    <p class="sub">The problem we solve, why it matters, how the product works step by step, what is new and what already exists.</p>
+    <p class="sub" style="font-size:10pt;opacity:.75">Prepared for Dheena Dhayalan R · 15 November 2026</p>
+  </div>
+  <img class="dev" src="../public/deck/img/soundbox-on.png" alt="Paytm AI Soundbox running Kaasu">
+</div>
+
+<!-- 1 -->
+<div class="section">
+<h2><span class="n">1</span>The one-minute version</h2>
+<p class="lead">Kaasu (காசு, Tamil for money) is an AI cash planner that lives on the Paytm Soundbox and in the Paytm for Business app. It looks at a shop's Paytm payments, sees a big expense coming weeks ahead, and helps the owner be ready for it.</p>
+<div class="box navy">
+  <p style="margin:0"><b>The rule it follows:</b> own money first, borrow only the gap. Kaasu first plans small daily savings and collects money customers owe. Only what's still missing becomes a small, planned loan from a regulated lender. Every rupee moves only after the owner enters his UPI PIN.</p>
+</div>
+<div class="grid3">
+  <div class="stat"><b>₹32,520</b><small>How short Murugan will be for Pongal stock, found 53 days early</small></div>
+  <div class="stat"><b>₹11,000</b><small>His planned loan, instead of ₹35,000 borrowed in a panic</small></div>
+  <div class="stat"><b>₹0</b><small>New hardware. It runs on the Soundbox already on 1.64 crore counters</small></div>
+</div>
+
+<h2><span class="n">2</span>The problem in detail</h2>
+<p>Murugan runs Murugan Stores in Velachery, Chennai. He sells about ₹11,240 a day, mostly through his Paytm QR code. On paper his shop is healthy. Yet on the days that matter most, his money isn't there.</p>
+<div class="quote"><span class="ta">"வியாபாரம் நல்லா இருக்கு. ஆனா தேவைப்படும் நாள்ல பணம் இல்ல."</span><br><span class="small">"Business is good. But the money isn't there on the day I need it."</span></div>
+<h3>Profit is not the problem. Timing is.</h3>
+<p>A shop can be profitable and still run out of cash, because money comes in a little every day but goes out in big lumps. Pongal stock (rice, jaggery, ghee, sugarcane and more) costs ₹80,000 and must be paid to the distributor on 6 January, weeks before the festival sales arrive.</p>
+<div class="grid4">
+  <div class="stat"><b>₹80,000</b><small>Needed on 6 January</small></div>
+  <div class="stat"><b>₹47,480</b><small>What he'll have at today's pace</small></div>
+  <div class="stat"><b style="color:var(--red)">−₹32,520</b><small>The shortfall</small></div>
+  <div class="stat"><b>53 days</b><small>Time left to fix it</small></div>
+</div>
+<h3>Four reasons the money runs out</h3>
+<table>
+  <tr><th style="width:26%">Cause</th><th>What happens</th></tr>
+  <tr><td><b>Festivals come early</b></td><td>Stock is paid weeks before festival sales arrive, so a big bill lands when the cash box is lowest.</td></tr>
+  <tr><td><b>Profit goes home</b></td><td>Every Sunday the family takes the week's profit for household needs. Nothing is kept aside for the big bill.</td></tr>
+  <tr><td><b>Udhaar stays unpaid</b></td><td>Udhaar is informal credit: regulars take goods now and pay later. Murugan is owed ₹4,820, but asking neighbours for money feels rude, and they "might get offended and move to another store" (shop owner quoted in Business Today).</td></tr>
+  <tr><td><b>Credit comes late and costly</b></td><td>When the bill arrives, he borrows in a panic, often from moneylenders or at the worst price, and borrows more than he needs (₹35,000).</td></tr>
+</table>
+<p>Today's tools don't fix this. Paytm's Soundbox announces "money received", and the new AI Soundbox can answer "how much did I sell today?". But nothing looks ahead and says: "In 53 days you will be short. Here is how to fix it, starting today."</p>
+</div>
+
+<!-- 3 -->
+<div class="section">
+<h2><span class="n">3</span>Why it is important</h2>
+<h3>For India's kiranas</h3>
+<div class="grid3">
+  <div class="stat"><b>91%</b><small>of India's grocery is still sold by kiranas</small><i>Redseer estimate, 2025</i></div>
+  <div class="stat"><b>52%</b><small>of kiranas saw food and FMCG sales fall as quick commerce grows</small><i>PwC × Kirana Club, 508 retailers</i></div>
+  <div class="stat"><b>82%</b><small>of buyers moved at least a quarter of their kirana shopping online</small><i>Datum Intelligence survey</i></div>
+  <div class="stat"><b>14%</b><small>of small businesses (MSMEs) reach formal credit</small><i>2026 industry report</i></div>
+  <div class="stat"><b>₹25–30 lakh cr</b><small>MSME credit gap: money small businesses need but can't borrow formally</small><i>Outlook Business, 2025 estimates</i></div>
+  <div class="stat"><b>22%</b><small>of kiranas plan any tech spend, because tools are costly and complex</small><i>CPM India, 4,593 retailers</i></div>
+</div>
+<p>Kiranas are under pressure from quick commerce, they are shut out of formal credit, and they don't adopt complicated apps. A planner that speaks Tamil on a device they already own removes all three barriers.</p>
+<h3>For Paytm</h3>
+<div class="grid3">
+  <div class="stat"><b>1.64 crore</b><small>Soundboxes on counters, up 27 lakh in a year</small><i>Paytm Q2 FY27</i></div>
+  <div class="stat"><b>4.9 crore</b><small>registered Paytm merchants; ₹7.1 lakh crore of payments a quarter</small><i>Paytm Q4 FY26, Q2 FY27</i></div>
+  <div class="stat"><b>85%</b><small>of Paytm merchant loans went to merchants with Paytm devices</small><i>Reported for Q2 FY26</i></div>
+</div>
+<p>The device is the relationship. Paytm's CEO has said Paytm is building AI agents that act as a small shop's "COO, CFO or CMO", with subscription and AI fees. Kaasu is a working picture of that CFO. It makes Soundboxes more useful every day, sends Paytm's lending partners smaller and safer loans, and creates a paid AI tier.</p>
+<h3>For customers, helpers and lenders</h3>
+<p>Customers keep their dignity: reminders come from Paytm, on their payday, not from the shopkeeper. Helpers get wage advances without a moneylender. Lenders get borrowers who already save daily, which lowers risk.</p>
+</div>
+
+<!-- 4 -->
+<div class="section">
+<h2><span class="n">4</span>How Kaasu works, step by step</h2>
+<p>Here is one morning at Murugan Stores, 53 days before Pongal.</p>
+<div class="steps">
+  <div><div><b>Sense.</b> Kaasu reads what Paytm already knows: daily QR payments, the udhaar list, and the festival calendar. Murugan types nothing.</div></div>
+  <div><div><b>Forecast.</b> The cash engine projects his balance to 6 January: he'll have ₹47,480 against ₹80,000 needed.</div></div>
+  <div><div><b>Plan.</b> It builds the cheapest fix in a fixed order: his own savings first, then udhaar collection, then a loan for whatever is left.</div></div>
+  <div><div><b>Ask.</b> At 7 am the Soundbox speaks in Tamil: "You'll be ₹32,520 short. Shall I keep ₹600 aside every day?"</div></div>
+  <div><div><b>Say yes.</b> He says "aam" (yes) to an AI Soundbox, or taps OK on the screen. Voice and buttons only say yes. They never move money.</div></div>
+  <div><div><b>Confirm with PIN.</b> His phone asks for his UPI PIN. Nothing moves without it. Any loan first shows a Key Fact Statement (all costs in plain words) and asks for consent.</div></div>
+  <div><div><b>Act.</b> ₹600 is auto-saved every night at 9 pm into a savings pot at Paytm's partner bank. Paytm schedules udhaar reminders for each customer's payday. The ₹11,000 loan request goes to a regulated lender.</div></div>
+  <div><div><b>Watch and adapt.</b> If three customers don't pay, Kaasu notices, shows the new gap, and offers a fix: save a little more, adjust the loan, or remind them once more. The Pongal plan stays on track.</div></div>
+</div>
+<div class="shots">
+  <figure><img src="../public/deck/img/p-short.png" alt=""><figcaption>The plan</figcaption></figure>
+  <figure><img src="../public/deck/img/p-pin.png" alt=""><figcaption>PIN confirms</figcaption></figure>
+  <figure><img src="../public/deck/img/p-done.png" alt=""><figcaption>Plan active</figcaption></figure>
+</div>
+</div>
+
+<!-- 5 -->
+<div class="section">
+<h2><span class="n">5</span>The maths, in plain words</h2>
+<p>Every number comes from a plain, explainable calculation in code (the cash engine, <code>sim.js</code>), not from AI. That makes it predictable and auditable.</p>
+<div class="math">Shortfall      = needed on 6 Jan − money at today's pace
+               = ₹80,000 − ₹47,480 = ₹32,520
+
+1. Own savings  = ₹600 a day × 52 days            = ₹31,200
+2. Udhaar       = expected back on customers' paydays = ₹3,370
+3. Gap loan     = rounded up, with a ₹2,000 safety buffer
+                = ₹11,000, repaid ₹190 a day from 17 January (60 days)
+
+Without Kaasu  = the whole gap plus a buffer, borrowed in a panic = ₹35,000</div>
+<h3>Safety checks built in</h3>
+<table>
+  <tr><th style="width:28%">Check</th><th>Rule</th></tr>
+  <tr><td><b>Can he afford the loan?</b></td><td>Daily repayment is compared with daily collections: up to 5% is comfortable, up to 10% is tight, above 10% is blocked.</td></tr>
+  <tr><td><b>Save Score</b></td><td>Regular savers build a score (730 in the demo) that partner lenders can use to offer a lower rate (1.2% a month in the demo).</td></tr>
+  <tr><td><b>Keep-back</b></td><td>A safe minimum always stays in his account, so a plan never leaves him unable to buy daily stock.</td></tr>
+</table>
+<h2><span class="n">6</span>Where AI is used, and where it is not</h2>
+<table>
+  <tr><th style="width:28%">AI does</th><th>How it stays safe</th></tr>
+  <tr><td><b>Writes the Tamil and English brief</b></td><td>Google Gemini turns the engine's facts into warm, natural Tamil. A guardrail checks every number in the AI's text against the engine's facts and rejects anything that doesn't match.</td></tr>
+  <tr><td><b>Answers questions</b> ("Can I buy a fridge for ₹18,000?")</td><td>The answer is grounded in the same facts. In the live app it said the fridge would drop him below his safe limit and risk the Pongal plan.</td></tr>
+  <tr><td><b>Reads distributor bills</b></td><td>Gemini Vision reads a photo of a bill into a table. The engine then checks each line against the distributor's schemes and found ₹446 of missed discounts in the sample.</td></tr>
+  <tr><td><b>Speaks</b></td><td>Text-to-speech in Tamil. If Gemini is down, Sarvam AI (an Indian-language model) takes over. If both fail, the app keeps working with text.</td></tr>
+</table>
+<div class="box pale"><b>AI never decides money.</b> It only explains. Maths decides the numbers, the merchant decides yes or no, and the PIN moves the money.</div>
+</div>
+
+<!-- 7 -->
+<div class="section">
+<h2><span class="n">7</span>All nine features</h2>
+<table>
+  <tr><th style="width:20%">Feature</th><th>What it does</th><th style="width:22%">Who gains</th></tr>
+  <tr><td><b>Pongal pre-booking</b> <span class="tag">New</span></td><td>Regular customers pre-pay a festival hamper (₹1,200, ₹150 a week). Payments settle to the shop the next day, so customers fund part of the stock. Refund if not delivered.</td><td>Shop: less borrowing. Customer: a festival deal.</td></tr>
+  <tr><td><b>Buy together</b> <span class="tag">New</span></td><td>Four neighbouring shops pool their orders to reach the distributor's bulk price (6% off, ₹1,295 saved).</td><td>Small shops get big-shop prices.</td></tr>
+  <tr><td><b>Check a bill</b> <span class="tag">New</span></td><td>AI reads distributor bills and finds discounts the shop was promised but didn't get.</td><td>Money the shop already earned.</td></tr>
+  <tr><td><b>Save Score</b> <span class="tag">New</span></td><td>Daily saving builds a score that partner lenders can use for cheaper loans.</td><td>Shop: lower rates. Lender: lower risk.</td></tr>
+  <tr><td><b>Rain Shield</b> <span class="tag">New</span></td><td>On an IMD red alert for his pin code, when his sales and his neighbours' sales drop, repayments pause for 3 days and a ₹3,000 insurance payout arrives. No claim form.</td><td>Protection when Chennai floods.</td></tr>
+  <tr><td><b>Payday udhaar</b> <span class="tag">New</span></td><td>Paytm, not the shop, reminds each customer on the day they usually get paid, with a one-tap pay link.</td><td>Shop gets paid; nobody loses face.</td></tr>
+  <tr><td><b>Bharosa</b> <span class="tag amber">Extends existing</span></td><td>Customers confirm each udhaar entry in their Paytm app, so there are no disputes. For trusted customers, Paytm Postpaid's lending partner pays the shop today (₹2,577 in the demo), and the customer repays the lender in 30 days. The shop vouches but never guarantees.</td><td>Shop: cash now. Customer: a credit trail.</td></tr>
+  <tr><td><b>Staff advance</b> <span class="tag amber">Extends existing</span></td><td>A helper asks the Soundbox for an advance. The owner approves with PIN, it's paid from his savings with no interest, and it's recovered on payday, within the legal 50% limit.</td><td>Helpers avoid moneylenders.</td></tr>
+  <tr><td><b>Galla check</b> <span class="tag amber">Extends existing</span></td><td>At closing time the owner says the cash count. Kaasu compares it with expected cash (₹3,260) and spots patterns, such as being short only between 6 and 9 pm, without blaming anyone.</td><td>Fewer leaks, no accusations.</td></tr>
+</table>
+<p class="small">The galla is the shop's cash drawer. "New" means we found no earlier Paytm hackathon entry or product doing this (checked 15 Nov 2026).</p>
+</div>
+
+<!-- 8 -->
+<div class="section">
+<h2><span class="n">8</span>Architecture and technology</h2>
+<div class="flow">
+  <div><b>Users</b>Soundbox (voice, OK button) · Paytm for Business app (journeys, PIN) · customers' Paytm app · helpers</div><span>→</span>
+  <div><b>Paytm platform</b>Soundbox fleet with its own 4G SIM and over-the-air updates · merchant account · UPI and payment aggregator · notifications</div><span>→</span>
+  <div style="background:var(--navy);color:#fff"><b style="color:#9fe3ff">Kaasu service</b>Cash engine · planner · AI layer · guardrail and consent log</div><span>→</span>
+  <div><b>Regulated partners</b>Partner bank (savings) · NBFC/bank lenders · Postpaid lender · insurer · IMD weather alerts</div>
+</div>
+<p>The Soundbox and the app never talk to each other directly. Both talk to Paytm's servers through the same merchant account, so a "yes" on the Soundbox and a PIN on the phone join up there. Older Soundboxes without a microphone use the OK button instead of voice.</p>
+<table>
+  <tr><th style="width:28%">Layer</th><th>What we used in the prototype</th></tr>
+  <tr><td><b>App and device</b></td><td>HTML, CSS and JavaScript; the Soundbox and phone are drawn in code; Tamil font Anek Tamil</td></tr>
+  <tr><td><b>Server</b></td><td>Node.js 24 with no framework; endpoints for brief, ask, voice, bill and health; deployed on Vercel</td></tr>
+  <tr><td><b>Cash engine</b></td><td>Plain JavaScript rules (<code>sim.js</code>), shared by the app, the server and the deck</td></tr>
+  <tr><td><b>AI</b></td><td>Google Gemini Flash (text), Gemini Vision (bills), Gemini TTS (voice); Sarvam AI as the Indian-language fallback; voice cached so it isn't regenerated</td></tr>
+  <tr><td><b>Testing</b></td><td>Playwright walks every journey in Chrome and reports errors</td></tr>
+  <tr><td><b>In production</b></td><td>A Soundbox firmware update plus a module in the Paytm for Business app; Paytm's own Indian-language model (Pi) could cut AI cost</td></tr>
+</table>
+
+<h2><span class="n">9</span>RBI rules and other regulations</h2>
+<p>Paytm acts as the distributor and technology layer. Regulated banks, NBFCs and insurers hold the money, lend and insure.</p>
+<table>
+  <tr><th style="width:20%">Part</th><th style="width:26%">Rule</th><th>How Kaasu complies</th></tr>
+  <tr><td><b>Planned loan</b></td><td>RBI Digital Lending Directions 2025</td><td>Paytm is the lending service provider. KFS with APR before signing, a cooling-off period, money paid straight to the shop's bank and repaid straight to the lender, with no pool account.</td></tr>
+  <tr><td><b>Savings pots</b></td><td>Only banks may take deposits</td><td>Pots are the shop's own RD or sweep account at a partner bank. Paytm Payments Bank cannot take new deposits after RBI's 2024 action, so it is not used.</td></tr>
+  <tr><td><b>Pongal pre-booking</b></td><td>Payment Aggregator Master Direction, Sep 2025</td><td>Payments settle to the shop the next banking day (T+1) and are never held in escrow. It is an advance for goods, not a deposit with returns.</td></tr>
+  <tr><td><b>Bharosa</b></td><td>Digital lending and credit reporting</td><td>The customer's own Postpaid loan, with KFS and consent, paid to the shop as the end-beneficiary. The lender reports to credit bureaus.</td></tr>
+  <tr><td><b>Reminders</b></td><td>DPDP Act 2023, TRAI DLT</td><td>Customer opt-in; each customer sees only their own amount; not debt collection.</td></tr>
+  <tr><td><b>Rain Shield</b></td><td>IRDAI, lender terms</td><td>Cover from a licensed insurer; the repayment pause is written into the loan's KFS.</td></tr>
+  <tr><td><b>Staff advance</b></td><td>Code on Wages 2019</td><td>The shop's own money; deductions within 50% of wages, with the helper's consent.</td></tr>
+  <tr><td><b>Every payment</b></td><td>RBI additional factor of authentication</td><td>UPI PIN for every transaction; voice and buttons only say yes.</td></tr>
+</table>
+<p class="small">Checked against law-firm summaries of the RBI directions. Paytm's legal and compliance team should confirm details such as cooling-off days.</p>
+</div>
+
+<!-- 10 -->
+<div class="section">
+<h2><span class="n">10</span>What already exists, and what is new</h2>
+<p>We checked 12 earlier Paytm Build for India entries and about 45 products before building.</p>
+<table>
+  <tr><th style="width:24%">Player</th><th>What they do today</th><th style="width:30%">Gap Kaasu fills</th></tr>
+  <tr><td><b>Paytm AI Soundbox</b></td><td>Answers sales and collection questions in 11 languages</td><td>Answers, but doesn't plan or act</td></tr>
+  <tr><td><b>BharatPe assistant</b></td><td>Gemini-based agent in the business app; some support tasks</td><td>No cash planning, no udhaar</td></tr>
+  <tr><td><b>PhonePe Business</b></td><td>Payments and loans (₹50,000 to ₹7 lakh); PhonePe Khata shows udhaar to customers</td><td>No per-entry confirmation, no plan</td></tr>
+  <tr><td><b>OkCredit, Khatabook</b></td><td>Digital udhaar ledgers with reminders sent in the shop's name</td><td>Reminders come from the shop, not on payday</td></tr>
+  <tr><td><b>Square, Shopify, Toast (US)</b></td><td>AI agents that watch operations and act</td><td>Not in India; no festival or udhaar logic</td></tr>
+  <tr><td><b>Pine Labs agents</b></td><td>Gemini agents on card machines for engagement and ads</td><td>Not focused on the shop's own cash</td></tr>
+  <tr><td><b>Money SOS</b> (Paytm Mumbai 2026 winner)</td><td>Plans a cash gap: insurance, then savings, then credit</td><td>Kaasu adds the festival pot, udhaar and Soundbox voice</td></tr>
+  <tr><td><b>Paytm Postpaid</b></td><td>Buy now, pay later through a lending partner (relaunched Sep 2025)</td><td>Bharosa turns existing udhaar into Postpaid, with the customer's consent</td></tr>
+</table>
+<div class="box navy"><b>What is truly new:</b> planning the shop's cash weeks ahead, own money first and a loan only for the gap, spoken in Tamil on the device already on the counter, with Paytm (not the shop) asking customers for udhaar. No other product covers all four of these: answering, acting, bringing money in, and planning ahead.</div>
+
+<h2><span class="n">11</span>How Paytm makes money</h2>
+<table>
+  <tr><th>Revenue stream</th><th>Assumption</th><th style="text-align:right">Per shop, per year</th></tr>
+  <tr><td><b>Kaasu AI plan</b></td><td>₹49 a month</td><td style="text-align:right">₹588</td></tr>
+  <tr><td><b>Loan distribution fee</b></td><td>30% of shops take an ₹11,000 loan; about 3% fee</td><td style="text-align:right">₹99</td></tr>
+  <tr><td><b>Bharosa partner fee</b></td><td>About ₹2,600 of udhaar moved a month; 2%</td><td style="text-align:right">₹624</td></tr>
+  <tr><td><b>AI and voice cost</b></td><td>Cached briefs, about ₹15 a month</td><td style="text-align:right;color:var(--red)">−₹180</td></tr>
+  <tr><td><b>Net</b></td><td>At 10 lakh shops: about ₹131 crore revenue, ₹113 crore after AI cost</td><td style="text-align:right"><b>₹1,131</b></td></tr>
+</table>
+<p class="small">All prices, take rates and adoption figures are our assumptions, to be tested in a 1,000-shop Chennai pilot. Other gains, such as more UPI on Paytm, insurance commission and deposit referrals, aren't counted.</p>
+
+<h2><span class="n">12</span>Words used in this document</h2>
+<table>
+  <tr><td style="width:22%"><b>Kirana</b></td><td>A small neighbourhood grocery shop.</td></tr>
+  <tr><td><b>Udhaar</b></td><td>Informal credit: a regular takes goods now and pays later.</td></tr>
+  <tr><td><b>Galla</b></td><td>The shop's cash drawer.</td></tr>
+  <tr><td><b>Soundbox</b></td><td>Paytm's counter device that announces payments; newer AI models have a touchscreen and a microphone.</td></tr>
+  <tr><td><b>KFS</b></td><td>Key Fact Statement: a one-page summary of a loan's full cost (APR), required by RBI before signing.</td></tr>
+  <tr><td><b>LSP</b></td><td>Lending service provider: a platform like Paytm that distributes loans for a regulated lender.</td></tr>
+  <tr><td><b>NBFC</b></td><td>Non-banking financial company: a regulated lender that isn't a bank.</td></tr>
+  <tr><td><b>T+1</b></td><td>Settled one banking day after the transaction.</td></tr>
+  <tr><td><b>AutoPay / e-mandate</b></td><td>A standing instruction, set up once with the UPI PIN, for regular payments such as daily saving.</td></tr>
+  <tr><td><b>DPDP Act</b></td><td>India's Digital Personal Data Protection Act, 2023: data is used only with consent.</td></tr>
+</table>
+<p class="small">Sources: Paytm quarterly results Q4 FY26 and Q2 FY27; Redseer; NPCI via Inc42; PwC × Kirana Club via Upstox; Datum Intelligence; CPM India via Mediabrief; AICPDF via Business Standard; Outlook Business; Business Today; RBI Digital Lending Directions 2025; RBI Payment Aggregator Master Direction 2025; RBI FAQ on Paytm Payments Bank 2024. Research done 14–15 November 2026.</p>
+</div>
+</body>
+</html>
