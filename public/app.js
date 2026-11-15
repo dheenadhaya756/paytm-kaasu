@@ -17,6 +17,64 @@ const state = {
   confirmed: new Set(["Lakshmi", "Selvi", "Fathima", "Anand"]), bharosa: null, staff: null, galla: null,
 };
 const T = (ta, en) => (state.lang === "ta" ? ta : en);
+
+// ---------------- five languages: every line the Soundbox or a customer sees ----------------
+const LANG_CODE = { ta: "ta-IN", en: "en-IN", hi: "hi-IN", ml: "ml-IN", kn: "kn-IN" };
+const NATIVE = /[ऀ-ൿ]/;
+const scriptLang = (s) => /[஀-௿]/.test(s) ? "ta" : /[ऀ-ॿ]/.test(s) ? "hi" : /[ഀ-ൿ]/.test(s) ? "ml" : /[ಀ-೿]/.test(s) ? "kn" : "en";
+const SAY = {
+  welcome: { en: "Your shop's cash, planned for you. Every day, every festival.", ta: "உங்கள் கடையின் பணம், உங்களுக்காக திட்டமிடப்பட்டது.",
+    hi: "आपकी दुकान का पैसा, आपके लिए पहले से प्लान किया हुआ।", ml: "നിങ്ങളുടെ കടയിലെ പണം, നിങ്ങൾക്കായി മുൻകൂട്ടി പ്ലാൻ ചെയ്തത്.", kn: "ನಿಮ್ಮ ಅಂಗಡಿಯ ಹಣ, ನಿಮಗಾಗಿ ಮುಂಚಿತವಾಗಿ ಯೋಜಿಸಲಾಗಿದೆ." },
+  hello: { en: "Hello! Ask me anything, like \"Can I buy a fridge this month?\" Speak or type.", ta: "வணக்கம்! \"இந்த மாதம் ஃப்ரிட்ஜ் வாங்கலாமா?\" போல எதையும் கேளுங்கள். பேசலாம் அல்லது டைப் செய்யலாம்.",
+    hi: "नमस्ते! कुछ भी पूछिए, जैसे \"क्या इस महीने फ़्रिज ले सकता हूँ?\" बोलिए या टाइप कीजिए।", ml: "നമസ്കാരം! \"ഈ മാസം ഫ്രിഡ്ജ് വാങ്ങാമോ?\" പോലെ എന്തും ചോദിക്കൂ. സംസാരിക്കാം അല്ലെങ്കിൽ ടൈപ്പ് ചെയ്യാം.", kn: "ನಮಸ್ಕಾರ! \"ಈ ತಿಂಗಳು ಫ್ರಿಡ್ಜ್ ಕೊಳ್ಳಬಹುದೇ?\" ಹಾಗೆ ಏನು ಬೇಕಾದರೂ ಕೇಳಿ. ಮಾತನಾಡಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ." },
+  sug: { en: "Is my money enough for Pongal?", ta: "பொங்கலுக்கு பணம் போதுமா?", hi: "पोंगल के लिए पैसा काफ़ी है?", ml: "പൊങ്കലിന് പണം മതിയോ?", kn: "ಪೊಂಗಲ್‌ಗೆ ಹಣ ಸಾಕಾ?" },
+  yes: { en: "Yes", ta: "ஆம்", hi: "हाँ", ml: "അതെ", kn: "ಹೌದು" },
+  rainName: { en: "", ta: "மழை கவசம்", hi: "बारिश कवच", ml: "മഴ കവചം", kn: "ಮಳೆ ಕವಚ" },
+  pin: { en: "Please confirm with your PIN on your phone.", ta: "உங்கள் போனில் PIN போட்டு உறுதி செய்யுங்கள்.",
+    hi: "अपने फ़ोन पर PIN डालकर पक्का कीजिए।", ml: "നിങ്ങളുടെ ഫോണിൽ PIN നൽകി ഉറപ്പാക്കൂ.", kn: "ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ PIN ಹಾಕಿ ಖಚಿತಪಡಿಸಿ." },
+  rain: { en: "Murugan, heavy rain alert in Velachery. Your sales are down 70% today. Loan repayments are paused for 3 days and ₹3,000 protection money has reached you. Stay safe.",
+    ta: "முருகன், வேளச்சேரியில் கனமழை எச்சரிக்கை. இன்று உங்கள் விற்பனை 70% குறைந்துள்ளது. 3 நாள் கடன் தவணை நிறுத்தப்பட்டது. ₹3,000 பாதுகாப்பு தொகை வந்துள்ளது. பாதுகாப்பாக இருங்கள்.",
+    hi: "मुरुगन, वेलाचेरी में भारी बारिश की चेतावनी है। आज आपकी बिक्री 70% कम है। 3 दिन की लोन किस्त रोक दी गई है और ₹3,000 सुरक्षा राशि आ गई है। सुरक्षित रहिए।",
+    ml: "മുരുകൻ, വേളാച്ചേരിയിൽ കനത്ത മഴ മുന്നറിയിപ്പ്. ഇന്ന് നിങ്ങളുടെ വിൽപ്പന 70% കുറഞ്ഞു. 3 ദിവസത്തെ ലോൺ തവണ നിർത്തിവെച്ചു, ₹3,000 സംരക്ഷണ തുക എത്തി. സുരക്ഷിതരായിരിക്കൂ.",
+    kn: "ಮುರುಗನ್, ವೇಳಚೇರಿಯಲ್ಲಿ ಭಾರಿ ಮಳೆ ಎಚ್ಚರಿಕೆ. ಇಂದು ನಿಮ್ಮ ಮಾರಾಟ 70% ಕಡಿಮೆಯಾಗಿದೆ. 3 ದಿನದ ಸಾಲದ ಕಂತು ನಿಲ್ಲಿಸಲಾಗಿದೆ, ₹3,000 ರಕ್ಷಣಾ ಮೊತ್ತ ಬಂದಿದೆ. ಸುರಕ್ಷಿತವಾಗಿರಿ." },
+  fundBubble: { en: "", ta: "பொங்கல் தொகுப்பு ₹1,200 · வாரம் ₹150 × 8 · 13 ஜனவரி டெலிவரி", hi: "पोंगल हैम्पर ₹1,200 · हर हफ़्ते ₹150 × 8 · 13 जनवरी डिलीवरी",
+    ml: "പൊങ്കൽ കിറ്റ് ₹1,200 · ആഴ്ചയിൽ ₹150 × 8 · ജനുവരി 13 ഡെലിവറി", kn: "ಪೊಂಗಲ್ ಕಿಟ್ ₹1,200 · ವಾರಕ್ಕೆ ₹150 × 8 · ಜನವರಿ 13 ಡೆಲಿವರಿ" },
+  fundLive: { en: "Pongal Fund is live. Lakshmi joined: ₹150 this week.", ta: "முருகன், பொங்கல் நிதி தொடங்கியது. லக்ஷ்மி சேர்ந்தார், இந்த வாரம் ₹150.",
+    hi: "मुरुगन, पोंगल फंड शुरू हो गया। लक्ष्मी जुड़ गईं, इस हफ़्ते ₹150।", ml: "മുരുകൻ, പൊങ്കൽ ഫണ്ട് തുടങ്ങി. ലക്ഷ്മി ചേർന്നു, ഈ ആഴ്ച ₹150.", kn: "ಮುರುಗನ್, ಪೊಂಗಲ್ ನಿಧಿ ಶುರುವಾಗಿದೆ. ಲಕ್ಷ್ಮಿ ಸೇರಿದ್ದಾರೆ, ಈ ವಾರ ₹150." },
+  distributor: { en: (b, a) => `Hello, bill ${b} is missing ${a} of scheme discounts. Can you adjust it in the next bill? Thanks, Murugan Stores.`,
+    ta: (b, a) => `வணக்கம், பில் ${b}-ல் ${a} தள்ளுபடி சேர்க்கப்படவில்லை. அடுத்த பில்லில் சரி செய்ய முடியுமா? நன்றி, முருகன் ஸ்டோர்ஸ்.`,
+    hi: (b, a) => `नमस्ते, बिल ${b} में ${a} की स्कीम छूट नहीं जुड़ी है। क्या अगले बिल में ठीक कर सकते हैं? धन्यवाद, मुरुगन स्टोर्स।`,
+    ml: (b, a) => `നമസ്കാരം, ബിൽ ${b}-ൽ ${a} സ്കീം ഡിസ്കൗണ്ട് ചേർത്തിട്ടില്ല. അടുത്ത ബില്ലിൽ ശരിയാക്കാമോ? നന്ദി, മുരുകൻ സ്റ്റോഴ്സ്.`,
+    kn: (b, a) => `ನಮಸ್ಕಾರ, ಬಿಲ್ ${b}ನಲ್ಲಿ ${a} ಸ್ಕೀಮ್ ರಿಯಾಯಿತಿ ಸೇರಿಸಿಲ್ಲ. ಮುಂದಿನ ಬಿಲ್‌ನಲ್ಲಿ ಸರಿಪಡಿಸಬಹುದೇ? ಧನ್ಯವಾದಗಳು, ಮುರುಗನ್ ಸ್ಟೋರ್ಸ್.` },
+  advAsk: { en: "Ravi is asking for a ₹1,500 advance. Check your phone.", ta: "ரவி ₹1,500 முன்பணம் கேட்கிறார். போனில் பாருங்கள்.",
+    hi: "रवि ₹1,500 एडवांस माँग रहे हैं। फ़ोन पर देखिए।", ml: "രവി ₹1,500 അഡ്വാൻസ് ചോദിക്കുന്നു. ഫോണിൽ നോക്കൂ.", kn: "ರವಿ ₹1,500 ಮುಂಗಡ ಕೇಳುತ್ತಿದ್ದಾರೆ. ಫೋನ್‌ನಲ್ಲಿ ನೋಡಿ." },
+  advPaid: { en: (a) => `Advance of ${a} sent to Ravi.`, ta: (a) => `ரவிக்கு ${a} முன்பணம் அனுப்பப்பட்டது.`, hi: (a) => `रवि को ${a} एडवांस भेज दिया गया।`,
+    ml: (a) => `രവിക്ക് ${a} അഡ്വാൻസ് അയച്ചു.`, kn: (a) => `ರವಿಗೆ ${a} ಮುಂಗಡ ಕಳುಹಿಸಲಾಗಿದೆ.` },
+  gallaAsk: { en: "Murugan, closing time. How much cash is in the galla?", ta: "முருகன், கடை மூடும் நேரம். கல்லாவில் எவ்வளவு பணம் இருக்கிறது?",
+    hi: "मुरुगन, दुकान बंद करने का समय है। गल्ले में कितना पैसा है?", ml: "മുരുകൻ, കട അടയ്ക്കാൻ സമയമായി. പണപ്പെട്ടിയിൽ എത്ര പണമുണ്ട്?", kn: "ಮುರುಗನ್, ಅಂಗಡಿ ಮುಚ್ಚುವ ಸಮಯ. ಗಲ್ಲಾದಲ್ಲಿ ಎಷ್ಟು ಹಣ ಇದೆ?" },
+  remind: { en: (a) => `Paytm reminder: ${a} is pending at Murugan Stores. Pay whenever convenient, in one tap.`,
+    ta: (a) => `Paytm நினைவூட்டல்: முருகன் ஸ்டோர்ஸ்-ல் ${a} நிலுவை உள்ளது. வசதியான போது ஒரு தட்டில் செலுத்தலாம்.`,
+    hi: (a) => `Paytm रिमाइंडर: मुरुगन स्टोर्स में ${a} बाकी है। जब सुविधा हो, एक टैप में चुका दीजिए।`,
+    ml: (a) => `Paytm ഓർമ്മപ്പെടുത്തൽ: മുരുകൻ സ്റ്റോഴ്സിൽ ${a} ബാക്കിയുണ്ട്. സൗകര്യമുള്ളപ്പോൾ ഒറ്റ ടാപ്പിൽ അടയ്ക്കാം.`,
+    kn: (a) => `Paytm ನೆನಪಿನೋಲೆ: ಮುರುಗನ್ ಸ್ಟೋರ್ಸ್‌ನಲ್ಲಿ ${a} ಬಾಕಿ ಇದೆ. ಅನುಕೂಲವಾದಾಗ ಒಂದೇ ಟ್ಯಾಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ.` },
+  remindFest: { en: (a) => `Pongal is coming! Your Murugan Stores balance is ${a}. Clear it in one tap.`,
+    ta: (a) => `பொங்கல் வருகிறது! முருகன் ஸ்டோர்ஸ் கணக்கில் ${a} நிலுவை. ஒரு தட்டில் செலுத்தி பண்டிகையை சுலபமாக்குங்கள்.`,
+    hi: (a) => `पोंगल आ रहा है! मुरुगन स्टोर्स में आपका ${a} बाकी है। एक टैप में चुकाइए और त्योहार आसान बनाइए।`,
+    ml: (a) => `പൊങ്കൽ വരുന്നു! മുരുകൻ സ്റ്റോഴ്സിൽ നിങ്ങളുടെ ${a} ബാക്കി. ഒറ്റ ടാപ്പിൽ അടച്ച് ഉത്സവം എളുപ്പമാക്കൂ.`,
+    kn: (a) => `ಪೊಂಗಲ್ ಬರುತ್ತಿದೆ! ಮುರುಗನ್ ಸ್ಟೋರ್ಸ್‌ನಲ್ಲಿ ನಿಮ್ಮ ${a} ಬಾಕಿ ಇದೆ. ಒಂದೇ ಟ್ಯಾಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ ಹಬ್ಬವನ್ನು ಸುಲಭ ಮಾಡಿ.` },
+  closing: { en: "Murugan, closing time. How much cash came in today? Did you give anyone udhaar?", ta: "முருகன், இன்று கடை முடிந்தது. இன்று கல்லாவில் எவ்வளவு பணம் வந்தது? யாருக்காவது கடன் கொடுத்தீர்களா?",
+    hi: "मुरुगन, आज दुकान बंद हुई। आज गल्ले में कितना पैसा आया? किसी को उधार दिया?", ml: "മുരുകൻ, ഇന്ന് കട അടച്ചു. ഇന്ന് പണപ്പെട്ടിയിൽ എത്ര പണം വന്നു? ആർക്കെങ്കിലും കടം കൊടുത്തോ?",
+    kn: "ಮುರುಗನ್, ಇಂದು ಅಂಗಡಿ ಮುಚ್ಚಿತು. ಇಂದು ಗಲ್ಲಾಕ್ಕೆ ಎಷ್ಟು ಹಣ ಬಂತು? ಯಾರಿಗಾದರೂ ಸಾಲ ಕೊಟ್ಟಿರಾ?" },
+  closingDone: { en: "Noted: ₹3,000 cash today and ₹200 udhaar for Lakshmi. Your plan is updated.", ta: "சரி. இன்றைய கல்லா ₹3,000, லக்ஷ்மிக்கு ₹200 கடன் குறித்துக்கொண்டேன்.",
+    hi: "ठीक है। आज गल्ले में ₹3,000 और लक्ष्मी का ₹200 उधार लिख लिया।", ml: "ശരി. ഇന്നത്തെ പണപ്പെട്ടി ₹3,000, ലക്ഷ്മിക്ക് ₹200 കടം രേഖപ്പെടുത്തി.", kn: "ಸರಿ. ಇಂದಿನ ಗಲ್ಲಾ ₹3,000, ಲಕ್ಷ್ಮಿಗೆ ₹200 ಸಾಲ ಬರೆದುಕೊಂಡೆ." },
+};
+const pick = (k, l, a) => { const v = SAY[k][l] ?? SAY[k].en; return typeof v === "function" ? v(...a) : v; };
+const say = (k, ...a) => pick(k, state.lang, a);
+const sayEn = (k, ...a) => pick(k, "en", a);
+function showSay(k, ...a) { setSpeech(say(k, ...a), state.lang === "en" ? "" : sayEn(k, ...a)); }
+function voice(k, ...a) { showSay(k, ...a); speak(say(k, ...a), state.lang); }
+// a message preview: the merchant's language on top, English below (English only when English is chosen)
+const msgView = (k, ...a) => state.lang === "en" ? `<div>${sayEn(k, ...a)}</div>` : `<div class="ta">${say(k, ...a)}</div><div class="sub">${sayEn(k, ...a)}</div>`;
 const owing = () => state.udhaar.filter(u => !u.bharosa).length;
 const udhaarSum = () => state.udhaar.filter(u => !u.bharosa).reduce((s, u) => s + u.amount, 0);
 
@@ -284,7 +342,7 @@ function renderUdhaar() {
 }
 function rainCard() {
   return `<div class="card rain ${state.rain ? "on" : ""}">
-    <div class="gc-h"><span class="z-ic ${state.rain ? "a" : "b"} lg">${ICON.shield}</span><div class="gc-t"><b>Rain Shield · மழை கவசம்</b><small>${state.rain ? "Active · heavy rain alert in Velachery" : "Watching IMD alerts for 600042 + your sales"}</small></div><span class="pill ${state.rain ? "warn" : "good"}">${state.rain ? "Active" : "On"}</span></div>
+    <div class="gc-h"><span class="z-ic ${state.rain ? "a" : "b"} lg">${ICON.shield}</span><div class="gc-t"><b>Rain Shield${state.lang === "en" ? "" : ` · <span class="ta">${say("rainName")}</span>`}</b><small>${state.rain ? "Active · heavy rain alert in Velachery" : "Watching IMD alerts for 600042 + your sales"}</small></div><span class="pill ${state.rain ? "warn" : "good"}">${state.rain ? "Active" : "On"}</span></div>
     ${state.rain
       ? row("Loan repayments", "Paused 3 days", "good") + row("Protection payout", "₹3,000 received", "good") + row("Repayments restart", "When sales recover")
       : `<p class="muted-p">If there is a flood alert <b>and</b> your sales and nearby shops' sales drop, Kaasu pauses your loan repayments and an insurance payout reaches you. No claim form.</p>
@@ -295,9 +353,7 @@ function rainEvent() {
   if (state.rain) return toast("Rain Shield is already active");
   state.rain = true;
   $("sbTop").textContent = "RAIN SHIELD ON";
-  const ta = "முருகன், வேளச்சேரியில் கனமழை எச்சரிக்கை. இன்று உங்கள் விற்பனை 70% குறைந்துள்ளது. 3 நாள் கடன் தவணை நிறுத்தப்பட்டது. ₹3,000 பாதுகாப்பு தொகை வந்துள்ளது. பாதுகாப்பாக இருங்கள்.";
-  const en = "Murugan, heavy rain alert in Velachery. Your sales are down 70% today. Loan repayments are paused for 3 days and ₹3,000 protection money has reached you. Stay safe.";
-  setSpeech(state.lang === "ta" ? ta : en, state.lang === "ta" ? en : ""); speak(state.lang === "ta" ? ta : en, state.lang);
+  voice("rain");
   if (!$("scrMain").hidden) showTab("Loans"); else renderPanes();
   toast("IMD red alert + 70% sales drop: repayments paused, ₹3,000 payout");
 }
@@ -363,7 +419,7 @@ const FLOWS = {
           ${chips("invite", [20, 40, 60].map(v => ({ v, l: v + " regulars", s: v === 40 ? "Recommended" : "" })), d.invite)}
           <div class="card">${row("Expected to join (about 60%)", f.joined + " customers")}${row("Advance by 6 January", rs(f.total), "good")}${row("Your Pongal loan need", f.total >= 11000 ? `${rs(11000)} → ₹0` : rs(Math.max(0, 11000 - f.total)), "good")}</div>
           <div class="preview-l">What Lakshmi sees in her Paytm app</div>
-          <div class="bubble"><div class="from">Murugan Stores · Pongal Fund</div><div class="ta">பொங்கல் தொகுப்பு ₹1,200 · வாரம் ₹150 × 8 · 13 ஜனவரி டெலிவரி</div><div class="sub">Pongal hamper ₹1,200 · ₹150 a week by AutoPay · delivered 13 Jan · refund if not delivered</div><span class="pay">Join with AutoPay</span></div>` }; },
+          <div class="bubble"><div class="from">Murugan Stores · Pongal Fund</div>${state.lang === "en" ? "" : `<div class="ta">${say("fundBubble")}</div>`}<div class="sub">Pongal hamper ₹1,200 · ₹150 a week by AutoPay · delivered 13 Jan · refund if not delivered</div><span class="pay">Join with AutoPay</span></div>` }; },
       () => ({ h: `<h2 class="j-h">Customers' money stays protected</h2>
         <div class="card">${row("Where the money goes", "Your Pongal pot at Paytm's partner bank, next day")}${row("What it pays for", "Your Pongal stock, paid to the distributor")}${row("If a customer cancels", "Full refund, any time")}${row("If the hamper isn't delivered", "Automatic refund")}${row("Interest or bonus", "None. It's an advance order, not a chit")}</div>
         <p class="fine">Paytm settles each payment to your partner-bank Pongal pot the next day, as RBI requires. The pot stays locked for Pongal stock, so customers trust it and you need no loan for what they pre-booked. It is an advance for goods, never a deposit with returns.</p>`, next: "Launch with PIN" }),
@@ -371,7 +427,7 @@ const FLOWS = {
     pin: (d) => `To invite ${d.invite} regulars to your Pongal Fund`,
     finish(d) { const f = fundCalc(d.invite); state.fund = { joined: f.joined, total: f.total };
       done("Pongal Fund launched", `${d.invite} regulars invited. When about ${f.joined} join, ${rs(f.total)} of your Pongal stock is paid for by customers.`, row("Hamper", rs(HAMPER.price)) + row("Expected advance", rs(f.total)) + row("Held in", "Your partner-bank Pongal pot"), "Home");
-      const ta = "முருகன், பொங்கல் நிதி தொடங்கியது. லக்ஷ்மி சேர்ந்தார், இந்த வாரம் ₹150."; setTimeout(() => { $("sbTop").textContent = "FUND +RS 150"; setSpeech(ta, "Pongal Fund is live. Lakshmi joined: ₹150 this week."); speak(ta, "ta"); }, 900); },
+      setTimeout(() => { $("sbTop").textContent = "FUND +RS 150"; voice("fundLive"); }, 900); },
   },
 
   // ---------- NEW B: Buy together. Nearby Paytm shops pool festival orders to reach the distributor's bulk slab ----------
@@ -411,7 +467,7 @@ const FLOWS = {
         return { h: `<h2 class="j-h">${r.missed ? `${rs(r.missed)} of discounts missing` : "All schemes were applied"}</h2>
           <p class="j-p">${esc(r.distributor)}${r.billNo ? " · " + esc(r.billNo) : ""} · ${r.source.startsWith("gemini") ? "read by AI" : "sample result"}</p>
           <div class="card">${r.rows.map(x => row(`${esc(x.name)} <small>${x.qty} × ${rs(x.rate)} · ${x.scheme}</small>`, x.missed ? `−${rs(x.missed)}` : "OK", x.missed ? "bad" : "good")).join("")}</div>
-          ${r.missed ? `<div class="preview-l">Message to the distributor</div><div class="bubble"><div class="ta">வணக்கம், பில் ${esc(r.billNo)}-ல் ${rs(r.missed)} தள்ளுபடி சேர்க்கப்படவில்லை. அடுத்த பில்லில் சரி செய்ய முடியுமா? நன்றி, முருகன் ஸ்டோர்ஸ்.</div><div class="sub">Hello, bill ${esc(r.billNo)} is missing ${rs(r.missed)} of scheme discounts. Can you adjust it in the next bill? Thanks, Murugan Stores.</div></div>` : ""}`,
+          ${r.missed ? `<div class="preview-l">Message to the distributor</div><div class="bubble">${msgView("distributor", esc(r.billNo), rs(r.missed))}</div>` : ""}`,
           next: r.missed ? "Send claim to distributor" : "Done" }; },
     ],
     finish(d) { state.billClaim = (state.billClaim || 0) + d.result.missed;
@@ -615,7 +671,7 @@ FLOWS.bharosa = {
 const HELPER = { name: "Ravi Kumar", salary: 9000, daysWorked: 15 };
 FLOWS.staff = {
   title: "Staff advance",
-  init: () => { setTimeout(() => { $("sbTop").textContent = "ADVANCE REQUEST"; setSpeech("ரவி ₹1,500 முன்பணம் கேட்கிறார். போனில் பாருங்கள்.", "Ravi is asking for a ₹1,500 advance. Check your phone."); }, 200); return { amount: 1500 }; },
+  init: () => { setTimeout(() => { $("sbTop").textContent = "ADVANCE REQUEST"; showSay("advAsk"); }, 200); return { amount: 1500 }; },
   steps: [
     () => { const earned = HELPER.salary / 30 * HELPER.daysWorked;
       return { h: `<h2 class="j-h">Ravi asked for an advance</h2>
@@ -630,14 +686,14 @@ FLOWS.staff = {
   pin: (d) => `To pay Ravi a ${rs(d.amount)} advance`,
   finish(d) { state.staff = { name: "Ravi", amount: d.amount };
     done("Advance paid", `${rs(d.amount)} sent to Ravi's UPI. It will be recovered from his 1 Dec salary.`, row("Ravi's earned balance", rs(HELPER.salary / 2 - d.amount)) + row("Next salary", rs(HELPER.salary - d.amount)), "Home");
-    const ta = `ரவிக்கு ${inr(d.amount)} முன்பணம் அனுப்பப்பட்டது.`; setSpeech(ta, `Advance of ${inr(d.amount)} sent to Ravi.`); $("sbTop").textContent = "ADVANCE PAID"; },
+    showSay("advPaid", inr(d.amount)); $("sbTop").textContent = "ADVANCE PAID"; },
 };
 
 // ===== NEW: Galla check. Spoken cash count vs expected cash; patterns, never accusations =====
 const EXPECTED_CASH = 3260;
 FLOWS.galla = {
   title: "Galla check",
-  init: () => { setTimeout(() => { $("sbTop").textContent = "COUNT YOUR CASH"; setSpeech("முருகன், கடை மூடும் நேரம். கல்லாவில் எவ்வளவு பணம் இருக்கிறது?", "Murugan, closing time. How much cash is in the galla?"); }, 200); return { counted: null }; },
+  init: () => { setTimeout(() => { $("sbTop").textContent = "COUNT YOUR CASH"; showSay("gallaAsk"); }, 200); return { counted: null }; },
   steps: [
     (d) => ({ h: `<h2 class="j-h">Closing time. Count the galla.</h2>
       <p class="j-p">Say the amount to your Soundbox. Kaasu compares it with what should be there.</p>
@@ -664,8 +720,8 @@ const toneSeg = () => `<div class="eyebrow">Reminder style</div><div class="opts
 function preview() {
   const l = state.udhaar[0];
   const body = state.tone === "gentle"
-    ? `<div class="ta">Paytm நினைவூட்டல்: முருகன் ஸ்டோர்ஸ்-ல் ${rs(l.amount)} நிலுவை உள்ளது. வசதியான போது ஒரு தட்டில் செலுத்தலாம்.</div><div class="sub">Paytm reminder: ${rs(l.amount)} is pending at Murugan Stores. Pay whenever convenient, in one tap.</div>`
-    : `<div class="ta">பொங்கல் வருகிறது! முருகன் ஸ்டோர்ஸ் கணக்கில் ${rs(l.amount)} நிலுவை. ஒரு தட்டில் செலுத்தி பண்டிகையை சுலபமாக்குங்கள்.</div><div class="sub">Pongal is coming! Your Murugan Stores balance is ${rs(l.amount)}. Clear it in one tap.</div>`;
+    ? msgView("remind", rs(l.amount))
+    : msgView("remindFest", rs(l.amount));
   return `<div class="preview-l">What ${l.name} sees: a reminder from Paytm, not from the shop</div><div class="bubble paytm"><div class="from"><img src="/brand/paytm-logo.svg" alt="Paytm" style="height:13px;vertical-align:-2px"> · Payment reminder</div>${body}<span class="pay">Pay ${rs(l.amount)}</span></div>`;
 }
 
@@ -707,6 +763,9 @@ function done(title, text, summary, tab) {
 const CONFIRM = {
   ta: (n) => `சரி முருகன்! தினமும் ${inr(n)} பொங்கல் உண்டியலில் சேர்க்கிறேன். பொங்கல் சரக்குக்கு பணம் தயார்.`,
   en: (n) => `Done, Murugan. I'll keep ${inr(n)} aside every day in the Pongal pot. Your Pongal stock is planned.`,
+  hi: (n) => `ठीक है मुरुगन! रोज़ ${inr(n)} पोंगल फंड में अलग रखूँगा। पोंगल के सामान का पैसा तैयार है।`,
+  ml: (n) => `ശരി മുരുകൻ! ദിവസവും ${inr(n)} പൊങ്കൽ നിധിയിലേക്ക് മാറ്റിവെക്കാം. പൊങ്കൽ സ്റ്റോക്കിനുള്ള പണം തയ്യാർ.`,
+  kn: (n) => `ಸರಿ ಮುರುಗನ್! ಪ್ರತಿದಿನ ${inr(n)} ಪೊಂಗಲ್ ನಿಧಿಗೆ ಇಡುತ್ತೇನೆ. ಪೊಂಗಲ್ ಸ್ಟಾಕ್‌ಗೆ ಹಣ ಸಿದ್ಧ.`,
 };
 function activatePongal() {
   const n = numbers();
@@ -720,14 +779,14 @@ function activatePongal() {
   done("Your Pongal plan is active", n.finalShort === 0 ? "Pongal stock of ₹80,000 is fully covered." : `Still short by ${rs(n.finalShort)}. Kaasu will keep watching.`,
     row("Daily saving", rs(state.dailySave)) + row("Udhaar reminders", state.remindersSent ? "Sent" : "Not sent") + row("Loan request", state.loanRequested ? rs(n.loan) + " · lender decides" : "None"), "Home");
   const t = CONFIRM[state.lang](state.dailySave);
-  setSpeech(t, state.lang === "ta" ? CONFIRM.en(state.dailySave) : ""); speak(t, state.lang);
+  setSpeech(t, state.lang !== "en" ? CONFIRM.en(state.dailySave) : ""); speak(t, state.lang);
 }
 function approveFromSoundbox() {
   if (state.active) return toast("Your Pongal plan is already active");
   state.collect = true; state.remindersSent = true; state.udhaar.forEach(u => state.reminded.add(u.name));
   state.loanAccepted = numbers().loanNeeded > 0; state.kfsRead = true;
   if ($("scrMain").hidden && $("scrJourney").hidden) { showScreen("scrMain"); showTab("Home"); }
-  setSpeech(T("உங்கள் போனில் PIN போட்டு உறுதி செய்யுங்கள்.", "Please confirm with your PIN on your phone."), state.lang === "ta" ? "Please confirm with your PIN on your phone." : "");
+  showSay("pin");
   requirePin(FLOWS.pongal.pin(), activatePongal);
 }
 
@@ -748,13 +807,17 @@ function localBrief() {
   const n = numbers();
   return { source: "engine",
     spoken_ta: `காலை வணக்கம் முருகன். ஜனவரி 6 அன்று பொங்கல் சரக்குக்கு ${inr(GOAL)} தேவை. இப்படியே போனால் ${inr(n.shortfall)} குறையும். தினமும் ${inr(state.dailySave)} சேமித்து, கடன் வசூல் செய்தால், பெரும்பகுதி சரியாகிவிடும். தொடங்கட்டுமா? "ஆம்" என்று சொல்லுங்கள்.`,
-    spoken_en: `Good morning Murugan. Pongal stock of ${inr(GOAL)} is due on 6 January. At this pace you will be short by ${inr(n.shortfall)}. Keep ${inr(state.dailySave)} aside every day and collect your udhaar, and most of it is covered. Shall I start? Say haan.` };
+    spoken_en: `Good morning Murugan. Pongal stock of ${inr(GOAL)} is due on 6 January. At this pace you will be short by ${inr(n.shortfall)}. Keep ${inr(state.dailySave)} aside every day and collect your udhaar, and most of it is covered. Shall I start? Say haan.`,
+    spoken_hi: `सुप्रभात मुरुगन। 6 जनवरी को पोंगल के सामान के लिए ${inr(GOAL)} चाहिए। ऐसे ही चला तो ${inr(n.shortfall)} कम पड़ेंगे। रोज़ ${inr(state.dailySave)} बचाइए और उधार वसूल कीजिए, तो ज़्यादातर पैसा पूरा हो जाएगा। शुरू करूँ? "हाँ" बोलिए।`,
+    spoken_ml: `സുപ്രഭാതം മുരുകൻ. ജനുവരി 6-ന് പൊങ്കൽ സ്റ്റോക്കിന് ${inr(GOAL)} വേണം. ഇങ്ങനെ പോയാൽ ${inr(n.shortfall)} കുറയും. ദിവസവും ${inr(state.dailySave)} മാറ്റിവെച്ച്, കടം പിരിച്ചെടുത്താൽ മിക്കതും ശരിയാകും. തുടങ്ങട്ടെ? "അതെ" എന്ന് പറയൂ.`,
+    spoken_kn: `ಶುಭೋದಯ ಮುರುಗನ್. ಜನವರಿ 6ಕ್ಕೆ ಪೊಂಗಲ್ ಸ್ಟಾಕ್‌ಗೆ ${inr(GOAL)} ಬೇಕು. ಹೀಗೆಯೇ ಹೋದರೆ ${inr(n.shortfall)} ಕಡಿಮೆ ಆಗುತ್ತದೆ. ಪ್ರತಿದಿನ ${inr(state.dailySave)} ಉಳಿಸಿ, ಸಾಲ ವಸೂಲಿ ಮಾಡಿದರೆ ಹೆಚ್ಚಿನದು ಸರಿಯಾಗುತ್ತದೆ. ಶುರು ಮಾಡಲೇ? "ಹೌದು" ಎನ್ನಿ.` };
 }
-function setSpeech(main, sub) { $("sbText").textContent = main; $("sbText").classList.toggle("ta", /[஀-௿]/.test(main)); $("sbTextEn").textContent = sub || ""; }
+function setSpeech(main, sub) { $("sbText").textContent = main; $("sbText").classList.toggle("ta", NATIVE.test(main)); $("sbTextEn").textContent = sub || ""; }
 function showBrief() {
-  if (state.active) return setSpeech(CONFIRM[state.lang](state.dailySave), state.lang === "ta" ? CONFIRM.en(state.dailySave) : "");
+  if (state.active) return setSpeech(CONFIRM[state.lang](state.dailySave), state.lang !== "en" ? CONFIRM.en(state.dailySave) : "");
   const b = state.brief || localBrief();
-  setSpeech(state.lang === "ta" ? b.spoken_ta : b.spoken_en, state.lang === "ta" ? b.spoken_en : "");
+  const src = b["spoken_" + state.lang] ? b : localBrief();   // AI brief in Tamil/English; the engine's brief for Hindi, Malayalam, Kannada
+  setSpeech(src["spoken_" + state.lang], state.lang === "en" ? "" : src.spoken_en);
 }
 async function loadBrief() {
   state.brief = localBrief(); showBrief();
@@ -809,15 +872,15 @@ async function speak(text, lang) {
 }
 function browserSpeak(text, lang) {
   if (!("speechSynthesis" in window)) return setWave("");
-  const u = new SpeechSynthesisUtterance(text); u.lang = lang === "ta" ? "ta-IN" : "en-IN";
+  const u = new SpeechSynthesisUtterance(text); u.lang = LANG_CODE[lang] || "en-IN";
   const v = speechSynthesis.getVoices().find(v => v.lang.startsWith(u.lang.slice(0, 2))); if (v) u.voice = v; u.onend = () => setWave(""); speechSynthesis.speak(u);
 }
-function warmVoice() { const b = state.brief; if (!b) return; [b.spoken_ta, b.spoken_en].forEach(x => speechParts(x).slice(0, 2).forEach(getVoice)); }
-const YES = /(haan|han|haa|ஆம்|ஆமா|சரி|sari|aam|yes|ok|okay|हाँ|हां)/i;
+function warmVoice() { const b = state.brief; if (!b) return; [(b["spoken_" + state.lang] ? b : localBrief())["spoken_" + state.lang], b.spoken_en].forEach(x => speechParts(x).slice(0, 2).forEach(getVoice)); }
+const YES = /(haan|han|haa|ஆம்|ஆமா|சரி|sari|aam|yes|ok|okay|हाँ|हां|ठीक|അതെ|ശരി|ಹೌದು|ಸರಿ)/i;
 function listen(onText, lang) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { toast("Voice input isn't available in this browser."); return false; }
-  const r = new SR(); r.lang = lang === "ta" ? "ta-IN" : "en-IN"; r.interimResults = false;
+  const r = new SR(); r.lang = LANG_CODE[lang] || "en-IN"; r.interimResults = false;
   r.onresult = (e) => onText(e.results[0][0].transcript); r.onerror = () => onText(null); r.start(); return r;
 }
 let lastHaan = 0;
@@ -837,14 +900,14 @@ function pressButton() {
 
 // ---------------- voice agent ----------------
 function addMsg(text, who, src) {
-  const d = document.createElement("div"); d.className = "msg " + who + (/[஀-௿]/.test(text) ? " ta" : ""); d.textContent = text;
+  const d = document.createElement("div"); d.className = "msg " + who + (NATIVE.test(text) ? " ta" : ""); d.textContent = text;
   if (src) { const s = document.createElement("span"); s.className = "src"; s.textContent = src; d.appendChild(s); }
   $("convo").appendChild(d); $("convo").scrollTop = 1e6; return d;
 }
 async function ask(q) {
   q = (q || "").trim(); if (!q) return; addMsg(q, "me"); const wait = addMsg("Thinking…", "bot");
-  try { const r = await fetch("/api/ask", { method: "POST", body: JSON.stringify({ question: q, plan: { dailySave: state.dailySave } }) }); const a = await r.json();
-    wait.remove(); addMsg(a.answer, "bot", a.source.startsWith("gemini") ? "AI answer · from your payments" : "Offline answer"); speak(a.answer, /[஀-௿]/.test(a.answer) ? "ta" : "en");
+  try { const r = await fetch("/api/ask", { method: "POST", body: JSON.stringify({ question: q, lang: state.lang, plan: { dailySave: state.dailySave } }) }); const a = await r.json();
+    wait.remove(); addMsg(a.answer, "bot", a.source.startsWith("gemini") ? "AI answer · from your payments" : "Offline answer"); speak(a.answer, scriptLang(a.answer));
   } catch { wait.textContent = "Couldn't reach Kaasu. Try again."; }
 }
 
@@ -861,15 +924,18 @@ let tt; function toast(t) { const el = $("toast"); el.textContent = t; el.hidden
 })();
 
 // ---------------- wire up ----------------
-const WELCOME = { en: "Your shop's cash, planned for you. Every day, every festival.", ta: "உங்கள் கடையின் பணம், உங்களுக்காக திட்டமிடப்பட்டது." };
 function setLang(l) {
   state.lang = l;
   document.querySelectorAll(".sb-controls .seg button").forEach(x => x.classList.toggle("on", x.dataset.lang === l));
-  $("welcomeH").textContent = WELCOME[l]; $("welcomeH").classList.toggle("ta", l === "ta"); showBrief();
+  document.body.dataset.lang = l; document.documentElement.lang = l;
+  $("welcomeH").textContent = say("welcome"); $("welcomeH").classList.toggle("ta", l !== "en");
+  $("sugNative").textContent = say("sug"); $("sugNative").classList.toggle("ta", l !== "en");
+  $("okWord").textContent = say("yes");
+  $("voiceHello").textContent = say("hello"); $("voiceHello").classList.toggle("ta", l !== "en");
+  showBrief(); if (!$("scrMain").hidden) renderPanes();
 }
 document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => {
-  const p = b.dataset.pick; setLang(p === "ta" ? "ta" : "en");
-  if (p !== "ta" && p !== "en") toast("Demo voice is in Tamil and English. More languages coming.");
+  setLang(b.dataset.pick);
   showScreen("scrWelcome");
 }));
 $("getStarted").addEventListener("click", () => { showScreen("scrMain"); showTab("Home"); });
@@ -941,11 +1007,9 @@ $("askBtn").addEventListener("click", () => { ask($("askInput").value); $("askIn
 $("askInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { ask(e.target.value); e.target.value = ""; } });
 document.querySelectorAll(".voice-sheet .sug").forEach(b => b.addEventListener("click", () => {
   if (b.id === "closingNote") {
-    const ta = "முருகன், இன்று கடை முடிந்தது. இன்று கல்லாவில் எவ்வளவு பணம் வந்தது? யாருக்காவது கடன் கொடுத்தீர்களா?";
-    const en = "Murugan, closing time. How much cash came in today? Did you give anyone udhaar?";
-    addMsg(T(ta, en), "bot"); speak(T(ta, en), state.lang);
+    addMsg(say("closing"), "bot"); speak(say("closing"), state.lang);
     setTimeout(() => addMsg("Cash 3,000. Lakshmi 200 udhaar.", "me"), 1500);
-    setTimeout(() => addMsg(T("சரி. இன்றைய கல்லா ₹3,000, லக்ஷ்மிக்கு ₹200 கடன் குறித்துக்கொண்டேன்.", "Noted: ₹3,000 cash today and ₹200 udhaar for Lakshmi. Your plan is updated."), "bot"), 2600);
+    setTimeout(() => addMsg(say("closingDone"), "bot"), 2600);
     return;
   }
   ask(b.textContent);

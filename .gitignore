@@ -27,3 +27,5 @@ tools/deck_v2.py
 
 .vercel
 .env*
+server.err.log
+video/deck_*.png

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kaasu · AI CFO for every shop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anek+Tamil:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@500&family=Noto+Sans+Kannada:wght@500&family=Noto+Sans+Devanagari:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anek+Tamil:wght@400;500;600;700&family=Anek+Devanagari:wght@400;500;600;700&family=Anek+Malayalam:wght@400;500;600;700&family=Anek+Kannada:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/v3.css">
 <link rel="stylesheet" href="/v4.css">
@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="/v10.css">
 <link rel="stylesheet" href="/v13.css">
 <link rel="stylesheet" href="/v14.css">
+<link rel="stylesheet" href="/v15.css">
 </head>
 <body>
 <header class="topbar">
@@ -41,7 +42,7 @@
               <div class="ps-card"><small>Soundbox</small><b id="sbTop">RS 80 RECEIVED</b></div>
               <div class="ps-row"><div class="ps-qr"><svg viewBox="0 0 90 90" aria-hidden="true"><g id="qrGroup"></g></svg></div><div class="ps-shop"><b>Murugan Stores</b><small>Scan and pay with any UPI app</small></div></div>
             </div>
-            <button type="button" class="ps-ok" id="pressBtn" aria-label="Press OK to say yes">OK · <span class="ta">ஆம்</span></button>
+            <button type="button" class="ps-ok" id="pressBtn" aria-label="Press OK to say yes">OK · <span class="ta" id="okWord">ஆம்</span></button>
             <div class="ps-nav" aria-hidden="true"><i class="sq"></i><i class="ci"></i><i class="tr"></i></div>
           </div>
           <div class="pos-grip"><span class="pos-port"></span></div>
@@ -180,12 +181,12 @@
         <!-- Voice agent sheet -->
         <div class="sheet voice-sheet" id="voiceSheet" hidden>
           <div class="grabber" aria-hidden="true"></div>
-          <div class="sheet-h"><div><b>Ask Kaasu AI</b><small class="sheet-sub">Anything about your shop's money · Tamil or English</small></div><button type="button" class="chip-btn" id="closeVoice">Close</button></div>
+          <div class="sheet-h"><div><b>Ask Kaasu AI</b><small class="sheet-sub">Anything about your shop's money · in your language</small></div><button type="button" class="chip-btn" id="closeVoice">Close</button></div>
           <div class="convo" id="convo">
-            <div class="msg bot" id="voiceHello">Vanakkam! Ask me anything, like "Can I buy a fridge this month?" Speak or type.</div>
+            <div class="msg bot ta" id="voiceHello">Vanakkam! Ask me anything, like "Can I buy a fridge this month?" Speak or type.</div>
           </div>
           <div class="suggest">
-            <button type="button" class="sug ta">பொங்கலுக்கு பணம் போதுமா?</button>
+            <button type="button" class="sug ta" id="sugNative">பொங்கலுக்கு பணம் போதுமா?</button>
             <button type="button" class="sug">Can I buy a fridge for Rs 18,000 this month?</button>
             <button type="button" class="sug">Why do I need a loan at all?</button>
             <button type="button" class="sug" id="closingNote">Today's closing note</button>
@@ -222,6 +223,9 @@
     <div class="sb-controls v4">
       <div class="seg" role="group" aria-label="Voice language">
         <button type="button" class="on" data-lang="ta" id="langTa">தமிழ்</button>
+        <button type="button" data-lang="hi">हिन्दी</button>
+        <button type="button" data-lang="ml">മലയാളം</button>
+        <button type="button" data-lang="kn">ಕನ್ನಡ</button>
         <button type="button" data-lang="en" id="langEn">English</button>
       </div>
       <button id="playBrief" class="hw" type="button"><span class="ico play" aria-hidden="true"></span>Play brief</button>

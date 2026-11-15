@@ -66,7 +66,7 @@ async function sarvamText(system, user) {
 }
 async function sarvamSpeech(text) {
   const c = await sarvam(); if (!c) return null;
-  const lang = /[஀-௿]/.test(text) ? "ta-IN" : "en-IN";
+  const lang = LANG_CODE[scriptLang(text)];
   for (const model of ["bulbul:v4-flash", "bulbul:v3"]) {
     try {
       const r = await c.textToSpeech.convert({ text: text.slice(0, 1500), target_language_code: lang, model });
@@ -76,6 +76,11 @@ async function sarvamSpeech(text) {
   }
   return null;
 }
+
+// ---- five languages ----
+const LANG_CODE = { ta: "ta-IN", en: "en-IN", hi: "hi-IN", ml: "ml-IN", kn: "kn-IN" };
+const LANG_NAME = { ta: "Tamil", en: "English", hi: "Hindi", ml: "Malayalam", kn: "Kannada" };
+const scriptLang = (s) => /[\u0B80-\u0BFF]/.test(s) ? "ta" : /[\u0900-\u097F]/.test(s) ? "hi" : /[\u0D00-\u0D7F]/.test(s) ? "ml" : /[\u0C80-\u0CFF]/.test(s) ? "kn" : "en";
 
 // ---- Guardrail: every number the AI says must come from the engine ----
 function allowedNumbers(facts) {
@@ -181,21 +186,29 @@ Rules:
   }
 }
 
-async function ask(question, plan) {
+async function ask(question, plan, lang) {
+  const pref = LANG_NAME[lang] || "English";
   const f = factsFor(plan);
   if (OFFLINE) return { source: "offline", answer: `I can't reach the AI right now. Your plan: save ${inr(f.dailySave)} a day for Pongal stock of ${inr(f.goalAmount)} due on 6 January.` };
   const system = `You are Kaasu, a friendly cash-flow assistant for ${f.shop}, owned by ${f.owner}.
-Language: reply in the same language AND script as the question. English question -> plain English. Tamil script question -> Tamil script. Hindi -> Hindi.
+Language: the merchant chose ${pref}. Reply in the same language AND script as the question (Tamil, Hindi, Malayalam, Kannada or English, each in its own script, never transliterated). If the question mixes languages, reply in ${pref}. Use natural, everyday shop words a kirana owner says aloud. Use ONE script for the whole answer (plus digits and "Rs"): never put Tamil letters in a Hindi, Malayalam or Kannada answer. Pongal is पोंगल in Hindi, പൊങ്കൽ in Malayalam, ಪೊಂಗಲ್ in Kannada. If the merchant asks whether the money is enough, explain the plan: the daily saving, the udhaar to collect, and the small loan for the remaining gap.
 Length: at most 3 short sentences that sound natural when spoken aloud.
 Reasoning: protect the Pongal stock plan first. For a new expense, compare it with takeHomeAfterSaving and lowestBalanceWithPlan; if it would put the Pongal plan at risk, suggest waiting until after Pongal week when cash recovers, or paying in small parts. Give a clear recommendation.
 Use only numbers from FACTS (write money as "Rs 12,345"). If the question needs a number you don't have, ask for it (for example the price of the fridge). Never give investment advice or promise returns.`;
+  // one script per answer: if the reply mixes Indian scripts, ask once more
+  const scripts = (s) => [/[஀-௿]/, /[ऀ-ॿ]/, /[ഀ-ൿ]/, /[ಀ-೿]/].filter(r => r.test(s)).length;
   try {
-    const { text, model } = await geminiText({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: "user", parts: [{ text: "FACTS:\n" + JSON.stringify(f) + "\n\nQUESTION: " + String(question).slice(0, 500) }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 300 },
-    });
-    return { source: model, answer: text.trim() };
+    let out;
+    for (let tryNo = 0; tryNo < 2; tryNo++) {
+      out = await geminiText({
+        systemInstruction: { parts: [{ text: system }] },
+        contents: [{ role: "user", parts: [{ text: "FACTS:\n" + JSON.stringify(f) + "\n\nQUESTION: " + String(question).slice(0, 500) }] }],
+        generationConfig: { temperature: tryNo ? 0 : 0.3, maxOutputTokens: 300 },
+      });
+      if (scripts(out.text) <= 1) break;
+      console.warn("[ai] mixed scripts in answer, asking again");
+    }
+    return { source: out.model, answer: out.text.trim().replace(/\s*\n+\s*/g, " ") };
   } catch (e) {
     try {
       const { text, model } = await sarvamText(system, `FACTS: ${JSON.stringify(f)}\n\nQUESTION: ${String(question).slice(0, 500)}`);
@@ -305,7 +318,7 @@ async function stt(b64, mime, lang) {
     const j = await gemini(model, {
       contents: [{ parts: [
         { inlineData: { mimeType: (mime || "audio/wav").split(";")[0], data: b64 } },
-        { text: "Transcribe this short voice question from an Indian shopkeeper. Write Tamil words in Tamil script and English words in English. Return only the exact words spoken, nothing else. If there is no speech, return an empty string." },
+        { text: "Transcribe this short voice question from an Indian shopkeeper. The speaker may use Tamil, Hindi, Malayalam, Kannada or English (often mixed). Write each Indian-language word in its own script and English words in English. Return only the exact words spoken, nothing else. If there is no speech, return an empty string." },
       ] }],
       generationConfig: { temperature: 0 },
     }, 8000);
@@ -316,7 +329,7 @@ async function stt(b64, mime, lang) {
   try {
     const c = await sarvam(); if (!c) return { text: "", source: "none" };
     const file = new File([buf], /wav/.test(mime || "") ? "question.wav" : "question.webm", { type: (mime || "audio/webm").split(";")[0] });
-    const r = await c.speechToText.transcribe({ file, model: "saaras:v3", mode: "codemix", language_code: lang === "ta" ? "ta-IN" : "unknown" });
+    const r = await c.speechToText.transcribe({ file, model: "saaras:v3", mode: "codemix", language_code: LANG_CODE[lang] && lang !== "en" ? LANG_CODE[lang] : "unknown" });
     console.log("[stt] sarvam saaras:v3");
     return { text: (r.transcript || "").trim(), source: "sarvam" };
   } catch (e) { console.warn("[stt] sarvam", String(e.message).slice(0, 160)); return { text: "", source: "error" }; }
@@ -327,7 +340,7 @@ export async function handler(req, res) {
   const url = new URL(req.url, "http://x");
   try {
     if (url.pathname === "/api/brief" && req.method === "POST") return send(res, 200, await brief(await readJson(req)));
-    if (url.pathname === "/api/ask" && req.method === "POST") { const b = await readJson(req); return send(res, 200, await ask(b.question || "", b.plan)); }
+    if (url.pathname === "/api/ask" && req.method === "POST") { const b = await readJson(req); return send(res, 200, await ask(b.question || "", b.plan, b.lang)); }
     if (url.pathname === "/api/tts" && req.method === "POST") {
       const b = await readJson(req);
       try { const a = await tts(String(b.text || "").slice(0, 1200)); return a ? send(res, 200, a, "audio/wav") : send(res, 503, { error: "tts unavailable" }); }

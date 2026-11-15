@@ -1,0 +1,19 @@
+/* ======== v15: five languages, one look ======== */
+/* Every Indian script uses the Anek family, so Hindi, Malayalam and Kannada match the Tamil text */
+:root { --tamil: "Anek Tamil", "Anek Devanagari", "Anek Malayalam", "Anek Kannada", "Nirmala UI", sans-serif; }
+body[data-lang="hi"] .ta, body[data-lang="hi"] .ta * { font-family: "Anek Devanagari", "Nirmala UI", sans-serif; }
+body[data-lang="ml"] .ta, body[data-lang="ml"] .ta * { font-family: "Anek Malayalam", "Nirmala UI", sans-serif; }
+body[data-lang="kn"] .ta, body[data-lang="kn"] .ta * { font-family: "Anek Kannada", "Nirmala UI", sans-serif; }
+/* Malayalam and Kannada glyphs sit taller and words run longer: a touch smaller, more line space */
+body[data-lang="ml"] .speech .sb-text.ta, body[data-lang="kn"] .speech .sb-text.ta { font-size: 16px; line-height: 1.62; }
+body[data-lang="hi"] .speech .sb-text.ta { font-size: 17px; line-height: 1.55; }
+body[data-lang="ml"] .welcome-h.ta, body[data-lang="kn"] .welcome-h.ta { font-size: 22px; line-height: 1.5; }
+body[data-lang="ml"] .msg.ta, body[data-lang="kn"] .msg.ta, body[data-lang="ml"] .bubble .ta, body[data-lang="kn"] .bubble .ta { line-height: 1.6; }
+.ta { overflow-wrap: anywhere; word-break: normal; }
+
+/* Demo controls: language row on top (5 options), then the three Soundbox actions */
+body .ctrl-col .sb-controls, body .ctrl-col .sb-controls.v4 { grid-template-columns: repeat(6, 1fr); }
+body .ctrl-col .sb-controls > .seg { grid-column: 1 / -1 !important; display: grid; grid-template-columns: repeat(5, 1fr); min-height: 46px; gap: 2px; width: 100%; justify-self: stretch; }
+body .ctrl-col .sb-controls > .hw { grid-column: span 2 !important; }
+body .ctrl-col .sb-controls .seg button { padding: 7px 4px; font-size: 13.5px; white-space: nowrap; }
+body .ctrl-col .sb-controls .seg button:not([data-lang="en"]) { font-family: var(--tamil); }
