@@ -46,3 +46,5 @@ body .ctrl-col .sb-controls, body .ctrl-col .sb-controls.v4 { display: grid; gri
 body .ctrl-col .sb-controls > * { grid-column: auto !important; grid-row: auto !important; min-height: 52px; }
 body .ctrl-col .sb-controls .seg { display: grid; grid-template-columns: 1fr 1fr; }
 body .ctrl-col .sb-controls .hw { flex-direction: row; justify-content: center; }
+/* Ask AI mic reacts to the voice level */
+.mic-orb.listening { transform: scale(calc(1 + var(--lvl, 0) * .18)); transition: transform .08s linear; box-shadow: 0 0 0 calc(8px + var(--lvl, 0) * 26px) rgba(0,186,242,.18); }

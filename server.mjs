@@ -294,6 +294,32 @@ async function checkBill(body) {
 }
 function send(res, code, body, type = "application/json") { res.writeHead(code, { "content-type": type, "cache-control": "no-store" }); res.end(type === "application/json" ? JSON.stringify(body) : body); }
 
+
+// ---- speech to text for Ask AI: Gemini first, Sarvam as fallback ----
+async function stt(b64, mime, lang) {
+  if (!b64 || OFFLINE) return { text: "", source: "none" };
+  const buf = Buffer.from(b64, "base64");
+  if (buf.length < 2000) return { text: "", source: "too-short" };
+  try {
+    const { text, model } = await geminiText({
+      contents: [{ parts: [
+        { inlineData: { mimeType: (mime || "audio/webm").split(";")[0], data: b64 } },
+        { text: "Transcribe this short voice question from an Indian shopkeeper. Write Tamil words in Tamil script and English words in English. Return only the exact words spoken, nothing else. If there is no speech, return an empty string." },
+      ] }],
+      generationConfig: { temperature: 0 },
+    });
+    const clean = (text || "").replace(/^["'\s]+|["'\s]+$/g, "").trim();
+    if (clean) return { text: clean, source: model };
+  } catch (e) { console.warn("[stt] gemini", String(e.message).slice(0, 120)); }
+  try {
+    const c = await sarvam(); if (!c) return { text: "", source: "none" };
+    const file = new File([buf], "question.webm", { type: (mime || "audio/webm").split(";")[0] });
+    const r = await c.speechToText.transcribe({ file, model: "saaras:v3", mode: "codemix", language_code: lang === "ta" ? "ta-IN" : "unknown" });
+    console.log("[stt] sarvam saaras:v3");
+    return { text: (r.transcript || "").trim(), source: "sarvam" };
+  } catch (e) { console.warn("[stt] sarvam", String(e.message).slice(0, 160)); return { text: "", source: "error" }; }
+}
+
 // One handler for both the local server and the Vercel function (api/index.mjs).
 export async function handler(req, res) {
   const url = new URL(req.url, "http://x");
@@ -305,6 +331,7 @@ export async function handler(req, res) {
       try { const a = await tts(String(b.text || "").slice(0, 1200)); return a ? send(res, 200, a, "audio/wav") : send(res, 503, { error: "tts unavailable" }); }
       catch (e) { console.warn("[tts]", e.message); return send(res, 503, { error: "tts unavailable" }); }
     }
+    if (url.pathname === "/api/stt" && req.method === "POST") { const q = await readJson(req, 8e6); return send(res, 200, await stt(q.audio, q.mime, q.lang)); }
     if (url.pathname === "/api/bill" && req.method === "POST") return send(res, 200, await checkBill(await readJson(req, 8e6)));
     if (url.pathname === "/favicon.ico") { res.writeHead(204); return res.end(); }
     if (url.pathname === "/api/health") return send(res, 200, { ok: true, offline: OFFLINE, gemini: !!KEY, sarvam: !!SARVAM_KEY, models: TEXT_MODELS, tts: TTS_MODEL });

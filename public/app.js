@@ -930,48 +930,61 @@ document.querySelectorAll(".voice-sheet .sug").forEach(b => b.addEventListener("
   }
   ask(b.textContent);
 }));
-// Ask AI by voice: proper dictation. Keeps listening through pauses, shows words live,
-// sends when the merchant taps again or goes quiet for ~2.5 s after speaking.
-const dict = { rec: null, on: false, text: "", silence: null, idle: null };
+// Ask AI by voice: the app records the question itself (works in every modern browser),
+// stops when the merchant goes quiet or taps again, and the server turns it into text.
+const dict = { on: false, rec: null, stream: null, chunks: [], ctx: null, raf: 0, spoke: false, quietSince: 0, started: 0 };
+function dictCleanup() {
+  cancelAnimationFrame(dict.raf);
+  try { dict.stream && dict.stream.getTracks().forEach(t => t.stop()); } catch {}
+  try { dict.ctx && dict.ctx.close(); } catch {}
+  dict.stream = null; dict.ctx = null; $("askMic").style.setProperty("--lvl", 0);
+}
 function dictStop(send) {
-  if (!dict.on) return; dict.on = false;
-  clearTimeout(dict.silence); clearTimeout(dict.idle);
-  try { dict.rec && dict.rec.stop(); } catch {}
-  $("askMic").classList.remove("listening"); $("micLabel").textContent = "Tap and ask";
-  const q = dict.text.trim(); dict.text = "";
-  if (send && q) { $("askInput").value = ""; ask(q); }
+  if (!dict.on) return; dict.on = false; dict.send = send;
+  try { dict.rec && dict.rec.state !== "inactive" ? dict.rec.stop() : dictCleanup(); } catch { dictCleanup(); }
+  $("askMic").classList.remove("listening");
+  $("micLabel").textContent = send ? "Understanding…" : "Tap and ask";
 }
-function dictStart() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { toast("Voice input needs Chrome or Edge. You can type instead."); $("askInput").focus(); return; }
-  stopVoice();                                       // don't let the Soundbox voice be heard as the question
-  dict.on = true; dict.text = ""; $("askInput").value = "";
-  $("askMic").classList.add("listening"); $("micLabel").textContent = "Listening… tap to send";
-  const begin = () => {
-    const r = new SR(); dict.rec = r;
-    r.lang = state.lang === "ta" ? "ta-IN" : "en-IN"; r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
-    let finalPart = dict.text;
-    r.onresult = (e) => {
-      let interim = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const tr = e.results[i][0].transcript;
-        if (e.results[i].isFinal) finalPart += (finalPart ? " " : "") + tr.trim(); else interim += tr;
-      }
-      dict.text = finalPart; $("askInput").value = (finalPart + " " + interim).trim();
-      clearTimeout(dict.idle); clearTimeout(dict.silence);
-      dict.silence = setTimeout(() => { dict.text = $("askInput").value; dictStop(true); }, 2500);
-    };
-    r.onerror = (e) => {
-      if (e.error === "not-allowed" || e.error === "service-not-allowed") { toast("Please allow the microphone for this site, then tap again."); dictStop(false); }
-      else if (e.error === "audio-capture") { toast("No microphone found. You can type instead."); dictStop(false); }
-    };
-    r.onend = () => { if (dict.on) { try { begin(); } catch { dictStop(true); } } };   // Chrome ends sessions on its own: keep going
-    r.start();
+async function dictStart() {
+  if (!navigator.mediaDevices || !window.MediaRecorder) { toast("This browser can't record. Please type your question."); $("askInput").focus(); return; }
+  stopVoice();
+  try { dict.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+  catch { toast("Please allow the microphone for this site, then tap again."); return; }
+  const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"].find(m => MediaRecorder.isTypeSupported(m)) || "";
+  dict.rec = new MediaRecorder(dict.stream, type ? { mimeType: type } : undefined);
+  dict.chunks = []; dict.on = true; dict.spoke = false; dict.started = performance.now(); dict.quietSince = performance.now();
+  dict.rec.ondataavailable = (e) => e.data.size && dict.chunks.push(e.data);
+  dict.rec.onstop = async () => {
+    const blob = new Blob(dict.chunks, { type: dict.rec.mimeType || type || "audio/webm" }); dictCleanup();
+    if (!dict.send) return;
+    if (!dict.spoke || blob.size < 2000) { $("micLabel").textContent = "Tap and ask"; toast("Didn't hear anything. Tap the mic and speak."); return; }
+    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(",")[1]); fr.readAsDataURL(blob); });
+    try {
+      const out = await (await fetch("/api/stt", { method: "POST", body: JSON.stringify({ audio: b64, mime: blob.type, lang: state.lang }) })).json();
+      $("micLabel").textContent = "Tap and ask";
+      if (out.text) { $("askInput").value = ""; ask(out.text); } else toast("Couldn't catch that. Please try again or type.");
+    } catch { $("micLabel").textContent = "Tap and ask"; toast("Couldn't reach Kaasu. Please type your question."); }
   };
-  try { begin(); } catch { dictStop(false); return; }
-  dict.idle = setTimeout(() => { if (dict.on && !$("askInput").value.trim()) { toast("Didn't hear anything. Tap the mic and speak."); dictStop(false); } }, 12000);
+  dict.rec.start(250);
+  $("askMic").classList.add("listening"); $("micLabel").textContent = "Listening… tap to send";
+  // simple voice-activity detection: stop ~1.8 s after the merchant stops talking
+  dict.ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const an = dict.ctx.createAnalyser(); an.fftSize = 1024; dict.ctx.createMediaStreamSource(dict.stream).connect(an);
+  const buf = new Uint8Array(an.fftSize);
+  const tick = () => {
+    if (!dict.on) return;
+    an.getByteTimeDomainData(buf); let sum = 0; for (const v of buf) { const x = (v - 128) / 128; sum += x * x; }
+    const rms = Math.sqrt(sum / buf.length), now = performance.now();
+    $("askMic").style.setProperty("--lvl", Math.min(1, rms * 8).toFixed(2));
+    if (rms > 0.035) { dict.spoke = true; dict.quietSince = now; }
+    if (dict.spoke && now - dict.quietSince > 1800) return dictStop(true);
+    if (!dict.spoke && now - dict.started > 10000) { dictStop(false); toast("Didn't hear anything. Tap the mic and speak."); return; }
+    if (now - dict.started > 25000) return dictStop(true);
+    dict.raf = requestAnimationFrame(tick);
+  };
+  tick();
 }
-$("askMic").addEventListener("click", () => (dict.on ? (dict.text = $("askInput").value, dictStop(true)) : dictStart()));
+$("askMic").addEventListener("click", () => (dict.on ? dictStop(true) : dictStart()));
 $("closeVoice").addEventListener("click", () => dictStop(false));
 $("resetBtn").addEventListener("click", () => { location.hash = ""; location.reload(); });
 fetch("/api/health").then(r => r.json()).then(h => { $("aiStatus").textContent = h.offline ? "AI: offline mode" : ["Gemini", h.sarvam && "Sarvam"].filter(Boolean).join(" + ") + " connected"; $("aiStatus").className = "chip" + (h.offline ? " off" : ""); })
